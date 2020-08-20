@@ -1,0 +1,124 @@
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <title>MatrioshTS</title>
+
+    <!-- CSS only -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.52.2/codemirror.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.52.2/theme/monokai.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.57.0/theme/material-ocean.min.css">
+    <link rel="stylesheet" href="./css/mycss.css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+        integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+
+</head>
+
+<body>
+    <header>
+        <nav class="navbar navbar-expand-sm bg-dark navbar-dark">
+            <!-- Brand -->
+            <a class="navbar-brand" href="#">MatrioshTS</a>
+
+            <!-- Links -->
+            <ul class="navbar-nav">
+                <li class="nav-item"><button type="button" class="btn btn-dark" id="open-file">Open File</button></li>
+                <li class="nav-item"><button type="button" class="btn btn-dark" id="traducir">Traducir</button></li>
+                <li class="nav-item"><button type="button" class="btn btn-dark" id="ejecutar">Ejecutar</button></li>
+
+                <!-- TODO aun no uso esta parte del dropdown -->
+                <!-- Dropdown -->
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbardrop" data-toggle="dropdown">
+                        Dropdown link
+                    </a>
+                    <div class="dropdown-menu">
+                        <a class="dropdown-item" href="#">Link 1</a>
+                        <a class="dropdown-item" href="#">Link 2</a>
+                        <a class="dropdown-item" href="#">Link 3</a>
+                    </div>
+                </li>
+
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <div class="container">
+            <div class="row-col-12 height-editor">
+                <ul class="nav nav-tabs" id="myTabEditor" role="tablist">
+                    <li class="nav-item">
+                        <button type="button" class="nav-link active" id="entrada-editor-tab" data-toggle="tab"
+                            data-target="#editor-content-entrada" role="tab" aria-controls="editor-content-entrada"
+                            aria-selected="true">Entrada
+                        </button>
+                    </li>
+                    <li class="nav-item">
+                        <button type="button" class="nav-link" id="salida-editor-tab" data-toggle="tab"
+                            data-target="#editor-content-salida" role="tab" aria-controls="editor-content-salida"
+                            aria-selected="false">Salida
+                        </button>
+                    </li>
+                </ul>
+                <div class="tab-content" id="myTabEditorContent">
+                    <div class="tab-pane fade show active" id="editor-content-entrada" role="tabpanel"
+                        aria-labelledby="entrada-editor-tab">
+                        <textarea id="textarea-editor-entrada"></textarea>
+                    </div>
+                    <div class="tab-pane fade active" id="editor-content-salida" role="tabpanel"
+                        aria-labelledby="salida-editor-tab">
+                        <textarea id="textarea-editor-salida"></textarea>
+                    </div>
+                </div>
+            </div>
+            <div class="row-col-12 height-console">
+                <ul class="nav nav-tabs" id="myTabEditor" role="tablist">
+                    <li class="nav-item">
+                        <button type="button" class="nav-link active" id="console-tab" data-toggle="tab"
+                            data-target="#console-content" role="tab" aria-controls="console-content"
+                            aria-selected="true">Consola
+                        </button>
+                    </li>
+
+                    <li class="nav-item">
+                        <button type="button" class="nav-link" id="salida-editor-tab" data-toggle="tab"
+                            data-target="#editor-content-salida" role="tab" aria-controls="editor-content-salida"
+                            aria-selected="false">Salida
+                        </button>
+                    </li>
+
+                </ul>
+                <div class="tab-content" id="myTabEditorContent">
+                    <div class="tab-pane fade show active" id="console-content" role="tabpanel"
+                        aria-labelledby="console-tab">
+                        <textarea id="textarea-console"></textarea>
+                    </div>
+                    <div class="tab-pane fade active" id="editor-content-salida" role="tabpanel"
+                        aria-labelledby="salida-editor-tab">
+                        <textarea id="textarea-editor-salida"></textarea>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+    <footer></footer>
+
+    <!-- JS, Popper.js, and jQuery -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
+        integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"
+        integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN"
+        crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"
+        integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV"
+        crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.52.2/codemirror.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.52.2/mode/javascript/javascript.min.js"></script>
+    <script src="js/myjs.js"></script>
+</body>
+
+</html>
