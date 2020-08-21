@@ -1,3 +1,4 @@
+// CODEMIRROR
 var editEntrada = CodeMirror.fromTextArea(document.getElementById('textarea-editor-entrada'),{
     mode: "javascript",
     theme: "monokai",
@@ -16,4 +17,41 @@ var consoleShow = CodeMirror.fromTextArea(document.getElementById('textarea-cons
     lineNumbers: false
 });
 
-console.log(editEntrada);
+  function getEditor(){
+    var codeMirrorTextArea = $('.CodeMirror');
+    var tmp = codeMirrorTextArea[0].CodeMirror;
+    return tmp;
+  }
+
+  function getSalida(){
+    var codeMirrorTextArea = $('.CodeMirror');
+    var tmp = codeMirrorTextArea[1].CodeMirror;
+    return tmp;
+  }
+
+  function getConsole(){
+    var codeMirrorTextArea = $('.CodeMirror');
+    var tmp = codeMirrorTextArea[2].CodeMirror;
+    return tmp;
+  }
+
+  // ABRIR ARCHIVO
+  var openFile = document.getElementById('open-file');
+
+  openFile.addEventListener('change', (event) => {
+    const fileUpload = event.target.files;
+    console.log(fileUpload);
+
+    if(fileUpload.lenght == 0){
+        alert('Error: Seleccione un archivo');
+        return;
+    }
+
+    var reader = new FileReader();
+    reader.addEventListener('load',function(e){
+        var text = e.target.result;    
+        var editor = getEditor();
+        editor.setValue(text);
+    });
+    reader.readAsText(fileUpload[0]);
+  });
