@@ -75,8 +75,8 @@ var Gramatica = (function(){
 var o=function(k,v,o,l){for(o=o||{},l=k.length;l--;o[k[l]]=v);return o};
 var parser = {trace: function trace () { },
 yy: {},
-symbols_: {"error":2,"INIT":3,"VALOR":4,"EOF":5,"val_number":6,"val_cadena":7,"val_verdadero":8,"val_falso":9,"val_nulo":10,"$accept":0,"$end":1},
-terminals_: {2:"error",5:"EOF",6:"val_number",7:"val_cadena",8:"val_verdadero",9:"val_falso",10:"val_nulo"},
+symbols_: {"error":2,"INIT":3,"VALOR":4,"EOF":5,"val_number":6,"val_string":7,"val_verdadero":8,"val_falso":9,"val_nulo":10,"$accept":0,"$end":1},
+terminals_: {2:"error",5:"EOF",6:"val_number",7:"val_string",8:"val_verdadero",9:"val_falso",10:"val_nulo"},
 productions_: [0,[3,2],[3,1],[4,1],[4,1],[4,1],[4,1],[4,1]],
 performAction: function anonymous(yytext, yyleng, yylineno, yy, yystate /* action[1] */, $$ /* vstack */, _$ /* lstack */) {
 /* this == yyval */
@@ -685,7 +685,7 @@ case 56:return '!'
 break;
 case 57:return 6
 break;
-case 58:return 'val_string'
+case 58:return 7
 break;
 case 59:return 'identificador'
 break;

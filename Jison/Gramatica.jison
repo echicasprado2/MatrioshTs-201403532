@@ -139,7 +139,7 @@ INIT: VALOR EOF { console.log("desde jison reconoci --> " + $1); }
     ;
 
 VALOR: val_number   { $$ = $1; }
-    | val_cadena    { $$ = $1; }
+    | val_string    { $$ = $1; }
     | val_verdadero { $$ = $1; }
     | val_falso     { $$ = $1; }
     | val_nulo      { $$ = $1; }
