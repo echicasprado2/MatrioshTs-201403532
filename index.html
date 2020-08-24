@@ -14,7 +14,6 @@
     <link rel="stylesheet" href="./css/mycss.css">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
         integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
-
 </head>
 
 <body>
@@ -28,8 +27,12 @@
                 <!-- <li class="nav-item"><button type="button" class="btn btn-dark" id="open-file">Open File</button></li> -->
 
                 <li class="nav-item"><input type="file" name="" id="open-file"></li>
-                <li class="nav-item"><button type="button" class="btn btn-dark" id="traducir">Traducir</button></li>
-                <li class="nav-item"><button type="button" class="btn btn-dark" id="ejecutar">Ejecutar</button></li>
+                <li class="nav-item">
+                    <button type="button" class="btn btn-dark" id="traducir">Traducir</button>
+                </li>
+                <li class="nav-item">
+                    <button type="button" class="btn btn-dark" id="ejecutar">Ejecutar</button>
+                </li>
 
                 <!-- TODO aun no uso esta parte del dropdown -->
                 <!-- Dropdown -->
@@ -118,9 +121,10 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"
         integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV"
         crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.52.2/codemirror.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.52.2/mode/javascript/javascript.min.js"></script>
-    <script src="js/myjs.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.52.2/codemirror.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.52.2/mode/javascript/javascript.min.js"></script>
+    <script type="text/javascript" src="Jison/Gramatica.js"></script>
+    <script type="text/javascript" src="js/myjs.js"></script>
 </body>
 
 </html>
