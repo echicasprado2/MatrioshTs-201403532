@@ -1,3 +1,4 @@
+
 // CODEMIRROR
 var editEntrada = CodeMirror.fromTextArea(document.getElementById('textarea-editor-entrada'),{
     mode: "javascript",
@@ -37,7 +38,6 @@ var consoleShow = CodeMirror.fromTextArea(document.getElementById('textarea-cons
 
   // ABRIR ARCHIVO
   var openFile = document.getElementById('open-file');
-
   openFile.addEventListener('change', (event) => {
     const fileUpload = event.target.files;
     console.log(fileUpload);
@@ -54,4 +54,14 @@ var consoleShow = CodeMirror.fromTextArea(document.getElementById('textarea-cons
         editor.setValue(text);
     });
     reader.readAsText(fileUpload[0]);
+  });
+
+
+  var translate = document.getElementById('traducir');
+  translate.addEventListener('click',(e)=>{
+    var editor = getEditor();
+    //var parserSource = generator.generate({moduleName: "Gramatica"});
+
+    //console.log(editor.getValue());
+    console.log(Gramatica.parse(editor.getValue()));
   });
