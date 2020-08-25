@@ -15,6 +15,7 @@ var __extends = (this && this.__extends) || (function () {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Value = void 0;
 var Expresion_1 = require("../Structure/Abstract/Expresion");
+var Static_1 = require("../Structure/Utils/Static");
 /**
  * @class use this class for save all value
  */
@@ -27,28 +28,19 @@ var Value = /** @class */ (function (_super) {
      *
      */
     function Value(type, value) {
-        var _this = _super.call(this) || this;
+        var _this = _super.call(this, 0, 0, type, value) || this;
         if (value instanceof Array) {
             _this.esArray = true;
-            _this.valueArray = value;
-            _this.type = type;
-            _this.value = null;
         }
         else {
             _this.esArray = false;
-            _this.valueArray = [];
-            _this.type = type;
-            _this.value = value;
         }
+        _this.nodeName = Static_1.Static.treeGraph.getNumberNode();
+        _this.graphcsCode = Static_1.Static.treeGraph.generateLeafNodeExpresion(_this);
         return _this;
     }
     Value.prototype.getValue = function (e) {
-        if (this.esArray) {
-            return new Value(this.type, this.valueArray);
-        }
-        else {
-            return new Value(this.type, this.value);
-        }
+        return new Value(this.type, this.value);
     };
     return Value;
 }(Expresion_1.Expresion));

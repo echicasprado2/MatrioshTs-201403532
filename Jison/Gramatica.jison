@@ -1,6 +1,14 @@
 /*Importaciones de clases */
 %{
-
+    /* UTILS */
+    // var Type = require('Clases/Structure/Utils/Type').Type;
+    // var EnumType = require('Clases/Structure/Utils/Type').EnumType;
+    
+    // /* EXPRESSIONES */
+    // var Value = require('Clases/Expressions/Value').Value;
+    
+    /* INSTRUCTIONS */
+    //import { Print } from './Clases/Instructions/Print';
 %}
 
 /* Lexico */
@@ -134,13 +142,59 @@ lex_comentariomultilinea [/][*][^*]*[*]+([^/*][^*]*[*]+)*[/]
 
 /* GRAMATICA */
 
-INIT: VALOR EOF { console.log("desde jison reconoci --> " + $1); }
+INIT: PRINT EOF //{ return $1; }
     | EOF
     ;
 
-VALOR: val_number   { $$ = $1; }
-    | val_cadena    { $$ = $1; }
-    | val_verdadero { $$ = $1; }
-    | val_falso     { $$ = $1; }
-    | val_nulo      { $$ = $1; }
+PRINT: print par_izq VALOR par_der punto_y_coma { $$ = new Print(this._$.first_line,this.$.first_column,$3); }
+    ;
+
+/* EXPRESIONES */
+E
+    // : ARITMETICAS  {$$ = $1; }
+    // | RELACIONALES {$$ = $1; }
+    // | LOGICAS      {$$ = $1; }
+    // | UNARIAS      {$$ = $1; }
+    //| VALOR        {$$ = $1; }
+    :VALOR {$$ = $1; };
+
+// ARITMETICAS
+//     : E '+'  E { $$ = new Aritmetica(this._$.first_line,this._$.first_column,TipoOperacion.SUMA,$1,$3); }
+//     | E '-'  E { $$ = new Aritmetica(this._$.first_line,this._$.first_column,TipoOperacion.RESTA,$1,$3); }
+//     | E '*'  E { $$ = new Aritmetica(this._$.first_line,this._$.first_column,TipoOperacion.MULTIPLICACION,$1,$3); }
+//     | E '/'  E { $$ = new Aritmetica(this._$.first_line,this._$.first_column,TipoOperacion.DIVISION,$1,$3); }
+//     | E '^^' E { $$ = new Aritmetica(this._$.first_line,this._$.first_column,TipoOperacion.POTENCIA,$1,$3); }
+//     | E '%'  E { $$ = new Aritmetica(this._$.first_line,this._$.first_column,TipoOperacion.MODULO,$1,$3); }
+//     | '-' E %prec UMENOS { $$ = new Unario(this._$.first_line,this._$.first_column,TipoOperacion.NEGATIVO,$2);}
+//     ;
+
+// RELACIONALES
+//     : E '!='  E { $$ = new Relacional(this._$.first_line,this._$.first_column,TipoOperacion.DIFERENTE_QUE,$1,$3); }
+//     | E '=='  E { $$ = new Relacional(this._$.first_line,this._$.first_column,TipoOperacion.IGUAL_QUE,$1,$3); }
+//     | E '===' E { $$ = new Relacional(this._$.first_line,this._$.first_column,TipoOperacion.IGUAL_REFERENCIA,$1,$3); }
+//     | E '>='  E { $$ = new Relacional(this._$.first_line,this._$.first_column,TipoOperacion.MAYOR_IGUAL,$1,$3); }
+//     | E '>'   E { $$ = new Relacional(this._$.first_line,this._$.first_column,TipoOperacion.MAYOR_QUE,$1,$3); }
+//     | E '<='  E { $$ = new Relacional(this._$.first_line,this._$.first_column,TipoOperacion.MENOR_IGUAL,$1,$3); }
+//     | E '<'   E { $$ = new Relacional(this._$.first_line,this._$.first_column,TipoOperacion.MENOR_QUE,$1,$3); }
+//     ;
+
+// LOGICAS
+//     : E '&&'  E { $$ = new Logica(this._$.first_line,this._$.first_column,TipoOperacion.AND,$1,$3); }
+//     | E '||'  E { $$ = new Logica(this._$.first_line,this._$.first_column,TipoOperacion.OR,$1,$3); }
+//     | E '^'   E { $$ = new Logica(this._$.first_line,this._$.first_column,TipoOperacion.XOR,$1,$3); }
+//     | '!'     E { $$ = new Logica(this._$.first_line,this._$.first_column,TipoOperacion.NOT,$1,$3); }
+//     ;
+
+// UNARIAS
+//     : E '++' { $$ = new Unario(this._$.first_line,this._$.first_column,TipoOperacion.MAS_MAS,$1);}
+//     | E '--' { $$ = new Unario(this._$.first_line,this._$.first_column,TipoOperacion.MENOS_MENOS,$1);}
+//     ;
+
+/*  valores */
+VALOR: val_number       { $$ = new Value(new Type(EnumType.NUMBER),$1); }
+    | val_string        { $$ = new Value(new Type(EnumType.STRING),$1); }
+    | val_verdadero     { $$ = new Value(new Type(EnumType.BOOLEAN),$1); }
+    | val_falso         { $$ = new Value(new Type(EnumType.BOOLEAN),$1); }
+    | val_nulo          { $$ = new Value(new Type(EnumType.NULL),$1); }
+    | par_izq E par_der { $$ = $2; }
     ;

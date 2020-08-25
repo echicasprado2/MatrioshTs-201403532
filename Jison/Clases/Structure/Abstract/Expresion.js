@@ -13,12 +13,16 @@ var __extends = (this && this.__extends) || (function () {
     };
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.Instuccion = void 0;
-var Instuccion = /** @class */ (function (_super) {
-    __extends(Instuccion, _super);
-    function Instuccion() {
-        return _super !== null && _super.apply(this, arguments) || this;
+exports.Expresion = void 0;
+var Node_1 = require("../Abstract/Node");
+var Expresion = /** @class */ (function (_super) {
+    __extends(Expresion, _super);
+    function Expresion(line, column, type, value) {
+        var _this = _super.call(this, line, column) || this;
+        _this.type = type;
+        _this.value = value || null;
+        return _this;
     }
-    return Instuccion;
-}(Node));
-exports.Instuccion = Instuccion;
+    return Expresion;
+}(Node_1.Node));
+exports.Expresion = Expresion;

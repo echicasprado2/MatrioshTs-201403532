@@ -1,46 +1,33 @@
 import { Type } from "../Structure/Utils/Type";
 import { Expresion } from "../Structure/Abstract/Expresion";
 import { Environment } from "../Structure/Simbols/Environment";
-
+import { Static } from "../Structure/Utils/Static";
 
 /**
  * @class use this class for save all value
  */
-export class Value extends Expresion{
+export class Value extends Expresion {
+  esArray: Boolean;
 
-    esArray: Boolean;
-    type: Type;
-    value: any;
-    valueArray: object[];
+  /**
+   *
+   * @param type - Type
+   * @param value - Object
+   *
+   */
 
-    /**
-     * 
-     * @param type - Type
-     * @param value - Object
-     * 
-     */
-
-    constructor(type: Type, value: any){
-        super();
-        if(value instanceof Array){
-            this.esArray = true;
-            this.valueArray = value;
-            this.type = type;
-            this.value = null;
-        }else{
-            this.esArray = false;
-            this.valueArray = [];
-            this.type = type;
-            this.value = value;
-        }
+  constructor(type: Type, value: any) {
+    super(0, 0, type, value);
+    if (value instanceof Array) {
+      this.esArray = true;
+    } else {
+      this.esArray = false;
     }
+    this.nodeName = Static.treeGraph.getNumberNode();
+    this.graphcsCode = Static.treeGraph.generateLeafNodeExpresion(this);
+  }
 
-    getValue(e: Environment): Expresion {
-        if(this.esArray){
-            return new Value(this.type,this.valueArray);
-        }else{
-            return new Value(this.type,this.value);
-        }
-    }
-
+  getValue(e: Environment): Expresion {
+    return new Value(this.type, this.value);
+  }
 }

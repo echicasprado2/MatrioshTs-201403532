@@ -12,6 +12,7 @@ var EnumType;
     EnumType["VOID"] = "VOID";
     EnumType["TYPE"] = "TYPE";
     EnumType["ARRAY"] = "ARRAY";
+    EnumType["NULL"] = "NULL";
     EnumType["ERROR"] = "ERROR";
 })(EnumType = exports.EnumType || (exports.EnumType = {}));
 /**
