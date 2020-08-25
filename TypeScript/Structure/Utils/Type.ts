@@ -9,6 +9,7 @@ export enum EnumType{
     VOID = 'VOID',
     TYPE = "TYPE",
     ARRAY = 'ARRAY',
+    NULL = 'NULL',
     ERROR = 'ERROR'
 }
 
