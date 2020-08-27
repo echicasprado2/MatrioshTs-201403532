@@ -66,4 +66,5 @@ var consoleShow = CodeMirror.fromTextArea(document.getElementById('textarea-cons
     // console.log();
     var console = getConsole();
     console.setValue(Gramatica.parse(editor.getValue()).toString());
+  
   });
