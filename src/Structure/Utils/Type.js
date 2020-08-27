@@ -1,9 +1,6 @@
-"use strict";
 /**
  *  @enum of type use in language.
  */
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.Type = exports.EnumType = void 0;
 var EnumType;
 (function (EnumType) {
     EnumType["NUMBER"] = "NUMBER";
@@ -14,17 +11,15 @@ var EnumType;
     EnumType["ARRAY"] = "ARRAY";
     EnumType["NULL"] = "NULL";
     EnumType["ERROR"] = "ERROR";
-})(EnumType = exports.EnumType || (exports.EnumType = {}));
+})(EnumType || (EnumType = {}));
 /**
  * @class type use for type anyone expresion with value
  */
-var Type = /** @class */ (function () {
-    function Type(enumType) {
+class Type {
+    constructor(enumType) {
         this.enumType = enumType;
     }
-    Type.prototype.toString = function () {
+    toString() {
         return this.enumType.toString();
-    };
-    return Type;
-}());
-exports.Type = Type;
+    }
+}

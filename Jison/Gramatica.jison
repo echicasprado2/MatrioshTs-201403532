@@ -1,14 +1,5 @@
 /*Importaciones de clases */
 %{
-    /* UTILS */
-    // var Type = require('Clases/Structure/Utils/Type').Type;
-    // var EnumType = require('Clases/Structure/Utils/Type').EnumType;
-    
-    // /* EXPRESSIONES */
-    // var Value = require('Clases/Expressions/Value').Value;
-    
-    /* INSTRUCTIONS */
-    //import { Print } from './Clases/Instructions/Print';
 %}
 
 /* Lexico */
@@ -142,7 +133,7 @@ lex_comentariomultilinea [/][*][^*]*[*]+([^/*][^*]*[*]+)*[/]
 
 /* GRAMATICA */
 
-INIT: PRINT EOF //{ return $1; }
+INIT: PRINT EOF { console.log($1); }
     | EOF
     ;
 
