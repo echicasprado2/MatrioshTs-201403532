@@ -1,23 +1,25 @@
 class TreeGraph {
-    constructor() {
-        this.numberNode = 0;
+    
+    static numberNode = 0;
+
+    static getNumberNode() {
+        TreeGraph.numberNode++;
+        return String("node" + TreeGraph.numberNode);
     }
-    getNumberNode() {
-        this.numberNode++;
-        return String("node" + this.numberNode);
-    }
-    generateLeafNodeExpresion(e) {
+
+    static generateLeafNodeExpresion(e) {
         return e.nodeName + "((" + e.value.toString() + "))";
     }
-    generateNode(e, tag) {
+
+    static generateNode(e, tag) {
         return e.nodeName + "((" + tag + "))";
     }
-    generateOneChield(father, tag, chield) {
-        var tmp = chield.nodeName;
-        tmp += Static.treeGraph.generateNode(father, tag);
-        tmp += father.nodeName;
+
+    static generateOneChield(father, tag, chield) {
+        var tmp = TreeGraph.generateNode(father, tag);
         tmp += " --> ";
-        tmp += chield.nodeName;
+        tmp += chield.graphcsCode;
+        tmp += ";\n";
         return tmp;
     }
 }

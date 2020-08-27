@@ -18,6 +18,9 @@ var consoleShow = CodeMirror.fromTextArea(document.getElementById('textarea-cons
     lineNumbers: false
 });
 
+// MERMAID
+  mermaid.initialize({startOnLoad:false});
+
   function getEditor(){
     var codeMirrorTextArea = $('.CodeMirror');
     var tmp = codeMirrorTextArea[0].CodeMirror;
@@ -64,7 +67,20 @@ var consoleShow = CodeMirror.fromTextArea(document.getElementById('textarea-cons
 
     //console.log(editor.getValue());
     // console.log();
-    var console = getConsole();
-    console.setValue(Gramatica.parse(editor.getValue()).toString());
-  
+    var result = Gramatica.parse(editor.getValue());
+    
+    var myConsole = getConsole();
+    myConsole.setValue("");
+    
+    // document.getElementById('prueba').innerHTML =`<div class=\"mermaid\"><br\>graph TD;\n ${result.graphcsCode}</div>`;
+
+    var element = document.querySelector("myGraph");
+    var insertSvg = function(svgCode,brindFunctions){
+      element.innerHTML = svgCode;
+    };
+    
+    var grapDefinition = `graph TD;\n ${result.graphcsCode}`;
+    var graph = mermaid.render('myGraph',grapDefinition,insertSvg);
+    // document.getElementById("myGraph").innerHTML = graph;
+
   });

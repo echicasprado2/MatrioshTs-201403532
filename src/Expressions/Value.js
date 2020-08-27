@@ -16,9 +16,10 @@ class Value extends Expresion {
         else {
             this.esArray = false;
         }
-        // this.nodeName = Static.treeGraph.getNumberNode();
-        // this.graphcsCode = Static.treeGraph.generateLeafNodeExpresion(this);
+        this.nodeName = TreeGraph.getNumberNode();
+        this.graphcsCode = TreeGraph.generateLeafNodeExpresion(this);
     }
+
     getValue(e) {
         return new Value(this.type, this.value);
     }
