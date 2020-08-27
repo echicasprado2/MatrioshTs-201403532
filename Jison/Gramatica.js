@@ -84,7 +84,7 @@ performAction: function anonymous(yytext, yyleng, yylineno, yy, yystate /* actio
 var $0 = $$.length - 1;
 switch (yystate) {
 case 1:
- console.log($$[$0-1]); 
+ console.log($$[$0-1]); return $$[$0-1]; 
 break;
 case 3:
  this.$ = new Print(this._$.first_line,this.$.first_column,$$[$0-2]); 

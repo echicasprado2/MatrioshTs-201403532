@@ -133,7 +133,7 @@ lex_comentariomultilinea [/][*][^*]*[*]+([^/*][^*]*[*]+)*[/]
 
 /* GRAMATICA */
 
-INIT: PRINT EOF { console.log($1); }
+INIT: PRINT EOF { console.log($1); return $1; }
     | EOF
     ;
 

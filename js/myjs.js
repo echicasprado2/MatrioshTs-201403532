@@ -63,5 +63,7 @@ var consoleShow = CodeMirror.fromTextArea(document.getElementById('textarea-cons
     //var parserSource = generator.generate({moduleName: "Gramatica"});
 
     //console.log(editor.getValue());
-    console.log(Gramatica.parse(editor.getValue()));
+    // console.log();
+    var console = getConsole();
+    console.setValue(Gramatica.parse(editor.getValue()).toString());
   });
