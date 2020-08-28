@@ -133,11 +133,18 @@ lex_comentariomultilinea [/][*][^*]*[*]+([^/*][^*]*[*]+)*[/]
 
 /* GRAMATICA */
 
-INIT: PRINT EOF { console.log($1); return $1; }
+INIT: SENTENCES EOF { return $1; }
     | EOF
     ;
 
-PRINT: print par_izq VALOR par_der punto_y_coma { $$ = new Print(this._$.first_line,this.$.first_column,$3); }
+SENTENCES: SENTENCES SENTENCE { $$ = $1; $$.push($2); }
+        | SENTENCE            { $$ = []; $$.push($1); }
+        ;
+
+SENTENCE: PRINT { $$ = $1; } 
+        ;
+
+PRINT: print par_izq VALOR par_der punto_y_coma { $$ = new Print(this._$.first_line,this._$.first_column,$3); }
     ;
 
 /* EXPRESIONES */
@@ -172,7 +179,6 @@ E
 // LOGICAS
 //     : E '&&'  E { $$ = new Logica(this._$.first_line,this._$.first_column,TipoOperacion.AND,$1,$3); }
 //     | E '||'  E { $$ = new Logica(this._$.first_line,this._$.first_column,TipoOperacion.OR,$1,$3); }
-//     | E '^'   E { $$ = new Logica(this._$.first_line,this._$.first_column,TipoOperacion.XOR,$1,$3); }
 //     | '!'     E { $$ = new Logica(this._$.first_line,this._$.first_column,TipoOperacion.NOT,$1,$3); }
 //     ;
 

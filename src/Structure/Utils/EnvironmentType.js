@@ -1,4 +1,4 @@
-export var EnumEnvironmentType;
+var EnumEnvironmentType;
 (function (EnumEnvironmentType) {
     EnumEnvironmentType["GLOBAL"] = "GLOBAL";
     EnumEnvironmentType["IF"] = "IF";
@@ -7,7 +7,7 @@ export var EnumEnvironmentType;
     EnumEnvironmentType["DO"] = "DO";
     EnumEnvironmentType["FUNCTION"] = "FUNCION";
 })(EnumEnvironmentType || (EnumEnvironmentType = {}));
-export class EnvironmentType {
+class EnvironmentType {
     constructor(enumEnvironmentType) {
         this.enumEnvironmentType = enumEnvironmentType;
     }

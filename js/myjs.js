@@ -18,9 +18,10 @@ var consoleShow = CodeMirror.fromTextArea(document.getElementById('textarea-cons
     lineNumbers: false
 });
 
-// MERMAID
+  // MERMAID
   mermaid.initialize({startOnLoad:false});
 
+  // FUNCIONES PARA OBTENER CODEMIRROR
   function getEditor(){
     var codeMirrorTextArea = $('.CodeMirror');
     var tmp = codeMirrorTextArea[0].CodeMirror;
@@ -63,24 +64,15 @@ var consoleShow = CodeMirror.fromTextArea(document.getElementById('textarea-cons
   var translate = document.getElementById('traducir');
   translate.addEventListener('click',(e)=>{
     var editor = getEditor();
-    //var parserSource = generator.generate({moduleName: "Gramatica"});
-
-    //console.log(editor.getValue());
-    // console.log();
-    var result = Gramatica.parse(editor.getValue());
     
-    var myConsole = getConsole();
-    myConsole.setValue("");
-    
-    // document.getElementById('prueba').innerHTML =`<div class=\"mermaid\"><br\>graph TD;\n ${result.graphcsCode}</div>`;
-
+    var result = new AST(Gramatica.parse(editor.getValue()));
+  
     var element = document.querySelector("myGraph");
-    var insertSvg = function(svgCode,brindFunctions){
+    var insertSvg = function(svgCode){
+      console.log(svgCode);
       element.innerHTML = svgCode;
     };
     
-    var grapDefinition = `graph TD;\n ${result.graphcsCode}`;
+    var grapDefinition = `graph TD;\n ${result.getGraphCode()}`;
     var graph = mermaid.render('myGraph',grapDefinition,insertSvg);
-    // document.getElementById("myGraph").innerHTML = graph;
-
   });

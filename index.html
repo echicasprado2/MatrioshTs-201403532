@@ -71,7 +71,16 @@
                 <div class="tab-content  height-editor" id="myTabEditorContent">
                     <div class="tab-pane fade show active  height-editor" id="editor-content-entrada" role="tabpanel"
                         aria-labelledby="entrada-editor-tab">
-                        <textarea id="textarea-editor-entrada">console.log("cadena");</textarea>
+                        <textarea id="textarea-editor-entrada">console.log("cadena");
+console.log(3);
+console.log(5.6);
+console.log('cadena 2');
+console.log(`cadena 3`);
+console.log(true);
+console.log(false);
+console.log(null);
+console.log((3));
+                        </textarea>
                     </div>
                     <div class="tab-pane fade active  height-editor" id="editor-content-salida" role="tabpanel"
                         aria-labelledby="salida-editor-tab">
@@ -133,17 +142,26 @@
     <script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
     
     <!-- STRUCTURE -->
-    <script src="src/Structure/Abstract/Node.js"></script>
-    <script src="src/Structure/Abstract/Expresion.js"></script>
-    <script src="src/Structure/Abstract/Instruction.js"></script>
+    <script src="src/Structure/Utils/EnvironmentType.js"></script>
+    <script src="src/Structure/Utils/ErrorType.js"></script>
+    <script src="src/Structure/Utils/OperationType.js"></script>
     <script src="src/Structure/Utils/TreeGraph.js"></script>
     <script src="src/Structure/Utils/Type.js"></script>
+
+    <script src="src/Structure/Abstract/Node.js"></script>
+    <script src="src/Structure/Abstract/ErrorNode.js"></script>
+    <script src="src/Structure/Abstract/Expresion.js"></script>
+    <script src="src/Structure/Abstract/Instruction.js"></script>
 
     <!-- EXPRESSIONS -->
     <script src="src/Expressions/Value.js"></script>
 
     <!-- INSTRUCTIONS -->
     <script src="src/Instructions/print.js"></script>
+    <script src="src/Instructions/Unary.js"></script>
+
+    <!-- AST -->
+    <script src="src/AST.js"></script>
 
     <script type="text/javascript" src="Jison/Gramatica.js"></script>
     <script type="text/javascript" src="js/myjs.js"></script>

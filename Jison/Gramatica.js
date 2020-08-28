@@ -72,45 +72,54 @@
   }
 */
 var Gramatica = (function(){
-var o=function(k,v,o,l){for(o=o||{},l=k.length;l--;o[k[l]]=v);return o},$V0=[1,13],$V1=[1,8],$V2=[1,9],$V3=[1,10],$V4=[1,11],$V5=[1,12];
+var o=function(k,v,o,l){for(o=o||{},l=k.length;l--;o[k[l]]=v);return o},$V0=[1,6],$V1=[5,8],$V2=[1,16],$V3=[1,11],$V4=[1,12],$V5=[1,13],$V6=[1,14],$V7=[1,15];
 var parser = {trace: function trace () { },
 yy: {},
-symbols_: {"error":2,"INIT":3,"PRINT":4,"EOF":5,"print":6,"par_izq":7,"VALOR":8,"par_der":9,"punto_y_coma":10,"E":11,"val_number":12,"val_string":13,"val_verdadero":14,"val_falso":15,"val_nulo":16,"$accept":0,"$end":1},
-terminals_: {2:"error",5:"EOF",6:"print",7:"par_izq",9:"par_der",10:"punto_y_coma",12:"val_number",13:"val_string",14:"val_verdadero",15:"val_falso",16:"val_nulo"},
-productions_: [0,[3,2],[3,1],[4,5],[11,1],[8,1],[8,1],[8,1],[8,1],[8,1],[8,3]],
+symbols_: {"error":2,"INIT":3,"SENTENCES":4,"EOF":5,"SENTENCE":6,"PRINT":7,"print":8,"par_izq":9,"VALOR":10,"par_der":11,"punto_y_coma":12,"E":13,"val_number":14,"val_string":15,"val_verdadero":16,"val_falso":17,"val_nulo":18,"$accept":0,"$end":1},
+terminals_: {2:"error",5:"EOF",8:"print",9:"par_izq",11:"par_der",12:"punto_y_coma",14:"val_number",15:"val_string",16:"val_verdadero",17:"val_falso",18:"val_nulo"},
+productions_: [0,[3,2],[3,1],[4,2],[4,1],[6,1],[7,5],[13,1],[10,1],[10,1],[10,1],[10,1],[10,1],[10,3]],
 performAction: function anonymous(yytext, yyleng, yylineno, yy, yystate /* action[1] */, $$ /* vstack */, _$ /* lstack */) {
 /* this == yyval */
 
 var $0 = $$.length - 1;
 switch (yystate) {
 case 1:
- console.log($$[$0-1]); return $$[$0-1]; 
+ return $$[$0-1]; 
 break;
 case 3:
- this.$ = new Print(this._$.first_line,this.$.first_column,$$[$0-2]); 
+ this.$ = $$[$0-1]; this.$.push($$[$0]); 
 break;
 case 4:
-this.$ = $$[$0]; 
+ this.$ = []; this.$.push($$[$0]); 
 break;
 case 5:
- this.$ = new Value(new Type(EnumType.NUMBER),$$[$0]); 
+ this.$ = $$[$0]; 
 break;
 case 6:
- this.$ = new Value(new Type(EnumType.STRING),$$[$0]); 
+ this.$ = new Print(this._$.first_line,this.$.first_column,$$[$0-2]); 
 break;
-case 7: case 8:
- this.$ = new Value(new Type(EnumType.BOOLEAN),$$[$0]); 
+case 7:
+this.$ = $$[$0]; 
+break;
+case 8:
+ this.$ = new Value(new Type(EnumType.NUMBER),$$[$0]); 
 break;
 case 9:
+ this.$ = new Value(new Type(EnumType.STRING),$$[$0]); 
+break;
+case 10: case 11:
+ this.$ = new Value(new Type(EnumType.BOOLEAN),$$[$0]); 
+break;
+case 12:
  this.$ = new Value(new Type(EnumType.NULL),$$[$0]); 
 break;
-case 10:
+case 13:
  this.$ = $$[$0-1]; 
 break;
 }
 },
-table: [{3:1,4:2,5:[1,3],6:[1,4]},{1:[3]},{5:[1,5]},{1:[2,2]},{7:[1,6]},{1:[2,1]},{7:$V0,8:7,12:$V1,13:$V2,14:$V3,15:$V4,16:$V5},{9:[1,14]},{9:[2,5]},{9:[2,6]},{9:[2,7]},{9:[2,8]},{9:[2,9]},{7:$V0,8:16,11:15,12:$V1,13:$V2,14:$V3,15:$V4,16:$V5},{10:[1,17]},{9:[1,18]},{9:[2,4]},{5:[2,3]},{9:[2,10]}],
-defaultActions: {3:[2,2],5:[2,1],8:[2,5],9:[2,6],10:[2,7],11:[2,8],12:[2,9],16:[2,4],17:[2,3],18:[2,10]},
+table: [{3:1,4:2,5:[1,3],6:4,7:5,8:$V0},{1:[3]},{5:[1,7],6:8,7:5,8:$V0},{1:[2,2]},o($V1,[2,4]),o($V1,[2,5]),{9:[1,9]},{1:[2,1]},o($V1,[2,3]),{9:$V2,10:10,14:$V3,15:$V4,16:$V5,17:$V6,18:$V7},{11:[1,17]},{11:[2,8]},{11:[2,9]},{11:[2,10]},{11:[2,11]},{11:[2,12]},{9:$V2,10:19,13:18,14:$V3,15:$V4,16:$V5,17:$V6,18:$V7},{12:[1,20]},{11:[1,21]},{11:[2,7]},o($V1,[2,6]),{11:[2,13]}],
+defaultActions: {3:[2,2],7:[2,1],11:[2,8],12:[2,9],13:[2,10],14:[2,11],15:[2,12],19:[2,7],21:[2,13]},
 parseError: function parseError (str, hash) {
     if (hash.recoverable) {
         this.trace(str);
@@ -592,11 +601,11 @@ case 1:/* Omitir */
 break;
 case 2:/* Omitir */
 break;
-case 3:return 16
+case 3:return 18
 break;
-case 4:return 14
+case 4:return 16
 break;
-case 5:return 15
+case 5:return 17
 break;
 case 6:return 'number'
 break;
@@ -636,21 +645,21 @@ case 23:return 'while'
 break;
 case 24:return 'do'
 break;
-case 25:return 6
+case 25:return 8
 break;
 case 26:return 'graficar_ts'
 break;
 case 27:return 'function'
 break;
-case 28:return 10
+case 28:return 12
 break;
 case 29:return 'dos_puntos'
 break;
 case 30:return 'punto'
 break;
-case 31:return 7
+case 31:return 9
 break;
-case 32:return 9
+case 32:return 11
 break;
 case 33:return 'llave_izq'
 break;
@@ -700,9 +709,9 @@ case 55:return '||'
 break;
 case 56:return '!'
 break;
-case 57:return 12
+case 57:return 14
 break;
-case 58:return 13
+case 58:return 15
 break;
 case 59:return 'identificador'
 break;

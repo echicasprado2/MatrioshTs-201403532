@@ -2,7 +2,7 @@
  * @enum use for error type with
  *  lexico, sintactico and semantico
  */
-export var EnumErrorType;
+var EnumErrorType;
 (function (EnumErrorType) {
     EnumErrorType["LEXICO"] = "LEXICO";
     EnumErrorType["SYNTACTIC"] = "SINTACTICO";
@@ -11,7 +11,7 @@ export var EnumErrorType;
 /**
  * @class use class for all error
  */
-export class ErrorType {
+class ErrorType {
     constructor(enumErrorType) {
         this.enumErrorType = enumErrorType;
     }

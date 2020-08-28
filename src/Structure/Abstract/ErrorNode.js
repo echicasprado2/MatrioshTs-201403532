@@ -1,4 +1,4 @@
-export class ErrorNode {
+class ErrorNode {
     constructor(line, column, errorType, description, environmentType) {
         this.line = line;
         this.column = column;
