@@ -20,10 +20,49 @@ lex_comentariomultilinea [/][*][^*]*[*]+([^/*][^*]*[*]+)*[/]
 {lex_comentariomultilinea}  /* Omitir */
 [\s\t\r\n]+                 /* Omitir */
 
+//aritmeticos
+"++" return '++'
+"--" return '--'
+"**" return '**'
+"+"  return '+'
+"-"  return '-'
+"*"  return '*'
+"/"  return '/'
+"%"  return '%'
+
 //valores
 "null"  return 'val_nulo'
 "true"  return 'val_verdadero'
 "false" return 'val_falso'
+
+//relacionales
+">=" return '>='
+">"  return '>'
+"<=" return '<='
+"<"  return '<'
+
+//comparacion
+"=="  return '=='
+"!="  return '!='
+"="   return '='
+
+//logicos
+"&&" return '&&'
+"||" return '||'
+"!" return '!'
+
+//simbolos
+";"  return 'punto_y_coma'
+":"  return 'dos_puntos'
+"."  return 'punto'
+"("  return 'par_izq'
+")"  return 'par_der'
+"{"  return 'llave_izq'
+"}"  return 'llave_der'
+"["  return 'cor_izq'
+"]"  return 'cor_der'
+","  return 'coma'
+"?"  return 'ternario'
 
 //PALABRAS RESERVADAS
 "number"      return 'number'
@@ -52,47 +91,6 @@ lex_comentariomultilinea [/][*][^*]*[*]+([^/*][^*]*[*]+)*[/]
 "grafica_ts"  return 'graficar_ts'
 "function"    return 'function'
 
-//simbolos
-";"  return 'punto_y_coma'
-":"  return 'dos_puntos'
-"."  return 'punto'
-"("  return 'par_izq'
-")"  return 'par_der'
-"{"  return 'llave_izq'
-"}"  return 'llave_der'
-"["  return 'cor_izq'
-"]"  return 'cor_der'
-","  return 'coma'
-"?"  return 'ternario'
-
-//aritmeticos
-"++" return '++'
-"--" return '--'
-"+"  return '+'
-"-"  return '-'
-"*"  return '*'
-"/"  return '/'
-"**" return '**'
-"%"  return '%'
-
-
-//comparacion
-"=="  return '=='
-"!="  return '!='
-"="   return '='
-
-//relacionales
-">=" return '>='
-">"  return '>'
-"<=" return '<='
-"<"  return '<'
-
-
-//logicos
-"&&" return '&&'
-"||" return '||'
-"!" return '!'
-
 //valores expresiones regulares
 {lex_number}       return 'val_number'
 {lex_string}        return 'val_string'
@@ -106,17 +104,19 @@ lex_comentariomultilinea [/][*][^*]*[*]+([^/*][^*]*[*]+)*[/]
 
 %right '='
 %right '?' ':'
-%left '++' '--'
 %left '||'
 %left '&&'
-%left '==' 
 %left '!='
+%left '==' 
 %nonassoc '>' '>='
 %nonassoc '<' '<='
 %left '+' '-'
 %left '*' '/' '%'
 %right '**'
-%right UMENOS '!'
+%right '!'
+%right UMENOS
+%right '++'
+%right '--'
 %right '('
 %left ')'
 %left '['
@@ -144,54 +144,30 @@ SENTENCES: SENTENCES SENTENCE { $$ = $1; $$.push($2); }
 SENTENCE: PRINT { $$ = $1; } 
         ;
 
-PRINT: print par_izq VALOR par_der punto_y_coma { $$ = new Print(this._$.first_line,this._$.first_column,$3); }
+PRINT: print par_izq E par_der punto_y_coma { $$ = new Print(this._$.first_line,this._$.first_column,$3); }
     ;
 
 /* EXPRESIONES */
-E
-    // : ARITMETICAS  {$$ = $1; }
-    // | RELACIONALES {$$ = $1; }
-    // | LOGICAS      {$$ = $1; }
-    // | UNARIAS      {$$ = $1; }
-    //| VALOR        {$$ = $1; }
-    :VALOR {$$ = $1; };
-
-// ARITMETICAS
-//     : E '+'  E { $$ = new Aritmetica(this._$.first_line,this._$.first_column,TipoOperacion.SUMA,$1,$3); }
-//     | E '-'  E { $$ = new Aritmetica(this._$.first_line,this._$.first_column,TipoOperacion.RESTA,$1,$3); }
-//     | E '*'  E { $$ = new Aritmetica(this._$.first_line,this._$.first_column,TipoOperacion.MULTIPLICACION,$1,$3); }
-//     | E '/'  E { $$ = new Aritmetica(this._$.first_line,this._$.first_column,TipoOperacion.DIVISION,$1,$3); }
-//     | E '^^' E { $$ = new Aritmetica(this._$.first_line,this._$.first_column,TipoOperacion.POTENCIA,$1,$3); }
-//     | E '%'  E { $$ = new Aritmetica(this._$.first_line,this._$.first_column,TipoOperacion.MODULO,$1,$3); }
-//     | '-' E %prec UMENOS { $$ = new Unario(this._$.first_line,this._$.first_column,TipoOperacion.NEGATIVO,$2);}
-//     ;
-
-// RELACIONALES
-//     : E '!='  E { $$ = new Relacional(this._$.first_line,this._$.first_column,TipoOperacion.DIFERENTE_QUE,$1,$3); }
-//     | E '=='  E { $$ = new Relacional(this._$.first_line,this._$.first_column,TipoOperacion.IGUAL_QUE,$1,$3); }
-//     | E '===' E { $$ = new Relacional(this._$.first_line,this._$.first_column,TipoOperacion.IGUAL_REFERENCIA,$1,$3); }
-//     | E '>='  E { $$ = new Relacional(this._$.first_line,this._$.first_column,TipoOperacion.MAYOR_IGUAL,$1,$3); }
-//     | E '>'   E { $$ = new Relacional(this._$.first_line,this._$.first_column,TipoOperacion.MAYOR_QUE,$1,$3); }
-//     | E '<='  E { $$ = new Relacional(this._$.first_line,this._$.first_column,TipoOperacion.MENOR_IGUAL,$1,$3); }
-//     | E '<'   E { $$ = new Relacional(this._$.first_line,this._$.first_column,TipoOperacion.MENOR_QUE,$1,$3); }
-//     ;
-
-// LOGICAS
-//     : E '&&'  E { $$ = new Logica(this._$.first_line,this._$.first_column,TipoOperacion.AND,$1,$3); }
-//     | E '||'  E { $$ = new Logica(this._$.first_line,this._$.first_column,TipoOperacion.OR,$1,$3); }
-//     | '!'     E { $$ = new Logica(this._$.first_line,this._$.first_column,TipoOperacion.NOT,$1,$3); }
-//     ;
-
-// UNARIAS
-//     : E '++' { $$ = new Unario(this._$.first_line,this._$.first_column,TipoOperacion.MAS_MAS,$1);}
-//     | E '--' { $$ = new Unario(this._$.first_line,this._$.first_column,TipoOperacion.MENOS_MENOS,$1);}
-//     ;
-
-/*  valores */
-VALOR: val_number       { $$ = new Value(new Type(EnumType.NUMBER),$1); }
-    | val_string        { $$ = new Value(new Type(EnumType.STRING),$1); }
-    | val_verdadero     { $$ = new Value(new Type(EnumType.BOOLEAN),$1); }
-    | val_falso         { $$ = new Value(new Type(EnumType.BOOLEAN),$1); }
-    | val_nulo          { $$ = new Value(new Type(EnumType.NULL),$1); }
-    | par_izq E par_der { $$ = $2; }
+E   : E '+'   E          { $$ = new Arithmetic(this._$.first_line,this._$.first_column,new OperationType(EnumOperationType.PLUS),$1,$3); }
+    | E '-'   E          { $$ = new Arithmetic(this._$.first_line,this._$.first_column,new OperationType(EnumOperationType.MINUS),$1,$3); }
+    | E '**'  E          { $$ = new Arithmetic(this._$.first_line,this._$.first_column,new OperationType(EnumOperationType.POWER),$1,$3); }
+    | E '*'   E          { $$ = new Arithmetic(this._$.first_line,this._$.first_column,new OperationType(EnumOperationType.MULTIPLICATION),$1,$3); }
+    | E '/'   E          { $$ = new Arithmetic(this._$.first_line,this._$.first_column,new OperationType(EnumOperationType.DIVISION),$1,$3); }
+    | E '%'   E          { $$ = new Arithmetic(this._$.first_line,this._$.first_column,new OperationType(EnumOperationType.MODULE),$1,$3); }
+    | E '&&'  E          { $$ = new Logic(this._$.first_line,this._$.first_column,new OperationType(EnumOperationType.AND),$1,$3); }
+    | E '||'  E          { $$ = new Logic(this._$.first_line,this._$.first_column,new OperationType(EnumOperationType.OR),$1,$3); }
+    | '!'     E          { $$ = new Unary(this._$.first_line, this._$.first_column, new OperationType(EnumOperationType.NOT), $2); }
+    | '-' E %prec UMENOS { $$ = new Unary(this._$.first_line, this._$.first_column, new OperationType(EnumOperationType.NEGATIVE), $2);}
+    | E '!='  E          { $$ = new Relational(this._$.first_line,this._$.first_column,new OperationType(EnumOperationType.DIFFERENT_THAN),$1,$3); }
+    | E '=='  E          { $$ = new Relational(this._$.first_line,this._$.first_column,new OperationType(EnumOperationType.LIKE_THAN),$1,$3); }
+    | E '>='  E          { $$ = new Relational(this._$.first_line,this._$.first_column,new OperationType(EnumOperationType.MORE_EQUAL_TO),$1,$3); }
+    | E '>'   E          { $$ = new Relational(this._$.first_line,this._$.first_column,new OperationType(EnumOperationType.LESS_EQUAL_TO),$1,$3); }
+    | E '<='  E          { $$ = new Relational(this._$.first_line,this._$.first_column,new OperationType(EnumOperationType.LESS_THAN),$1,$3); }
+    | E '<'   E          { $$ = new Relational(this._$.first_line,this._$.first_column,new OperationType(EnumOperationType.MORE_THAN),$1,$3); }
+    | val_number         { $$ = new Value(new Type(EnumType.NUMBER),$1); }
+    | val_string         { $$ = new Value(new Type(EnumType.STRING),$1); }
+    | val_verdadero      { $$ = new Value(new Type(EnumType.BOOLEAN),$1); }
+    | val_falso          { $$ = new Value(new Type(EnumType.BOOLEAN),$1); }
+    | val_nulo           { $$ = new Value(new Type(EnumType.NULL),$1); }
+    | par_izq E par_der  { $2.translatedCode = "("+ $2.translatedCode +")"; $$ = $2; }
     ;

@@ -63,16 +63,25 @@ var consoleShow = CodeMirror.fromTextArea(document.getElementById('textarea-cons
 
   var translate = document.getElementById('traducir');
   translate.addEventListener('click',(e)=>{
+
+    TreeGraph.cleanNodeNumber();
+    
     var editor = getEditor();
     
+    // console.log(Gramatica.parse(editor.getValue()));
     var result = new AST(Gramatica.parse(editor.getValue()));
   
+    var myTranslated = getSalida();
+    myTranslated.setValue(result.translatedCode);
+    
+    //genera el arbol y da error
     var element = document.querySelector("myGraph");
     var insertSvg = function(svgCode){
-      console.log(svgCode);
       element.innerHTML = svgCode;
     };
     
     var grapDefinition = `graph TD;\n ${result.getGraphCode()}`;
     var graph = mermaid.render('myGraph',grapDefinition,insertSvg);
+    
+    
   });

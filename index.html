@@ -80,7 +80,15 @@ console.log(true);
 console.log(false);
 console.log(null);
 console.log((3));
-                        </textarea>
+console.log((true && true));
+console.log((false || true));
+console.log((!true));
+console.log((3 <= 5));
+console.log((4 >= 3));
+console.log((6 < 45));
+console.log((2 > 6));
+console.log((4 == (5*5)));
+console.log((100/10 != 10));</textarea> 
                     </div>
                     <div class="tab-pane fade active  height-editor" id="editor-content-salida" role="tabpanel"
                         aria-labelledby="salida-editor-tab">
@@ -141,6 +149,9 @@ console.log((3));
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.52.2/mode/javascript/javascript.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
     
+    <script type="text/javascript" src="Jison/Gramatica.js"></script>
+    <script type="text/javascript" src="js/myjs.js"></script>
+
     <!-- STRUCTURE -->
     <script src="src/Structure/Utils/EnvironmentType.js"></script>
     <script src="src/Structure/Utils/ErrorType.js"></script>
@@ -159,12 +170,14 @@ console.log((3));
     <!-- INSTRUCTIONS -->
     <script src="src/Instructions/print.js"></script>
     <script src="src/Instructions/Unary.js"></script>
+    <script src="src/Instructions/Logic.js"></script>
+    <script src="src/Instructions/Arithmetic.js"></script>
+    <script src="src/Instructions/Relational.js"></script>
 
     <!-- AST -->
     <script src="src/AST.js"></script>
 
-    <script type="text/javascript" src="Jison/Gramatica.js"></script>
-    <script type="text/javascript" src="js/myjs.js"></script>
+    
 </body>
 
 </html>

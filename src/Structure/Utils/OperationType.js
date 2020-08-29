@@ -12,12 +12,12 @@ var EnumOperationType;
     EnumOperationType["AND"] = "&&";
     EnumOperationType["OR"] = "||";
     EnumOperationType["NOT"] = "!";
-    EnumOperationType["!="] = "!=";
-    EnumOperationType["=="] = "==";
-    EnumOperationType[">="] = ">=";
-    EnumOperationType["<="] = "<=";
-    EnumOperationType[">"] = ">";
-    EnumOperationType["<"] = "<";
+    EnumOperationType["DIFFERENT_THAN"] = "!=";
+    EnumOperationType["LIKE_THAN"] = "==";
+    EnumOperationType["MORE_EQUAL_TO"] = ">=";
+    EnumOperationType["LESS_EQUAL_TO"] = "<=";
+    EnumOperationType["MORE_THAN"] = ">";
+    EnumOperationType["LESS_THAN"] = "<";
 })(EnumOperationType || (EnumOperationType = {}));
 
 class OperationType{
@@ -26,6 +26,6 @@ class OperationType{
     }
 
     toString(){
-        return this.enumOperationType.toString();
+        return this.enumOperationType;
     }
 }

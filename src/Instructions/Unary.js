@@ -9,6 +9,7 @@
         this.operationType = operationType;
         this.expresion = expresion;
         this.nodeName = TreeGraph.getNumberNode();
+        console.log(this.operationType);
         this.graphcsCode = TreeGraph.generateOneChield(this,operationType.toString(),this.expresion);
     }
 

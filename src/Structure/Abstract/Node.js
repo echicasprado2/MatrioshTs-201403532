@@ -4,5 +4,6 @@ class Node {
         this.column = column;
         this.nodeName = "";
         this.graphcsCode = "";
+        this.translatedCode = "";
     }
 }
