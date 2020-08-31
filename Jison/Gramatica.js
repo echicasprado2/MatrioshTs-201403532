@@ -92,10 +92,7 @@ break;
 case 4: case 16:
  this.$ = []; this.$.push($$[$0]); 
 break;
-case 5:
- this.$ = $$[$0]; console.log($$[$0]); 
-break;
-case 6:
+case 5: case 6:
  this.$ = $$[$0]; 
 break;
 case 7:
@@ -118,9 +115,7 @@ case 13:
                         stack = eval('$$');
                         for(var i = stack.length-2;i > 0; i--){
                                 if(stack[i] === '{' && stack[i-1] instanceof Function){
-                                        //console.log("funcion: " + stack[i-1].identifier + ", valor: " + stack[stack.length - 1].value.value);
                                         stack[i-1].instructions.push(stack[stack.length -1]);
-                                        //console.log(stack[i-1]);
                                         break;
                                 }
                         }
@@ -131,9 +126,7 @@ case 14:
                         stack = eval('$$');
                         for(var i = stack.length-2;i > 0; i--){
                                 if(stack[i] === '{' && stack[i-1] instanceof Function){
-                                        //console.log("funcion: " + stack[i-1].identifier + ", valor: " + stack[stack.length - 1].identifier);
                                         stack[i-1].nestedFunctions.push(stack[stack.length - 1]);
-                                        //console.log(stack[i-1]);
                                         break;
                                 }
                         }       

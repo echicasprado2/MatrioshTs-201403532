@@ -141,7 +141,7 @@ SENTENCES: SENTENCES SENTENCE { $$ = $1; $$.push($2); }
         | SENTENCE            { $$ = []; $$.push($1); }
         ;
 
-SENTENCE: FUNCTION { $$ = $1; console.log($1); }
+SENTENCE: FUNCTION { $$ = $1; }
         | PRINT    { $$ = $1; }  
         ;
 

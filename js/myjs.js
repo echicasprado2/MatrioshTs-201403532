@@ -70,6 +70,8 @@ var consoleShow = CodeMirror.fromTextArea(document.getElementById('textarea-cons
     
     // console.log(Gramatica.parse(editor.getValue()));
     var result = new AST(Gramatica.parse(editor.getValue()));
+    result.getSymbolsTable();
+    console.log(EnviromentTranslatedGraph.nodes);
   
     var myTranslated = getSalida();
     myTranslated.setValue(result.translatedCode);

@@ -11,6 +11,8 @@ var EnumType;
     EnumType["ARRAY"] = "ARRAY";
     EnumType["NULL"] = "NULL";
     EnumType["ERROR"] = "ERROR";
+    // otros tipos que usare
+    EnumType["FUNCTION"] = "FUNCTION";
 })(EnumType || (EnumType = {}));
 /**
  * @class type use for type anyone expresion with value

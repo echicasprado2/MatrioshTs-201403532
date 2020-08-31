@@ -35,6 +35,26 @@ class Function extends Instruction{
         this.translatedCode += "}";
     }
 
+    getSymbolsTable(e){//e es environment translated
+        console.log(e);
+        var exists = e.searchSymbol(this.identifier);
+
+        if(exists == null){// no existe la funcion
+            e.insert(this.identifier,new Symbol(this.identifier,new Type(EnumType.FUNCTION,""),this));
+            TranslatedTableSymbols.add(new nodeTableSymbols(this.line,this.column,this.identifier,e.enviromentType.toString()));
+        }else{
+            console.log(
+                new ErrorNode(
+                    this.line,
+                    this.column,
+                    new ErrorType(EnumErrorType.SEMANTIC),
+                    `La funcion ${this.identifier} ya existe en la linea: ${this.line}, columna: ${this.column}`),
+                    e.type
+                    );
+        }
+        return null;
+    }
+
     execute(e) {
         throw new Error("Method not implemented.");
     }

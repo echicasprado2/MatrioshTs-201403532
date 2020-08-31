@@ -11,4 +11,9 @@ class EnvironmentType {
     constructor(enumEnvironmentType) {
         this.enumEnvironmentType = enumEnvironmentType;
     }
+
+    toString() {
+        return this.enumEnvironmentType.toString();
+    }
+
 }
