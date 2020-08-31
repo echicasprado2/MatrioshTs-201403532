@@ -21,6 +21,11 @@ class Value extends Expresion {
         this.translatedCode = value.toString();
     }
 
+    getTranslatedCode(){
+        return this.translatedCode;
+    }
+
+
     getValue(e) {
         return new Value(this.type, this.value);
     }

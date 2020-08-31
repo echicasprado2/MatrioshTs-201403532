@@ -9,7 +9,7 @@
 // expresiones regulares
 lex_number               [0-9]+("."[0-9]+)?\b
 lex_string               [\"\'\`](([^\"\'\`\\])*([\\].)*)*[\"\'\`]
-lex_id                   [A-Za-z_\ñ\Ñ][A-Za-z_0-9\ñ\Ñ]*
+lex_identificador        [A-Za-z_\ñ\Ñ][A-Za-z_0-9\ñ\Ñ]*
 lex_comentariounilinea   ["/"]["/"].*(\r|\n|\r\n)
 lex_comentariomultilinea [/][*][^*]*[*]+([^/*][^*]*[*]+)*[/]
 
@@ -141,8 +141,62 @@ SENTENCES: SENTENCES SENTENCE { $$ = $1; $$.push($2); }
         | SENTENCE            { $$ = []; $$.push($1); }
         ;
 
-SENTENCE: PRINT { $$ = $1; } 
+SENTENCE: FUNCTION { $$ = $1; console.log($1); }
+        | PRINT    { $$ = $1; }  
         ;
+
+
+
+FUNCTION: FUNCTION_HEAD llave_izq FUNCTION_SENTENCES llave_der { $$ = $1; }
+        | FUNCTION_HEAD llave_izq llave_der                    { $$ = $1; }
+        ;
+
+FUNCTION_HEAD: function identificador par_izq par_der dos_puntos TYPE          { $$ = new Function(this._$.first_line,this._$.first_column,$2,[],$6); }
+        | function identificador par_izq L_PARAMETROS par_der dos_puntos TYPE  { $$ = new Function(this._$.first_line,this._$.first_column,$2,$4,$7); }
+        ;
+
+FUNCTION_SENTENCES: FUNCTION_SENTENCE FUNCTION_SENTENCES   { }
+                | FUNCTION_SENTENCE                        { }
+                ;
+    
+FUNCTION_SENTENCE: PRINT    { 
+                        stack = eval('$$');
+                        for(var i = stack.length-2;i > 0; i--){
+                                if(stack[i] === '{' && stack[i-1] instanceof Function){
+                                        stack[i-1].instructions.push(stack[stack.length -1]);
+                                        break;
+                                }
+                        }
+                }
+                | FUNCTION  { 
+                        stack = eval('$$');
+                        for(var i = stack.length-2;i > 0; i--){
+                                if(stack[i] === '{' && stack[i-1] instanceof Function){
+                                        stack[i-1].nestedFunctions.push(stack[stack.length - 1]);
+                                        break;
+                                }
+                        }       
+                }
+                ;
+
+
+
+
+
+
+L_PARAMETROS: L_PARAMETROS coma PARAMETRO  { $$ = $1; $$.push($3); }
+            | PARAMETRO                    { $$ = []; $$.push($1); }
+            ;
+
+PARAMETRO: identificador dos_puntos TYPE { $$ = new Parameter(this._$.first_line,this._$.first_column,$1,$3,null); }
+        ;
+
+TYPE: void          { $$ = new Type(EnumType.VOID,""); }
+    | number        { $$ = new Type(EnumType.NUMBER,""); }
+    | string        { $$ = new Type(EnumType.STRING,""); }
+    | boolean       { $$ = new Type(EnumType.BOOLEAN,""); }
+    | identificador { $$ = new Type(EnumType.TYPE,$1); }
+    ;
 
 PRINT: print par_izq E par_der punto_y_coma { $$ = new Print(this._$.first_line,this._$.first_column,$3); }
     ;
@@ -164,10 +218,10 @@ E   : E '+'   E          { $$ = new Arithmetic(this._$.first_line,this._$.first_
     | E '>'   E          { $$ = new Relational(this._$.first_line,this._$.first_column,new OperationType(EnumOperationType.LESS_EQUAL_TO),$1,$3); }
     | E '<='  E          { $$ = new Relational(this._$.first_line,this._$.first_column,new OperationType(EnumOperationType.LESS_THAN),$1,$3); }
     | E '<'   E          { $$ = new Relational(this._$.first_line,this._$.first_column,new OperationType(EnumOperationType.MORE_THAN),$1,$3); }
-    | val_number         { $$ = new Value(new Type(EnumType.NUMBER),$1); }
-    | val_string         { $$ = new Value(new Type(EnumType.STRING),$1); }
-    | val_verdadero      { $$ = new Value(new Type(EnumType.BOOLEAN),$1); }
-    | val_falso          { $$ = new Value(new Type(EnumType.BOOLEAN),$1); }
-    | val_nulo           { $$ = new Value(new Type(EnumType.NULL),$1); }
+    | val_number         { $$ = new Value(new Type(EnumType.NUMBER,""),$1); }
+    | val_string         { $$ = new Value(new Type(EnumType.STRING,""),$1); }
+    | val_verdadero      { $$ = new Value(new Type(EnumType.BOOLEAN,""),$1); }
+    | val_falso          { $$ = new Value(new Type(EnumType.BOOLEAN,""),$1); }
+    | val_nulo           { $$ = new Value(new Type(EnumType.NULL,""),$1); }
     | par_izq E par_der  { $2.translatedCode = "("+ $2.translatedCode +")"; $$ = $2; }
     ;

@@ -16,10 +16,16 @@ var EnumType;
  * @class type use for type anyone expresion with value
  */
 class Type {
-    constructor(enumType) {
+    constructor(enumType,identifier) {
         this.enumType = enumType;
+        this.identifier = identifier;
     }
+    
     toString() {
-        return this.enumType.toString();
+        if(this.enumType === EnumType.TYPE){
+            return this.identifier.toString();
+        }else{
+            return this.enumType.toString().toLowerCase();
+        }
     }
 }

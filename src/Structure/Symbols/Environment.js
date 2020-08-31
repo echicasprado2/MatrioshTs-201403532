@@ -1,4 +1,4 @@
-export class Environment {
+class Environment {
     constructor(previous, environmentType) {
         this.previous = previous;
         this.enviromentType = environmentType;

@@ -1,4 +1,4 @@
-class Logic extends Instruction{
+class Logic extends Expresion{
     constructor(linea, column,operationType,expresion1,expresion2){
         super(linea,column);
         this.operationType = operationType;
@@ -12,7 +12,7 @@ class Logic extends Instruction{
             +this.expresion2.translatedCode;
     }
 
-    execute(e) {
-        throw new Error("Method not implemented.");
+    getValue(e) {
+        return new Value(this.type, this.value);
     }
 }

@@ -71,24 +71,58 @@
                 <div class="tab-content  height-editor" id="myTabEditorContent">
                     <div class="tab-pane fade show active  height-editor" id="editor-content-entrada" role="tabpanel"
                         aria-labelledby="entrada-editor-tab">
-                        <textarea id="textarea-editor-entrada">console.log("cadena");
-console.log(3);
-console.log(5.6);
-console.log('cadena 2');
-console.log(`cadena 3`);
-console.log(true);
-console.log(false);
-console.log(null);
-console.log((3));
-console.log((true && true));
-console.log((false || true));
-console.log((!true));
-console.log((3 <= 5));
-console.log((4 >= 3));
-console.log((6 < 45));
-console.log((2 > 6));
-console.log((4 == (5*5)));
-console.log((100/10 != 10));</textarea> 
+                        <textarea id="textarea-editor-entrada">function root():void {
+    console.log("function root head");
+    function root1():void {
+      console.log("function root1 head");
+      function root11():void {
+        console.log("function root11 head");
+        function root12():void {
+          console.log("function root12 head");
+          function root13():void {
+            console.log("function root13 head");
+            function root14():void {
+              console.log("function root14 head");
+              function root15():void {
+                console.log("function root15 head");
+                console.log("function root15 foot");
+              }
+              console.log("function root14 foot");
+            }
+            console.log("function root13 foot");
+          }
+          console.log("function root12 foot");
+        }
+        console.log("function root11 foot");
+      }
+      console.log("function root1 foot");
+    }
+    function root2():void {
+      console.log("function root2 head");
+      function root21():void {
+        console.log("function root21 head");
+        function root22():void {
+          console.log("function root22 head");
+          function root23():void {
+            console.log("function root23 head");
+            function root24():void {
+              console.log("function root24 head");
+              function root25():void {
+                console.log("function root25 head");
+                console.log("function root25 foot");
+              }
+              console.log("function root24 foot");
+            }
+            console.log("function root23 foot");
+          }
+          console.log("function root22 foot");
+        }
+        console.log("function root21 foot");
+      }
+      console.log("function root2 foot");
+    }
+    console.log("function root foot");
+}</textarea> 
                     </div>
                     <div class="tab-pane fade active  height-editor" id="editor-content-salida" role="tabpanel"
                         aria-labelledby="salida-editor-tab">
@@ -166,13 +200,15 @@ console.log((100/10 != 10));</textarea>
 
     <!-- EXPRESSIONS -->
     <script src="src/Expressions/Value.js"></script>
+    <script src="src/Expressions/Unary.js"></script>
+    <script src="src/Expressions/Logic.js"></script>
+    <script src="src/Expressions/Arithmetic.js"></script>
+    <script src="src/Expressions/Relational.js"></script>
 
     <!-- INSTRUCTIONS -->
     <script src="src/Instructions/print.js"></script>
-    <script src="src/Instructions/Unary.js"></script>
-    <script src="src/Instructions/Logic.js"></script>
-    <script src="src/Instructions/Arithmetic.js"></script>
-    <script src="src/Instructions/Relational.js"></script>
+    <script src="src/Instructions/Parameter.js"></script>
+    <script src="src/Instructions/Function.js"></script>
 
     <!-- AST -->
     <script src="src/AST.js"></script>
