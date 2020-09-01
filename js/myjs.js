@@ -76,13 +76,13 @@ var consoleShow = CodeMirror.fromTextArea(document.getElementById('textarea-cons
     myTranslated.setValue(result.getTranslated());//inserto el codigo traduccido
     
     //genera el arbol y da error
-    // var element = document.querySelector("myGraph");
-    // var insertSvg = function(svgCode){
-    //   element.innerHTML = svgCode;
-    // };
+    var element = document.querySelector("myGraph");
+    var insertSvg = function(svgCode){
+      element.innerHTML = svgCode;
+    };
     
-    // var grapDefinition = `graph TD;\n ${result.getGraphCode()}`;
-    // var graph = mermaid.render('myGraph',grapDefinition,insertSvg);
+    var grapDefinition = `graph TD;\n ${result.getGraphCode()}`;
+    var graph = mermaid.render('myGraph',grapDefinition,insertSvg);
     
     
   });

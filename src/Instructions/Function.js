@@ -1,4 +1,12 @@
 class Function extends Instruction{
+    /**
+     * 
+     * @param {*} line 
+     * @param {*} column 
+     * @param {*} identifier 
+     * @param {*} Parameters 
+     * @param {*} type 
+     */
     constructor(line,column,identifier,Parameters,type){
         super(line,column);
         this.identifier = identifier;
@@ -42,6 +50,18 @@ class Function extends Instruction{
      * obtengo el codigo para agregar al grafo del ast
      */
     getGraphsCode(){
+        var chieldren =[];
+         
+        for(var i = 0;i < this.instructions.length;i++){
+            chieldren.push(this.instructions[i]);
+        }
+
+        for(var i = 0;i < this.nestedFunctions.length;i++){
+            chieldren.push(this.nestedFunctions[i]);
+        }
+        
+        this.graphcsCode = TreeGraph.generateChieldren(this,this.identifier,chieldren);
+        
         return this.graphcsCode;
     }
 
@@ -50,22 +70,35 @@ class Function extends Instruction{
      * @param {Environment actual} e  
      */
     translatedSymbolsTable(e){
-        var exists = e.searchSymbol(this.identifier);
+        // var exists = e.searchSymbol(this.identifier);
 
-        if(exists == null){// no existe la funcion
-            e.insert(this.identifier,new Symbol(this.identifier,new Type(EnumType.FUNCTION,""),this));
-            TableReport.addTranslated(new nodeTableSymbols(this.line,this.column,this.identifier,e.enviromentType.toString(),null));
-        }else{
-            console.log(
-                new ErrorNode(
-                    this.line,
-                    this.column,
-                    new ErrorType(EnumErrorType.SEMANTIC),
-                    `La funcion ${this.identifier} ya existe en la linea: ${this.line}, columna: ${this.column}`),
-                    e.type
-                    );
+        // if(exists == null){// no existe la funcion
+        //     //e.insert(this.identifier,new Symbol(this.identifier,new Type(EnumType.FUNCTION,""),this));
+        //     TableReport.addTranslated(new nodeTableSymbols(this.line,this.column,this.identifier,e.enviromentType.toString(),null));
+        //     var enviromentFunction = new Enviroment(e,new enviromentType(EnumEnvironmentType.FUNCTION,this.identifier));
+        //     for(var i = 0;i< this.i)
+        // }else{
+        //     console.log(
+        //         new ErrorNode(
+        //             this.line,
+        //             this.column,
+        //             new ErrorType(EnumErrorType.SEMANTIC),
+        //             `La funcion ${this.identifier} ya existe en la linea: ${this.line}, columna: ${this.column}`),
+        //             e.type
+        //             );
+        // }
+
+        TableReport.addTranslated(new nodeTableSymbols(this.line,this.column,this.identifier,e.enviromentType,null));
+        var envFunction = new Environment(e,new EnvironmentType(EnumEnvironmentType.FUNCTION,this.identifier));
+        console.log(envFunction);
+        
+        for(var i = 0;i < this.instructions.length;i++){
+            this.instructions[i].translatedSymbolsTable(envFunction);
         }
-        return null;
+
+        for(var i = 0;i < this.nestedFunctions.length;i++){
+            this.nestedFunctions[i].translatedSymbolsTable(envFunction);
+        }
     }
 
     /**
@@ -83,4 +116,5 @@ class Function extends Instruction{
     execute(e) {
         throw new Error("Method not implemented.");
     }
+
 }

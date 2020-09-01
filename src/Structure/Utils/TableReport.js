@@ -29,6 +29,9 @@ class TableReport {
   }
 
   static addTranslated(node) {
+    if(node.typeEnviroment == EnumEnvironmentType.FUNCTION){
+      node.typeEnviroment = node.typeEnviroment.name;
+    }
     TableReport.nodesTranslated.push(node);
   }
 

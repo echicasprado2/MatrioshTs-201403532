@@ -8,8 +8,13 @@ var EnumEnvironmentType;
     EnumEnvironmentType["FUNCTION"] = "FUNCION";
 })(EnumEnvironmentType || (EnumEnvironmentType = {}));
 class EnvironmentType {
-    constructor(enumEnvironmentType) {
+    /**
+     * 
+     * @param {*} enumEnvironmentType 
+     */
+    constructor(enumEnvironmentType,name) {
         this.enumEnvironmentType = enumEnvironmentType;
+        this.name = name;
     }
 
     toString() {

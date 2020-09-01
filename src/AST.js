@@ -4,8 +4,8 @@ class AST {
         this.instruccions = instruccions;
         this.graphCode = "";
         this.translatedCode = "";
-        this.environmentTranslated = new Environment(null, new EnvironmentType(EnumEnvironmentType.GLOBAL));
-        this.environmentExecute = new Environment(null, new EnvironmentType(EnumEnvironmentType.GLOBAL));
+        this.environmentTranslated = new Environment(null, new EnvironmentType(EnumEnvironmentType.GLOBAL,""));
+        this.environmentExecute = new Environment(null, new EnvironmentType(EnumEnvironmentType.GLOBAL,""));
     }
 
     /**
@@ -14,9 +14,9 @@ class AST {
     getTranslated(){
         // TODO de este tengo que hacer la traduccion
         for(var i = 0; i < this.instruccions.length;i++){
-            var item = this.instruccions[i];
-            this.translatedCode += item.translatedCode;
+            this.translatedCode += this.instruccions[i].translatedCode;
         }
+        return this.translatedCode;
     }
 
     /**
@@ -25,19 +25,16 @@ class AST {
     getGraphCode(){
         this.graphCode = "root((root));\n";
 
-        for(var i = 0; i < this.instruccions.length;i++){
-            var item = this.instruccions[i];
-            this.graphCode += item.graphcsCode;
+        for(var i = 0; i < this.instruccions.length;i++){            
+            this.graphCode += this.instruccions[i].getGraphsCode();
         }
 
         for(var i = 0; i < this.instruccions.length;i++){
-            var item = this.instruccions[i];
-            this.graphCode += item.nodeName + ";\n";
+            this.graphCode += this.instruccions[i].nodeName + ";\n";
         }
 
         for(var i = 0; i < this.instruccions.length;i++){
-            var item = this.instruccions[i];
-            this.graphCode += "root --> " + item.nodeName + ";\n";
+            this.graphCode += "root --> " + this.instruccions[i].nodeName + ";\n";
         }
         return this.graphCode;
     }

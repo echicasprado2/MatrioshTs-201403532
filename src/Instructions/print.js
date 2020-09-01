@@ -4,7 +4,7 @@ class Print extends Instruction {
         this.value = expresion;
         this.nodeName = TreeGraph.getNumberNode();
         this.graphcsCode = TreeGraph.generateOneChield(this,'PRINT',this.value);
-        this.translatedCode = "console.log("+ this.value.translatedCode +");\n";
+        this.translatedCode = "console.log("+ this.value.getTranslated() +");\n";
     }
 
     /**
@@ -25,9 +25,7 @@ class Print extends Instruction {
      * 
      * @param {Environment actual} e  
      */
-    translatedSymbolsTable(e){
-        return "implementar este codigo";
-    }
+    translatedSymbolsTable(e){}
 
     /**
      * 

@@ -1,4 +1,9 @@
 class Environment {
+    /**
+     * 
+     * @param {*} previous 
+     * @param {*} environmentType 
+     */
     constructor(previous, environmentType) {
         this.previous = previous;
         this.enviromentType = environmentType;
