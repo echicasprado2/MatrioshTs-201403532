@@ -5,14 +5,16 @@ class Function extends Instruction{
         this.parameters = Parameters;
         this.instructions = [] //array de instrucciones
         this.type = type;
-        this.nodeName = "";
+        this.nodeName = TreeGraph.getNumberNode();;
         this.graphcsCode = "";
         this.translatedCode = "";
         this.nestedFunctions = [];
     }
 
+    /**
+     * obtener el codigo para la traduccion
+     */
     getTranslated(){
-        this.nodeName = TreeGraph.getNumberNode();
         this.graphcsCode = TreeGraph.generateChieldren(this,this.identifier,this.Instructions);
 
         this.translatedCode = `function ${this.identifier}(`;
@@ -33,15 +35,26 @@ class Function extends Instruction{
         }
 
         this.translatedCode += "}";
+        return this.translatedCode;
     }
 
-    getSymbolsTable(e){//e es environment translated
-        console.log(e);
+    /**
+     * obtengo el codigo para agregar al grafo del ast
+     */
+    getGraphsCode(){
+        return this.graphcsCode;
+    }
+
+    /**
+     * 
+     * @param {Environment actual} e  
+     */
+    translatedSymbolsTable(e){
         var exists = e.searchSymbol(this.identifier);
 
         if(exists == null){// no existe la funcion
             e.insert(this.identifier,new Symbol(this.identifier,new Type(EnumType.FUNCTION,""),this));
-            TranslatedTableSymbols.add(new nodeTableSymbols(this.line,this.column,this.identifier,e.enviromentType.toString()));
+            TableReport.addTranslated(new nodeTableSymbols(this.line,this.column,this.identifier,e.enviromentType.toString(),null));
         }else{
             console.log(
                 new ErrorNode(
@@ -55,6 +68,18 @@ class Function extends Instruction{
         return null;
     }
 
+    /**
+     * 
+     * @param {Enviroment} e 
+     */
+    executeSymbolsTable(e){
+        return "implementar este codigo"
+    }
+
+    /**
+     * 
+     * @param {Environment} e 
+     */
     execute(e) {
         throw new Error("Method not implemented.");
     }

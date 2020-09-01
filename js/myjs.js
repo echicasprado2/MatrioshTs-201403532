@@ -68,13 +68,12 @@ var consoleShow = CodeMirror.fromTextArea(document.getElementById('textarea-cons
     
     var editor = getEditor();
     
-    // console.log(Gramatica.parse(editor.getValue()));
-    var result = new AST(Gramatica.parse(editor.getValue()));
-    result.getSymbolsTable();
-    console.log(EnviromentTranslatedGraph.nodes);
+    var result = new AST(Gramatica.parse(editor.getValue()));// obtengo el ast al correr el analizador
+    result.translatedSymbolsTable();//obtengo la tabla de simbolos para la traduccion
+    showTableTranslatedSymbols();//muestro la tabla de simbolos para la traduccion
   
-    var myTranslated = getSalida();
-    myTranslated.setValue(result.translatedCode);
+    var myTranslated = getSalida();//creo un objeto donde mostrare la salida traducida de mi entrada
+    myTranslated.setValue(result.getTranslated());//inserto el codigo traduccido
     
     //genera el arbol y da error
     // var element = document.querySelector("myGraph");
@@ -87,3 +86,27 @@ var consoleShow = CodeMirror.fromTextArea(document.getElementById('textarea-cons
     
     
   });
+
+
+  function showTableTranslatedSymbols(){
+    var table = document.getElementById('tableTranslated').getElementsByTagName('tbody')[0];
+    var nodes = TableReport.getNodesTranslated();
+
+    for(var i=0;i<nodes.length;i++){
+      var item = nodes[i];
+      var newRow = table.insertRow(table.rows.length);
+      var idCell = newRow.insertCell(0);
+      var nameCell = newRow.insertCell(1);
+      var environmentCell = newRow.insertCell(2);
+      
+      var textIdCell = document.createTextNode((i+1).toString());
+      var textNameCell = document.createTextNode(item.name);
+      var textEnvironmentCell = document.createTextNode(item.typeEnviroment);
+
+      idCell.appendChild(textIdCell);
+      nameCell.appendChild(textNameCell);
+      environmentCell.appendChild(textEnvironmentCell);
+    }
+
+
+  };

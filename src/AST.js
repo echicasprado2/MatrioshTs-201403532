@@ -8,22 +8,20 @@ class AST {
         this.environmentExecute = new Environment(null, new EnvironmentType(EnumEnvironmentType.GLOBAL));
     }
 
-    // TODO de este tengo que hacer la traduccion y tabla de simbolos de la traduccion
-    getTranslatedCode(){
+    /**
+     * obtengo el codigo traduccido de mi analisis
+     */
+    getTranslated(){
+        // TODO de este tengo que hacer la traduccion
         for(var i = 0; i < this.instruccions.length;i++){
             var item = this.instruccions[i];
             this.translatedCode += item.translatedCode;
         }
     }
 
-    getSymbolsTable(){//e es environment translated
-        for(var i = 0;i < this.instruccions.length;i++){
-            var item = this.instruccions[i];
-            console.log();
-            item.getSymbolsTable(this.environmentTranslated);
-        }
-    }
-
+    /**
+     * creo el codigo para generar el ast, 
+     */
     getGraphCode(){
         this.graphCode = "root((root));\n";
 
@@ -42,6 +40,24 @@ class AST {
             this.graphCode += "root --> " + item.nodeName + ";\n";
         }
         return this.graphCode;
+    }
+
+    /**
+     * creo la tabla de simbolos para la traduccion
+     */
+    translatedSymbolsTable(){//e es environment translated
+        TableReport.cleanTranslated();
+        for(var i = 0;i < this.instruccions.length;i++){
+            var item = this.instruccions[i];
+            item.translatedSymbolsTable(this.environmentTranslated);
+        }
+    }
+
+    /**
+     * Obtengo la tabla de simbolos para la ejecucion
+     */
+    executeSymbolsTable(){
+
     }
 
 }

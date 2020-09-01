@@ -122,7 +122,7 @@
       console.log("function root2 foot");
     }
     console.log("function root foot");
-}</textarea> 
+}</textarea>
                     </div>
                     <div class="tab-pane fade active  height-editor" id="editor-content-salida" role="tabpanel"
                         aria-labelledby="salida-editor-tab">
@@ -166,6 +166,20 @@
             </div>
         </div>
 
+        <div>
+            <table class="table" id="tableTranslated">
+                <thead>
+                    <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">IDENTIFICADOR</th>
+                        <th scope="col">ENTORNO</th>
+                    </tr>
+                </thead>
+                <tbody>
+                </tbody>
+            </table>
+        </div>
+
     </main>
     <footer></footer>
 
@@ -179,10 +193,12 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"
         integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV"
         crossorigin="anonymous"></script>
-    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.52.2/codemirror.min.js"></script>
-    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.52.2/mode/javascript/javascript.min.js"></script>
+    <script type="text/javascript"
+        src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.52.2/codemirror.min.js"></script>
+    <script type="text/javascript"
+        src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.52.2/mode/javascript/javascript.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
-    
+
     <script type="text/javascript" src="Jison/Gramatica.js"></script>
     <script type="text/javascript" src="js/myjs.js"></script>
 
@@ -192,7 +208,8 @@
     <script src="src/Structure/Utils/OperationType.js"></script>
     <script src="src/Structure/Utils/TreeGraph.js"></script>
     <script src="src/Structure/Utils/Type.js"></script>
-
+    <script src="src/Structure/Utils/TableReport.js"></script>
+    
     <script src="src/Structure/Abstract/Node.js"></script>
     <script src="src/Structure/Abstract/ErrorNode.js"></script>
     <script src="src/Structure/Abstract/Expresion.js"></script>
@@ -216,10 +233,6 @@
 
     <!-- AST -->
     <script src="src/AST.js"></script>
-
-    <!-- GRAFICAR TABLAS DE SIMBOLOS -->
-    <script src="src/Structure/Utils/TranslatedTableSymbols.js"></script>
-    
 </body>
 
 </html>

@@ -17,9 +17,44 @@ class Parameter extends Instruction{
         }else{
             this.translatedCode = this.identifier + " : " + this.type.toString();
         }
+        
         this.graphcsCode = TreeGraph.generateChieldren(this,'PARAMETER',chieldren);
     }
 
+    /**
+     * obtener el codigo para la traduccion
+     */
+    getTranslated(){
+        return this.translatedCode;
+    }
+
+    /**
+     * obtengo el codigo para agregar al grafo del ast
+     */
+    getGraphsCode(){
+        return this.graphcsCode;
+    }
+
+    /**
+     * 
+     * @param {Environment actual} e  
+     */
+    translatedSymbolsTable(e){
+        return "implementar este codigo";
+    }
+
+    /**
+     * 
+     * @param {Enviroment} e 
+     */
+    executeSymbolsTable(e){
+        return "implementar este codigo"
+    }
+
+    /**
+     * 
+     * @param {*} e 
+     */
     execute(e) {
         throw new Error("Method not implemented.");
     }

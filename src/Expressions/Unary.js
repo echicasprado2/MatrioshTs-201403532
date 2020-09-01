@@ -18,8 +18,34 @@
         }
     }
 
-    getTranslatedCode(){
+    /**
+     * obtener el codigo para la traduccion
+     */
+    getTranslated(){
         return this.translatedCode;
+    }
+
+    /**
+     * obtengo el codigo para agregar al grafo del ast
+     */
+    getGraphsCode(){
+        return this.graphcsCode;
+    }
+
+    /**
+     * 
+     * @param {Environment actual} e  
+     */
+    translatedSymbolsTable(e){
+        return "implementar este codigo";
+    }
+
+    /**
+     * 
+     * @param {Enviroment} e 
+     */
+    executeSymbolsTable(e){
+        return "implementar este codigo"
     }
 
     getValue(e) {
