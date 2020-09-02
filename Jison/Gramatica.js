@@ -115,7 +115,8 @@ case 13:
                         stack = eval('$$');
                         for(var i = stack.length-2;i > 0; i--){
                                 if(stack[i] === '{' && stack[i-1] instanceof Function){
-                                        stack[i-1].instructions.push(stack[stack.length -1]);
+                                        //stack[i-1].instructions.push(stack[stack.length -1]);
+                                        stack[i-1].addInstruction(stack[stack.length -1]);
                                         break;
                                 }
                         }
@@ -126,7 +127,8 @@ case 14:
                         stack = eval('$$');
                         for(var i = stack.length-2;i > 0; i--){
                                 if(stack[i] === '{' && stack[i-1] instanceof Function){
-                                        stack[i-1].nestedFunctions.push(stack[stack.length - 1]);
+                                        // stack[i-1].nestedFunctions.push(stack[stack.length - 1]);
+                                        stack[i-1].addFunction(stack[stack.length - 1]);
                                         break;
                                 }
                         }       
