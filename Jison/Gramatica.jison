@@ -72,6 +72,9 @@ lex_comentariomultilinea [/][*][^*]*[*]+([^/*][^*]*[*]+)*[/]
 
 "const"       return 'const'
 "let"         return 'let'
+"push"        return 'push'
+"pop"         return 'pop'
+"length"      return 'length'
 
 "if"          return 'if'
 "else"        return 'else'
@@ -145,7 +148,20 @@ SENTENCE: FUNCTION { $$ = $1; }
         | PRINT    { $$ = $1; }  
         ;
 
+BLOCK:    llave_izq SENTENCES llave_der { $$ = new Block($2); }
+        | llave_izq llave_der           { $$ = new Block([]); }
+        ;
 
+PUNTO_Y_COMA: punto_y_coma { $$ = ";"; }
+            |              { $$ = ";"; }
+            ;
+
+/* TODO considerar para funciones
+* function id () {}
+* function id (l_params) {}
+* function id ():type {}
+* function id (l_params):type {}
+*/
 
 FUNCTION: FUNCTION_HEAD llave_izq FUNCTION_SENTENCES llave_der { $$ = $1; }
         | FUNCTION_HEAD llave_izq llave_der                    { $$ = $1; }
@@ -159,7 +175,8 @@ FUNCTION_SENTENCES: FUNCTION_SENTENCE FUNCTION_SENTENCES   { }
                 | FUNCTION_SENTENCE                        { }
                 ;
     
-FUNCTION_SENTENCE: PRINT    { 
+FUNCTION_SENTENCE: PRINT    
+                { 
                         stack = eval('$$');
                         for(var i = stack.length-2;i > 0; i--){
                                 if(stack[i] === '{' && stack[i-1] instanceof Function){
@@ -168,7 +185,8 @@ FUNCTION_SENTENCE: PRINT    {
                                 }
                         }
                 }
-                | FUNCTION  { 
+                | FUNCTION  
+                { 
                         stack = eval('$$');
                         for(var i = stack.length-2;i > 0; i--){
                                 if(stack[i] === '{' && stack[i-1] instanceof Function){
@@ -178,11 +196,6 @@ FUNCTION_SENTENCE: PRINT    {
                         }       
                 }
                 ;
-
-
-
-
-
 
 L_PARAMETROS: L_PARAMETROS coma PARAMETRO  { $$ = $1; $$.push($3); }
             | PARAMETRO                    { $$ = []; $$.push($1); }
@@ -200,6 +213,71 @@ TYPE: void          { $$ = new Type(EnumType.VOID,""); }
 
 PRINT: print par_izq E par_der punto_y_coma { $$ = new Print(this._$.first_line,this._$.first_column,$3); }
     ;
+
+/* TODO para hacer la declaracion tengo que tomar en cuenta la declaracion de array
+        x    (let | const) id ;              
+        x    (let | const) id, id,... ;
+        x    (let | const) id : tipo;
+        x    (let | const) id,id,.. : tipo;
+
+        *    (let | const) id, id,.. = valor;
+        *    (let | const) id = valor;
+        *    (let | const) id : tipo = valor;
+        *    (let | const) id,id,.. : tipo = valor;
+        
+        x    (let | const) id [] ;
+        x    (let | const) id, id,... [] ;
+        x    (let | const) id : tipo [] ;
+        x    (let | const) id, id : tipo [] ;
+        *    (let | const) id [] = [valor,valor,...] ;
+        *    (let | const) id, id,.. [] = [valor,valor,...] ;
+        *    (let | const) id : tipo [] = [valor,valor,...] ;
+        
+        x    (let | const) id [] [] ... ;
+        x    (let | const) id : tipo [] [] ... ;
+        *    (let | const) id [] [] ... = [[valor,valor,...],[valor,valor,...],[valor,valor,...],...];
+        *    (let | const) id : tipo [] [] ... = [[valor,valor,...],[valor,valor,...],[valor,valor,...],...];
+        */
+DECLARATION: TYPE_DECLARATION  L_ID TYPE_VARIABLE PUNTO_Y_COMA {}
+        |    TYPE_DECLARATION  L_ID TYPE_VARIABLE L_DIMENSION PUNTO_Y_COMA {}
+        ;
+
+TYPE_DECLARATION: let   { $$ = new VariableType(EnumVariableType.LET); }
+                | const { $$ = new VariableType(EnumVariableType.CONST); }
+                ;
+
+L_ID:     L_ID coma identificador { $$ = $1; $$.push($2); }
+        | identificador           { $$ = []; $$.push($1); }
+        ; 
+
+TYPE_VARIABLE:   dos_puntos TYPE { $$ = $2; }
+                | /* epsilon */  { $$ = new Type(EnumType.NULL,""); }
+                ;
+
+L_DIMENSION: L_DIMENSION cor_izq cor_der { $$ = $1 + 1; }
+        | cor_izq cor_der                { $$ = 1; }
+        ;
+
+/* TODO Asignacion
+* id = e;
+* id = id.id. ...;
+* id = id[] ...;
+* id = id[][] ...;
+* id = id[].id[] ...;
+* id = id[][].id[][] ...;
+* id = id();
+* id = id(param,param);
+* id = ternario;
+* id [] = e;
+* id [] = 
+* id [] [] ... = e;
+* id [] [] ... = e;
+* id [] [] ... = a.length();
+* id [] [] ... = a.push();
+* id [] [] ... = a.pop();
+*/
+
+
 
 /* EXPRESIONES */
 E   : E '+'   E          { $$ = new Arithmetic(this._$.first_line,this._$.first_column,new OperationType(EnumOperationType.PLUS),$1,$3); }

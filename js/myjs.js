@@ -77,12 +77,13 @@ var consoleShow = CodeMirror.fromTextArea(document.getElementById('textarea-cons
     
     //genera el arbol y da error
     var element = document.querySelector("myGraph");
+
     var insertSvg = function(svgCode){
       element.innerHTML = svgCode;
     };
     
     var grapDefinition = `graph TD;\n ${result.getGraphCode()}`;
-    // console.log(grapDefinition);
+    //console.log(grapDefinition);
     var graph = mermaid.render('myGraph',grapDefinition,insertSvg);
     
     
