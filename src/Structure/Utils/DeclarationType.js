@@ -1,15 +1,15 @@
 /**
  *  @enum of type use in language.
  */
-var EnumVariableType;
-(function (EnumVariableType) {
-    EnumVariableType["LET"] = "LET";
-    EnumVariableType["CONST"] = "CONST";
-})(EnumVariableType || (EnumVariableType = {}));
+var EnumDeclarationType;
+(function (EnumDeclarationType) {
+    EnumDeclarationType["LET"] = "LET";
+    EnumDeclarationType["CONST"] = "CONST";
+})(EnumDeclarationType || (EnumDeclarationType = {}));
 /**
  * @class type use for type anyone expresion with value
  */
-class Type {
+class DeclarationType {
     /**
      * 
      * @param {*} enumType 

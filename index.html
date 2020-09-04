@@ -71,58 +71,14 @@
                 <div class="tab-content  height-editor" id="myTabEditorContent">
                     <div class="tab-pane fade show active  height-editor" id="editor-content-entrada" role="tabpanel"
                         aria-labelledby="entrada-editor-tab">
-                        <textarea id="textarea-editor-entrada">function root():void {
-    console.log("function root head");
-    function root1():void {
-      console.log("function root1 head");
-      function root11():void {
-        console.log("function root11 head");
-        function root12():void {
-          console.log("function root12 head");
-          function root13():void {
-            console.log("function root13 head");
-            function root14():void {
-              console.log("function root14 head");
-              function root15():void {
-                console.log("function root15 head");
-                console.log("function root15 foot");
-              }
-              console.log("function root14 foot");
-            }
-            console.log("function root13 foot");
-          }
-          console.log("function root12 foot");
-        }
-        console.log("function root11 foot");
-      }
-      console.log("function root1 foot");
-    }
-    function root2():void {
-      console.log("function root2 head");
-      function root21():void {
-        console.log("function root21 head");
-        function root22():void {
-          console.log("function root22 head");
-          function root23():void {
-            console.log("function root23 head");
-            function root24():void {
-              console.log("function root24 head");
-              function root25():void {
-                console.log("function root25 head");
-                console.log("function root25 foot");
-              }
-              console.log("function root24 foot");
-            }
-            console.log("function root23 foot");
-          }
-          console.log("function root22 foot");
-        }
-        console.log("function root21 foot");
-      }
-      console.log("function root2 foot");
-    }
-    console.log("function root foot");
-}</textarea>
+                        <textarea id="textarea-editor-entrada">const var1;
+const var2 = 3;
+const var3,var4,var5;
+const var6,var7,var9 = "valores";
+let var10:number;
+let var11:string = "otra variable";
+let var12,var13,var14:boolean;
+let var15,var16:bolean = true;</textarea>
                     </div>
                     <div class="tab-pane fade active  height-editor" id="editor-content-salida" role="tabpanel"
                         aria-labelledby="salida-editor-tab">
@@ -233,6 +189,7 @@
     <script type="text/javascript" src="js/myjs.js"></script>
 
     <!-- UTILS -->
+    <script src="src/Structure/Utils/DeclarationType.js"></script>
     <script src="src/Structure/Utils/EnvironmentType.js"></script>
     <script src="src/Structure/Utils/ErrorType.js"></script>
     <script src="src/Structure/Utils/OperationType.js"></script>
@@ -262,6 +219,7 @@
     <script src="src/Instructions/Parameter.js"></script>
     <script src="src/Instructions/Function.js"></script>
     <script src="src/Instructions/Block.js"></script>
+    <script src="src/Instructions/Declaration.js"></script>
 
     <!-- AST -->
     <script src="src/AST.js"></script>
