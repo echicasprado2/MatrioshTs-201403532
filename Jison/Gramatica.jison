@@ -144,8 +144,9 @@ SENTENCES: SENTENCES SENTENCE { $$ = $1; $$.push($2); }
         | SENTENCE            { $$ = []; $$.push($1); }
         ;
 
-SENTENCE: FUNCTION { $$ = $1; }
-        | PRINT    { $$ = $1; }  
+SENTENCE: FUNCTION    { $$ = $1; }
+        | PRINT       { $$ = $1; } 
+        | DECLARATION { $$ = $1; }
         ;
 
 BLOCK:    llave_izq SENTENCES llave_der { $$ = new Block($2); }
@@ -209,6 +210,7 @@ TYPE: void          { $$ = new Type(EnumType.VOID,""); }
     | string        { $$ = new Type(EnumType.STRING,""); }
     | boolean       { $$ = new Type(EnumType.BOOLEAN,""); }
     | identificador { $$ = new Type(EnumType.TYPE,$1); }
+    //| /* epsilon */ { $$ = new Type(EnumType.NULL,""); }
     ;
 
 PRINT: print par_izq E par_der punto_y_coma { $$ = new Print(this._$.first_line,this._$.first_column,$3); }
@@ -238,15 +240,15 @@ PRINT: print par_izq E par_der punto_y_coma { $$ = new Print(this._$.first_line,
         *    (let | const) id [] [] ... = [[valor,valor,...],[valor,valor,...],[valor,valor,...],...];
         *    (let | const) id : tipo [] [] ... = [[valor,valor,...],[valor,valor,...],[valor,valor,...],...];
         */
-DECLARATION: TYPE_DECLARATION  L_ID TYPE_VARIABLE PUNTO_Y_COMA {}
+DECLARATION: TYPE_DECLARATION  L_ID TYPE_VARIABLE PUNTO_Y_COMA             { $$ = new Declaration(this._$.first_line,this._$.first_column,$1,$2,$3); }
         |    TYPE_DECLARATION  L_ID TYPE_VARIABLE L_DIMENSION PUNTO_Y_COMA {}
         ;
 
-TYPE_DECLARATION: let   { $$ = new VariableType(EnumVariableType.LET); }
-                | const { $$ = new VariableType(EnumVariableType.CONST); }
+TYPE_DECLARATION: let   { $$ = new DeclarationType(EnumDeclarationType.LET); }
+                | const { $$ = new DeclarationType(EnumDeclarationType.CONST); }
                 ;
 
-L_ID:     L_ID coma identificador { $$ = $1; $$.push($2); }
+L_ID:     L_ID coma identificador { $$ = $1; $$.push($3); }
         | identificador           { $$ = []; $$.push($1); }
         ; 
 

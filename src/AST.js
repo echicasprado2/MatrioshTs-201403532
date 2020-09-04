@@ -51,8 +51,7 @@ class AST {
     //e es environment translated
     TableReport.cleanTranslated();
     for (var i = 0; i < this.instruccions.length; i++) {
-      var item = this.instruccions[i];
-      item.translatedSymbolsTable(this.environmentTranslated);
+      this.instruccions[i].translatedSymbolsTable(this.environmentTranslated);
     }
   }
 

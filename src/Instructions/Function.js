@@ -82,16 +82,11 @@ class Function extends Instruction {
    * obtengo el codigo para agregar al grafo del ast
    */
   getGraphsCode() {
+    /* FIXME necesito que la grafica se vea que va a la derecha
+    * puedo crear un metodo especial para graficar las funciones,
+    * le puedo pasar el objeto como tal y que me retorne su grafica.
+    */
     var chieldrenGraph = [];
-
-    // for(var i = 0;i < this.instructions.length;i++){
-    //     chieldrenGraph.push(this.instructions[i]);
-    // }
-
-    // for(var i = 0;i < this.nestedFunctions.length;i++){
-    //     chieldrenGraph.push(this.nestedFunctions[i]);
-    // }
-
     for (var i = 0; i < this.chieldren.length; i++) {
       chieldrenGraph.push(this.chieldren[i].instruction);
     }

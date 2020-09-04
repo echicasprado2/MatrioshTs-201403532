@@ -2,7 +2,7 @@ class Block extends Instruction {
   constructor(sentences) {
     super(0, 0);
     this.nodeName = TreeGraph.getNumberNode();
-    this.graphCode = TreeGraph.generateChieldren(this, "BLOCK", sentences);
+    this.graphcsCode = TreeGraph.generateChieldren(this, "BLOCK", sentences);
     this.translatedCode = "";
   }
 
@@ -18,7 +18,7 @@ class Block extends Instruction {
   }
 
   getGraphsCode() {
-    return this.graphsCode;
+    return this.graphcsCode;
   }
 
   translatedSymbolsTable(e) {
