@@ -7,13 +7,14 @@ class Declaration extends Instruction {
      * @param {*} ids 
      * @param {*} type 
      */
-    constructor(linea, column, typeDeclaration, ids, type){
+    constructor(linea, column, typeDeclaration, ids, type, value){
         super(linea,column);
         this.typeDeclaration = typeDeclaration;
         this.ids  = ids;
         this.type = type;
+        this.value = value;
         this.nodeName = TreeGraph.getNumberNode();
-        this.graphcsCode = TreeGraph.getCodeOfDeclaration(this,this.typeDeclaration,ids,type);
+        this.graphcsCode = TreeGraph.getCodeOfDeclaration(this,this.typeDeclaration,this.ids,this.type,this.value);
         this.translatedCode = "";
     }
 
@@ -21,7 +22,7 @@ class Declaration extends Instruction {
         this.translatedCode += this.typeDeclaration.toString() + " ";
         
         for(var i = 0; i < this.ids.length;i++){
-            if(i == (this.ids.length - 1) || i == 0){
+            if(i == 0){
                 this.translatedCode += this.ids[i];
             }else{
                 this.translatedCode += ", " + this.ids[i];
@@ -29,12 +30,16 @@ class Declaration extends Instruction {
         }
 
         if(this.type.enumType != EnumType.NULL){
-            this.translatedCode += ":" + this.type.toString() + ";\n";
+            this.translatedCode += ":" + this.type.toString();
         }else{
-            this.translatedCode += ";\n";
+            this.translatedCode;
+        }
+
+        if(this.value != ""){
+            this.translatedCode += " = " + this.value.getTranslated();
         }
         
-        return this.translatedCode;
+        return this.translatedCode + ";\n";
     }
 
     getGraphsCode(){

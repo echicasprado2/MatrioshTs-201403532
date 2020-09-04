@@ -205,6 +205,9 @@ L_PARAMETROS: L_PARAMETROS coma PARAMETRO  { $$ = $1; $$.push($3); }
 PARAMETRO: identificador dos_puntos TYPE { $$ = new Parameter(this._$.first_line,this._$.first_column,$1,$3,null); }
         ;
 
+/* FIXME tengo que hacer que reconozca cuando una funcion
+* no tiene un tipo definido
+*/
 TYPE: void          { $$ = new Type(EnumType.VOID,""); }
     | number        { $$ = new Type(EnumType.NUMBER,""); }
     | string        { $$ = new Type(EnumType.STRING,""); }
@@ -222,10 +225,10 @@ PRINT: print par_izq E par_der punto_y_coma { $$ = new Print(this._$.first_line,
         x    (let | const) id : tipo;
         x    (let | const) id,id,.. : tipo;
 
-        *    (let | const) id, id,.. = valor;
-        *    (let | const) id = valor;
-        *    (let | const) id : tipo = valor;
-        *    (let | const) id,id,.. : tipo = valor;
+        x    (let | const) id = valor;
+        x    (let | const) id, id,.. = valor;
+        x    (let | const) id : tipo = valor;
+        x    (let | const) id,id,.. : tipo = valor;
         
         x    (let | const) id [] ;
         x    (let | const) id, id,... [] ;
@@ -240,7 +243,9 @@ PRINT: print par_izq E par_der punto_y_coma { $$ = new Print(this._$.first_line,
         *    (let | const) id [] [] ... = [[valor,valor,...],[valor,valor,...],[valor,valor,...],...];
         *    (let | const) id : tipo [] [] ... = [[valor,valor,...],[valor,valor,...],[valor,valor,...],...];
         */
-DECLARATION: TYPE_DECLARATION  L_ID TYPE_VARIABLE PUNTO_Y_COMA             { $$ = new Declaration(this._$.first_line,this._$.first_column,$1,$2,$3); }
+        
+DECLARATION: TYPE_DECLARATION  L_ID TYPE_VARIABLE PUNTO_Y_COMA                       { $$ = new Declaration(this._$.first_line,this._$.first_column,$1,$2,$3,""); }
+        |    TYPE_DECLARATION  L_ID TYPE_VARIABLE '=' E PUNTO_Y_COMA { $$ = new Declaration(this._$.first_line,this._$.first_column,$1,$2,$3,$5); }
         |    TYPE_DECLARATION  L_ID TYPE_VARIABLE L_DIMENSION PUNTO_Y_COMA {}
         ;
 

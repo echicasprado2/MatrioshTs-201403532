@@ -69,6 +69,7 @@ var consoleShow = CodeMirror.fromTextArea(document.getElementById('textarea-cons
     var editor = getEditor();
     
     var result = new AST(Gramatica.parse(editor.getValue()));// obtengo el ast al correr el analizador
+    var treeCode = result.getGraphCode();// codigo para hace el grafo
     result.translatedSymbolsTable();//obtengo la tabla de simbolos para la traduccion
     showTableTranslatedSymbols();//muestro la tabla de simbolos para la traduccion
   
@@ -82,7 +83,7 @@ var consoleShow = CodeMirror.fromTextArea(document.getElementById('textarea-cons
       element.innerHTML = svgCode;
     };
     
-    var grapDefinition = `graph TD;\n ${result.getGraphCode()}`;
+    var grapDefinition = `graph TD;\n ${treeCode}`;
     // console.log(grapDefinition);
     var graph = mermaid.render('myGraph',grapDefinition,insertSvg);
     
@@ -91,6 +92,9 @@ var consoleShow = CodeMirror.fromTextArea(document.getElementById('textarea-cons
 
 
   function showTableTranslatedSymbols(){
+    /* FIXME buscar una forma de limpiar el tbody de la tabla o 
+    * crear la tabla cada con html a la medida y luego hacer un innerhtml en el div 
+    */
     var table = document.getElementById('tableTranslated').getElementsByTagName('tbody')[0];
     var nodes = TableReport.getNodesTranslated();
 
