@@ -195,4 +195,131 @@ class TreeGraph {
 
     return tmp;
   }
+
+  static getCodeOfDeclarationArray(father, typeDaclaration, ids, type, dimensions,value) {
+    var nodeFather = TreeGraph.generateNode(father, (`DECLARACION\n Dimenciones: ${dimensions}`));
+    var tmp = "";
+    var fatherTempNamePrevious = "";
+    var fatherTempName = "";
+    var typeDeclarationName = "";
+    var idName = "";
+    var typeName = "";
+    var valueName = "";
+    var igualName = "";
+    var fatherTempNode = "";
+    var typeDeclarationNode = "";
+    var idNode = "";
+    var typeNode = "";
+    var valueNode = "";
+    var igualNode = "";
+
+    for (var i = 0; i < ids.length; i++) {
+      fatherTempName = TreeGraph.getNumberNode();
+      typeDeclarationName = TreeGraph.getNumberNode();
+      idName = TreeGraph.getNumberNode();
+      
+      fatherTempNode = TreeGraph.generateLeafCustom(fatherTempName,(`DECLARACION\\n Dimenciones: ${dimensions}`));
+      typeDeclarationNode = TreeGraph.generateLeafCustom(typeDeclarationName,typeDaclaration.toString());
+      idNode = TreeGraph.generateLeafCustom(idName, ids[i]);
+      
+      if(type.enumType != EnumType.NULL){
+        typeName = TreeGraph.getNumberNode();
+        typeNode = TreeGraph.generateLeafCustom(typeName, type.toString());
+      }
+
+      if(value != ""){
+        valueName = TreeGraph.getNumberNode();
+        igualName = TreeGraph.getNumberNode();
+        igualNode = TreeGraph.generateLeafCustom(igualName, "=");
+        
+        var cadena = "";
+        for(var i=0;i < value.value[0].length;i++){
+          if(i ==0){
+            cadena += value.value[0][i].value;
+          }else{
+            cadena += "," + value.value[0][i].value;
+          }
+        }
+        valueNode = TreeGraph.generateLeafCustom(valueName, cadena);
+      }
+
+
+      tmp += typeDeclarationNode;
+      tmp += idNode;
+
+      if(type.enumType != EnumType.NULL){
+        tmp += typeNode;
+      }
+      
+      if(value != ""){
+        tmp += igualNode;
+        tmp += valueNode;
+      }
+
+      if (ids.length == 1) {
+        tmp += nodeFather + ";\n";
+        tmp += father.nodeName + " --> " + typeDeclarationName + ";\n";
+        tmp += father.nodeName + " --> " + idName + ";\n";
+        
+        if(type.enumType != EnumType.NULL){
+          tmp += father.nodeName + " --> " + typeName + ";\n";
+        }
+
+        if(value != ""){
+          tmp += father.nodeName + " --> " + igualName + ";\n";
+          tmp += father.nodeName + " --> " + valueName + ";\n";
+        }
+        
+      } else if (i == ids.length - 1) {
+        tmp += nodeFather + ";\n";
+        tmp += father.nodeName + " --> " + fatherTempNamePrevious + ";\n";
+        tmp += father.nodeName + " --> " + typeDeclarationName + ";\n";
+        tmp += father.nodeName + " --> " + idName + ";\n";
+        
+        if(type.enumType != EnumType.NULL){
+          tmp += father.nodeName + " --> " + typeName + ";\n";
+        }
+
+        if(value != ""){
+          tmp += father.nodeName + " --> " + igualName + ";\n";
+          tmp += father.nodeName + " --> " + valueName + ";\n";
+        }
+
+      } else if (fatherTempNamePrevious == "") {
+        tmp += fatherTempNode + ";\n";
+        tmp += fatherTempName + " --> " + typeDeclarationName + ";\n";
+        tmp += fatherTempName + " --> " + idName + ";\n";
+        
+        if(type.enumType != EnumType.NULL){
+          tmp += fatherTempName + " --> " + typeName + ";\n";
+        }
+
+        if(value != ""){
+          tmp += fatherTempName + " --> " + igualName + ";\n";
+          tmp += fatherTempName + " --> " + valueName + ";\n";
+        }
+
+        fatherTempNamePrevious = fatherTempName;
+      } else {
+        tmp += fatherTempNode + ";\n";
+        tmp += fatherTempName + " --> " + fatherTempNamePrevious + ";\n";
+        tmp += fatherTempName + " --> " + typeDeclarationName + ";\n";
+        tmp += fatherTempName + " --> " + idName + ";\n";
+        
+        if(type.enumType != EnumType.NULL){
+          tmp += fatherTempName + " --> " + typeName + ";\n";
+        }
+
+        if(value != ""){
+          tmp += fatherTempName + " --> " + igualName + ";\n";
+          tmp += fatherTempName + " --> " + valueName + ";\n";
+        }
+
+        fatherTempNamePrevious = fatherTempName;
+      }
+    }
+
+    return tmp;
+  }
+
 }

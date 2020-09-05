@@ -234,9 +234,9 @@ PRINT: print par_izq E par_der punto_y_coma { $$ = new Print(this._$.first_line,
         x    (let | const) id, id,... [] ;
         x    (let | const) id : tipo [] ;
         x    (let | const) id, id : tipo [] ;
-        *    (let | const) id [] = [valor,valor,...] ;
-        *    (let | const) id, id,.. [] = [valor,valor,...] ;
-        *    (let | const) id : tipo [] = [valor,valor,...] ;
+        x    (let | const) id [] = [valor,valor,...] ;
+        x    (let | const) id, id,.. [] = [valor,valor,...] ;
+        x    (let | const) id : tipo [] = [valor,valor,...] ;
         
         x    (let | const) id [] [] ... ;
         x    (let | const) id : tipo [] [] ... ;
@@ -244,9 +244,22 @@ PRINT: print par_izq E par_der punto_y_coma { $$ = new Print(this._$.first_line,
         *    (let | const) id : tipo [] [] ... = [[valor,valor,...],[valor,valor,...],[valor,valor,...],...];
         */
         
-DECLARATION: TYPE_DECLARATION  L_ID TYPE_VARIABLE PUNTO_Y_COMA                       { $$ = new Declaration(this._$.first_line,this._$.first_column,$1,$2,$3,""); }
-        |    TYPE_DECLARATION  L_ID TYPE_VARIABLE '=' E PUNTO_Y_COMA { $$ = new Declaration(this._$.first_line,this._$.first_column,$1,$2,$3,$5); }
-        |    TYPE_DECLARATION  L_ID TYPE_VARIABLE L_DIMENSION PUNTO_Y_COMA {}
+DECLARATION: TYPE_DECLARATION  L_ID TYPE_VARIABLE PUNTO_Y_COMA                         { $$ = new Declaration(this._$.first_line,this._$.first_column,$1,$2,$3,""); }
+        |    TYPE_DECLARATION  L_ID TYPE_VARIABLE '=' E PUNTO_Y_COMA                   { $$ = new Declaration(this._$.first_line,this._$.first_column,$1,$2,$3,$5); }
+        |    TYPE_DECLARATION  L_ID TYPE_VARIABLE L_DIMENSION PUNTO_Y_COMA             { $$ = new DeclarationArray(this._$.first_line,this._$.first_column,$1,$2,$3,$4,""); }
+        |    TYPE_DECLARATION  L_ID TYPE_VARIABLE L_DIMENSION '=' L_ARRAY PUNTO_Y_COMA { $$ = new DeclarationArray(this._$.first_line,this._$.first_column,$1,$2,$3,$4,new Value(new Type(EnumType.ARRAY,""),$6)); }
+        ;
+
+L_ARRAY: L_ARRAY coma cor_izq E_ARRAY cor_der { $$ = $1; $$.push($3); }
+        | cor_izq E_ARRAY cor_der        { $$ = []; $$.push($2); }
+        ;
+
+E_ARRAY: cor_izq E_ARRAY cor_der
+        | L_E
+        ;
+
+L_E: L_E coma E { $$ = $1; $$.push($3);}
+        | E     { $$ = []; $$.push($1); }
         ;
 
 TYPE_DECLARATION: let   { $$ = new DeclarationType(EnumDeclarationType.LET); }
