@@ -71,14 +71,9 @@
                 <div class="tab-content  height-editor" id="myTabEditorContent">
                     <div class="tab-pane fade show active  height-editor" id="editor-content-entrada" role="tabpanel"
                         aria-labelledby="entrada-editor-tab">
-                        <textarea id="textarea-editor-entrada">const var1;
-const var2 = 3;
-const var3,var4,var5;
-const var6,var7,var9 = "valores";
-let var10:number;
-let var11:string = "otra variable";
-let var12,var13,var14:boolean;
-let var15,var16:bolean = true;</textarea>
+                        <textarea id="textarea-editor-entrada">const var1[][] = [1,2,3,[4,5,6],7,8,9];
+var1 = 5;
+var1.var2 = 4;</textarea>
                     </div>
                     <div class="tab-pane fade active  height-editor" id="editor-content-salida" role="tabpanel"
                         aria-labelledby="salida-editor-tab">
@@ -209,6 +204,7 @@ let var15,var16:bolean = true;</textarea>
 
     <!-- EXPRESSIONS -->
     <script src="src/Expressions/Value.js"></script>
+    <script src="src/Expressions/Id.js"></script>
     <script src="src/Expressions/Unary.js"></script>
     <script src="src/Expressions/Logic.js"></script>
     <script src="src/Expressions/Arithmetic.js"></script>
@@ -221,6 +217,7 @@ let var15,var16:bolean = true;</textarea>
     <script src="src/Instructions/Block.js"></script>
     <script src="src/Instructions/Declaration.js"></script>
     <script src="src/Instructions/DeclarationArray.js"></script>
+    <script src="src/Instructions/Assignment.js"></script>
 
     <!-- AST -->
     <script src="src/AST.js"></script>

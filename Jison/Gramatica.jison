@@ -147,6 +147,7 @@ SENTENCES: SENTENCES SENTENCE { $$ = $1; $$.push($2); }
 SENTENCE: FUNCTION    { $$ = $1; }
         | PRINT       { $$ = $1; } 
         | DECLARATION { $$ = $1; }
+        | ASSIGNMENT  { $$ = $1; }
         ;
 
 BLOCK:    llave_izq SENTENCES llave_der { $$ = new Block($2); }
@@ -251,12 +252,12 @@ DECLARATION: TYPE_DECLARATION  L_ID TYPE_VARIABLE PUNTO_Y_COMA                  
         ;
 
 L_ARRAY: L_ARRAY coma cor_izq E_ARRAY cor_der { $$ = $1; $$.push($3); }
-        | cor_izq E_ARRAY cor_der        { $$ = []; $$.push($2); }
+        | cor_izq L_E cor_der        { $$ = []; $$.push($2); }
         ;
 
-E_ARRAY: cor_izq E_ARRAY cor_der
-        | L_E
-        ;
+// E_ARRAY: cor_izq E_ARRAY cor_der
+//         | L_E
+//         ;
 
 L_E: L_E coma E { $$ = $1; $$.push($3);}
         | E     { $$ = []; $$.push($1); }
@@ -297,6 +298,12 @@ L_DIMENSION: L_DIMENSION cor_izq cor_der { $$ = $1 + 1; }
 * id [] [] ... = a.pop();
 */
 
+ASSIGNMENT: ACCESS '=' E PUNTO_Y_COMA { $$ = new Assignment(this._$.first_line,this.$.first_column,$1,$3); }
+        ;
+
+ACCESS: ACCESS punto identificador { $$ = $1; $$.push(new Id(this._$.first_line,this._$.first_column,$3)); }
+        | identificador          { $$ = []; $$.push(new Id(this._$.first_line,this._$.first_column,$1)); }
+        ;
 
 
 /* EXPRESIONES */
@@ -322,4 +329,5 @@ E   : E '+'   E          { $$ = new Arithmetic(this._$.first_line,this._$.first_
     | val_falso          { $$ = new Value(new Type(EnumType.BOOLEAN,""),$1); }
     | val_nulo           { $$ = new Value(new Type(EnumType.NULL,""),$1); }
     | par_izq E par_der  { $2.translatedCode = "("+ $2.translatedCode +")"; $$ = $2; }
+    | cor_izq L_E cor_der  { $$ = $2; }
     ;
