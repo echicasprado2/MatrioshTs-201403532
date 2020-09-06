@@ -3,7 +3,7 @@ class Id extends Expresion {
         super(linea,column,null,identifier);
         this.nodeName = TreeGraph.getNumberNode();
         this.graphcsCode = TreeGraph.generateLeafNodeExpresion(this);
-        this.translatedCode = this.identifier;
+        this.translatedCode = identifier;
     }
 
     getTranslated(){

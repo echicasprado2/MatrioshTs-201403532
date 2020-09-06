@@ -16,6 +16,7 @@ class Declaration extends Instruction {
         this.nodeName = TreeGraph.getNumberNode();
         this.graphcsCode = TreeGraph.getCodeOfDeclaration(this,this.typeDeclaration,this.ids,this.type,this.value);
         this.translatedCode = "";
+        // console.log(this.value);
     }
 
     getTranslated(){
@@ -36,9 +37,19 @@ class Declaration extends Instruction {
         }
 
         if(this.value != ""){
-            this.translatedCode += " = " + this.value.getTranslated();
+            if(this.value instanceof Array){
+                console.log(this.value);
+                for(var i =0;i< this.value.length;i++){
+                    if(i == 0){
+                        this.translatedCode += " = " + this.value[i].getTranslated();
+                    }else{
+                        this.translatedCode += "." + this.value[i].getTranslated();
+                    }
+                }
+            }else{
+                this.translatedCode += " = " + this.value.getTranslated();
+            }
         }
-        
         return this.translatedCode + ";\n";
     }
 
