@@ -180,6 +180,26 @@ FUNCTION_SENTENCE: PRINT
                                 }
                         }
                 }
+                | DECLARATION 
+                { 
+                        stack = eval('$$');
+                        for(var i = stack.length-2;i > 0; i--){
+                                if(stack[i] === '{' && stack[i-1] instanceof Function){
+                                        stack[i-1].addInstruction(stack[stack.length -1]);
+                                        break;
+                                }
+                        }
+                }
+                | ASSIGNMENT
+                { 
+                        stack = eval('$$');
+                        for(var i = stack.length-2;i > 0; i--){
+                                if(stack[i] === '{' && stack[i-1] instanceof Function){
+                                        stack[i-1].addInstruction(stack[stack.length -1]);
+                                        break;
+                                }
+                        }
+                }
                 | FUNCTION  
                 { 
                         stack = eval('$$');
@@ -199,15 +219,11 @@ L_PARAMETROS: L_PARAMETROS coma PARAMETRO  { $$ = $1; $$.push($3); }
 PARAMETRO: identificador dos_puntos TYPE { $$ = new Parameter(this._$.first_line,this._$.first_column,$1,$3,null); }
         ;
 
-/* FIXME tengo que hacer que reconozca cuando una funcion
-* no tiene un tipo definido
-*/
 TYPE: void          { $$ = new Type(EnumType.VOID,""); }
     | number        { $$ = new Type(EnumType.NUMBER,""); }
     | string        { $$ = new Type(EnumType.STRING,""); }
     | boolean       { $$ = new Type(EnumType.BOOLEAN,""); }
     | identificador { $$ = new Type(EnumType.TYPE,$1); }
-    //| /* epsilon */ { $$ = new Type(EnumType.NULL,""); }
     ;
 
 PRINT: print par_izq E par_der punto_y_coma { $$ = new Print(this._$.first_line,this._$.first_column,$3); }
@@ -239,32 +255,28 @@ L_DIMENSION: L_DIMENSION cor_izq cor_der { $$ = $1 + 1; }
         | cor_izq cor_der                { $$ = 1; }
         ;
 
-/* TODO Asignacion
-x id = e;
-* id = id.id. ...;
-* id = id[] ...;
-* id = id[][] ...;
-* id = id[].id[] ...;
-* id = id[][].id[][] ...;
-* id = id();
-* id = id(param,param);
-* id = ternario;
-* id [] = e;
-* id [] = 
-* id [] [] ... = e;
-* id [] [] ... = e;
-* id [] [] ... = a.length();
-* id [] [] ... = a.push();
-* id [] [] ... = a.pop();
-*/
-
-ASSIGNMENT: ID_ASSIGNMENT '=' E PUNTO_Y_COMA { $$ = new Assignment(this._$.first_line,this.$.first_column,$1,$3); }
+ASSIGNMENT: ID_ASSIGNMENT '=' E PUNTO_Y_COMA 
+        { 
+                for(var i = 0; i < $1.length;i++){
+                        if($1[i] instanceof AccessArray){
+                                $$ = new AssignmentArray(this._$.first_line,this.$.first_column,$1,$3);
+                                return;
+                        }
+                }
+                $$ = new Assignment(this._$.first_line,this.$.first_column,$1,$3); 
+        }
+        | ID_ASSIGNMENT POST_FIXED PUNTO_Y_COMA { $$ = new Unary(this._$.first_line,this._$.first_column,$2,$1); }
         ;
 
-ID_ASSIGNMENT: ID_ASSIGNMENT punto identificador { $$ = $1; $$.push(new Id(this._$.first_line,this._$.first_column,$3)); }
-        | identificador                          { $$ = []; $$.push(new Id(this._$.first_line,this._$.first_column,$1)); }
+ID_ASSIGNMENT: ID_ASSIGNMENT punto identificador             { $$ = $1; $$.push(new Id(this._$.first_line,this._$.first_column,$3)); }
+        | ID_ASSIGNMENT punto identificador ACCESS_DIMENSION { $$ = $1; $$.push(new AccessArray(this._$.first_line,this._$.first_column,$3,$4)); }
+        | identificador                                      { $$ = []; $$.push(new Id(this._$.first_line,this._$.first_column,$1)); }
+        | identificador ACCESS_DIMENSION                     { $$ = []; $$.push(new AccessArray(this._$.first_line,this._$.first_column,$1,$2)); }
         ;
 
+ACCESS_DIMENSION: ACCESS_DIMENSION cor_izq E cor_der { $$ = $1; $$.push($3); }
+                | cor_izq E cor_der                  { $$ = []; $$.push($2); }
+                ;
 
 /* EXPRESIONES */
 E   : E '+'   E          { $$ = new Arithmetic(this._$.first_line,this._$.first_column,new OperationType(EnumOperationType.PLUS),$1,$3); }
@@ -293,20 +305,21 @@ E   : E '+'   E          { $$ = new Arithmetic(this._$.first_line,this._$.first_
     | ACCESS               { $$ = $1; }
     ;
 
-ACCESS: ACCESS punto identificador                       { $$ = $1; $$.push(new Id(this._$.first_line,this._$.first_column,$3));}
+ACCESS: ACCESS punto identificador                       { $$ = $1; $$.push(new Id(this._$.first_line,this._$.first_column,$3)); }
         | ACCESS punto identificador cor_izq E cor_der   {/* METODOS PARA  */}
         | ACCESS punto identificador par_izq par_der     {/* METODOS PARA  */}
         | ACCESS punto identificador par_izq L_E par_der {/* METODOS PARA  */}
-        | ACCESS punto identificador '--'                { $$ = $1; $$.push(new Unary(this.$.first_line,this._$.first_column,new OperationType(EnumOperationType.MINUS_MINUS),$1)); }
-        | ACCESS punto identificador '++'                { $$ = $1; $$.push(new Unary(this.$.first_line,this._$.first_column,new OperationType(EnumOperationType.PLUS_PLUS),$1)); }
+        | ACCESS punto identificador POST_FIXED          { $$ = $1; $$.push(new Unary(this.$.first_line,this._$.first_column,$5,$3)); }
         | identificador                                  { $$ = []; $$.push(new Id(this._$.first_line,this._$.first_column,$1)); }
-        | identificador '--'                             { $$ = []; $$.push(new Unary(this.$.first_line,this._$.first_column,new OperationType(EnumOperationType.MINUS_MINUS),$1)); }
-        | identificador '++'                             { $$ = []; $$.push(new Unary(this.$.first_line,this._$.first_column,new OperationType(EnumOperationType.PLUS_PLUS),$1)); }
+        | identificador POST_FIXED                       { $$ = []; $$.push(new Unary(this.$.first_line,this._$.first_column,$3,$1)); }
         | identificador cor_izq E cor_der                { $$ = []; }
-        | identificador cor_izq E cor_der '--'           { $$ = []; }
-        | identificador cor_izq E cor_der '++'           { $$ = []; }
+        | identificador cor_izq E cor_der POST_FIXED     { $$ = []; }
         | identificador par_izq par_der                  { $$ = []; }
         | identificador par_izq L_E par_der              { $$ = []; }
+        ;
+
+POST_FIXED: '--' { $$ = new OperationType(EnumOperationType.MINUS_MINUS); }
+        | '++'   { $$ = new OperationType(EnumOperationType.PLUS_PLUS); }
         ;
 
 L_E: L_E coma E { $$ = $1; $$.push($3);}

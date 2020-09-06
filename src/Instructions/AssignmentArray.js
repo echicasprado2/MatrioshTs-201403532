@@ -1,4 +1,5 @@
-class Assignment extends Instruction {
+class AssignmentArray extends Instruction {
+    
     /**
      * 
      * @param {*} linea 
@@ -8,16 +9,19 @@ class Assignment extends Instruction {
      */
     constructor(linea,column,access,expresion){
         super(linea,column);
+        this.nodeName = TreeGraph.getNumberNode();
+
         this.listAccess = access;
         this.value = expresion;
-        this.nodeName = TreeGraph.getNumberNode();
-        // TODO no me sale la grafica de asignar
-        // tengo que crear un metodo para generar la grafica
-        this.graphcsCode = TreeGraph.generateChieldren(this,"ASIGNACION",);
+
+        this.graphcsCode = TreeGraph;
         this.translatedCode = "";
     }
 
     getTranslated(){
+        /* TODO tengo que obtener todos los accesos y poner la expresion
+        al analizar se ve que es lo mismo de la asignacion normal.
+         */
         for(var i = 0;i < this.listAccess.length;i++){
             this.translatedCode += (i == 0) ? this.listAccess[i].getTranslated() : "." + this.listAccess[i].getTranslated(); 
         }
@@ -40,7 +44,7 @@ class Assignment extends Instruction {
     }
 
     getGraphsCode(){
-        //return this.graphcsCode;
+        return this.graphcsCode;
     }
 
     translatedSymbolsTable(e){
