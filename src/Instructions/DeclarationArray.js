@@ -33,18 +33,26 @@ class DeclarationArray extends Instruction {
         }
 
         if(this.values != ""){
-            this.translatedCode += " = [";
-            for(var i = 0;i< this.values.value[0].length;i++){
-                if(i == 0){
-                    this.translatedCode += this.values.value[0][i].getTranslated();
-                }else{
-                    this.translatedCode += "," + this.values.value[0][i].getTranslated();
-                }
-            }
-            this.translatedCode += "]";
+            this.translatedCode += " = ";
+            this.translatedCode += this.makeArray(this.values.value[0]);
         }
-        
+
         return this.translatedCode + ";\n";
+    }
+
+    makeArray(valueArray){
+        var cadena = "[";
+
+        for(var i = 0;i< valueArray.length;i++){
+            if(valueArray[i] instanceof Array){
+                cadena += this.makeArray(valueArray[i]);
+            }else if(i == 0){
+                cadena += valueArray[i].value.toString();
+            }else{
+                cadena += "," + valueArray[i].value.toString();
+            }
+        }
+        return cadena + "]";
     }
 
     getGraphsCode(){

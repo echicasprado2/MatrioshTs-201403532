@@ -9,7 +9,6 @@ class Parameter extends Instruction{
         var identifierNode = new Value(new Type(EnumType.STRING,""),this.identifier);
         var chieldren = [identifierNode,this.type];
 
-        // TODO validar si se pueden hacer varias declaraciones de una vez
         if(expresion != null){
             this.expresion = expresion;
             chieldren.push(this.expresion);    
