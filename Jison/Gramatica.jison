@@ -128,6 +128,8 @@ lex_comentariomultilinea [/][*][^*]*[*]+([^/*][^*]*[*]+)*[/]
 %left '}'
 %left 'EOF'
 
+//TODO add error lexico
+
 %start INIT
 
 %ebnf
@@ -142,7 +144,19 @@ INIT: SENTENCES EOF { return $1; }
 
 SENTENCES: SENTENCES SENTENCE { $$ = $1; $$.push($2); }
         | SENTENCE            { $$ = []; $$.push($1); }
+        /*TODO add
+        break
+        continue
+        return E
+        return 
+        */
+        
+        /*TODO add recuperacion de error sintactico 
+                con ; y }
+        */
         ;
+
+
 
 SENTENCE: FUNCTION    { $$ = $1; }
         | PRINT       { $$ = $1; } 
@@ -226,6 +240,10 @@ TYPE: void          { $$ = new Type(EnumType.VOID,""); }
     | identificador { $$ = new Type(EnumType.TYPE,$1); }
     ;
 
+/* TODO native functions
+ console.log 
+ graficar_ts
+*/
 PRINT: print par_izq E par_der punto_y_coma { $$ = new Print(this._$.first_line,this._$.first_column,$3); }
     ;
         
@@ -278,6 +296,16 @@ ACCESS_DIMENSION: ACCESS_DIMENSION cor_izq E cor_der { $$ = $1; $$.push($3); }
                 | cor_izq E cor_der                  { $$ = []; $$.push($2); }
                 ;
 
+/* TODO make sentences of control
+        if - else
+        while
+        do-while
+        switch - case
+        for 
+        for in
+        for of
+*/
+
 /* EXPRESIONES */
 E   : E '+'   E          { $$ = new Arithmetic(this._$.first_line,this._$.first_column,new OperationType(EnumOperationType.PLUS),$1,$3); }
     | E '-'   E          { $$ = new Arithmetic(this._$.first_line,this._$.first_column,new OperationType(EnumOperationType.MINUS),$1,$3); }
@@ -302,6 +330,7 @@ E   : E '+'   E          { $$ = new Arithmetic(this._$.first_line,this._$.first_
     | val_nulo           { $$ = new Value(new Type(EnumType.NULL,""),$1); }
     | par_izq E par_der  { $2.translatedCode = "("+ $2.translatedCode +")"; $$ = $2; }
     | cor_izq L_E cor_der  { $$ = $2; }
+    // TODO add ternario
     | ACCESS               { $$ = $1; }
     ;
 
@@ -325,3 +354,5 @@ POST_FIXED: '--' { $$ = new OperationType(EnumOperationType.MINUS_MINUS); }
 L_E: L_E coma E { $$ = $1; $$.push($3);}
         | E     { $$ = []; $$.push($1); }
         ;
+
+//TODO make methods of array -> push(E) pop() and length()
