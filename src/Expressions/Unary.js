@@ -9,7 +9,7 @@
         this.operationType = operationType;
         this.expresion = expresion;
         this.nodeName = TreeGraph.getNumberNode();
-        this.graphcsCode = "";//TreeGraph.generateOneChield(this,this.operationType.toString(),this.expresion);
+        this.graphcsCode = "";
         this.translatedCode = "";
     }
 
@@ -18,14 +18,17 @@
      */
     getTranslated(){
 
+        console.log(this.expresion);
 
         if(this.operationType == EnumOperationType.PLUS_PLUS || this.operationType == EnumOperationType.MINUS_MINUS){
+            
             for(var i = 0;i < this.expresion.length;i++){
                 this.translatedCode += (i == 0) ? this.expresion[i].getTranslated() : "." + this.expresion[i].getTranslated(); 
             }
-            
             this.translatedCode += this.operationType.toString();
+
         }else{
+
             this.translatedCode = this.operationType.toString();
 
             for(var i = 0;i < this.expresion.length;i++){

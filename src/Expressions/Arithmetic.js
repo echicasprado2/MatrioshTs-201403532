@@ -1,44 +1,52 @@
-class Arithmetic extends Expresion{
-    constructor(linea, column,operationType,expresion1,expresion2){
-        super(linea,column);
-        this.operationType = operationType;
-        this.expresion1 = expresion1;
-        this.expresion2 = expresion2;
-        this.nodeName = TreeGraph.getNumberNode();
-        let chieldren = [expresion1,expresion2];
-        this.graphcsCode = TreeGraph.generateChieldren(this,operationType.toString(),chieldren);
-        this.translatedCode = this.expresion1.translatedCode + " " 
-            + this.operationType.toString() + " " 
-            +this.expresion2.translatedCode;
+class Arithmetic extends Expresion {
+  constructor(linea, column, operationType, expresion1, expresion2) {
+    super(linea, column);
+    this.operationType = operationType;
+    this.expresion1 = expresion1;
+    this.expresion2 = expresion2;
+    this.nodeName = TreeGraph.getNumberNode();
+
+    this.graphcsCode = "";
+    this.translatedCode = "";
+  }
+
+  /**
+   * obtener el codigo para la traduccion
+   */
+  getTranslated() {
+    for (var i = 0; i < this.expresion1.length; i++) {
+        this.translatedCode += (i == 0) ? this.expresion1[i].getTranslated() : `.${this.expresion1[i].getTranslated()}`;
     }
 
-    /**
-     * obtener el codigo para la traduccion
-     */
-    getTranslated(){
-        return this.translatedCode;
+    this.translatedCode += ` ${this.operationType.toString()} `;
+
+    for (var i = 0; i < this.expresion2.length; i++) {
+        this.translatedCode += (i == 0) ? this.expresion2[i].getTranslated() : `.${this.expresion2[i].getTranslated()}`;
     }
 
-    /**
-     * obtengo el codigo para agregar al grafo del ast
-     */
-    getGraphsCode(){
-        return this.graphcsCode;
-    }
+    return this.translatedCode;
+  }
 
-    /**
-     * 
-     * @param {Environment actual} e  
-     */
-    translatedSymbolsTable(e){
-        return "implementar este codigo";
-    }
+  /**
+   * obtengo el codigo para agregar al grafo del ast
+   */
+  getGraphsCode() {
+    return this.graphcsCode;
+  }
 
-    /**
-     * 
-     * @param {Enviroment} e 
-     */
-    executeSymbolsTable(e){
-        return "implementar este codigo"
-    }
+  /**
+   *
+   * @param {Environment actual} e
+   */
+  translatedSymbolsTable(e) {
+    return "implementar este codigo";
+  }
+
+  /**
+   *
+   * @param {Enviroment} e
+   */
+  executeSymbolsTable(e) {
+    return "implementar este codigo";
+  }
 }

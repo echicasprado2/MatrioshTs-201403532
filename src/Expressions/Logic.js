@@ -5,17 +5,25 @@ class Logic extends Expresion{
         this.expresion1 = expresion1;
         this.expresion2 = expresion2;
         this.nodeName = TreeGraph.getNumberNode();
-        let chieldren = [expresion1,expresion2];
-        this.graphcsCode = TreeGraph.generateChieldren(this,operationType.toString(),chieldren);
-        this.translatedCode = this.expresion1.translatedCode + " " 
-            + this.operationType.toString() + " " 
-            +this.expresion2.translatedCode;
+        
+        this.graphcsCode = "";
+        this.translatedCode = "";
     }
 
     /**
      * obtener el codigo para la traduccion
      */
     getTranslated(){
+        for (var i = 0; i < this.expresion1.length; i++) {
+            this.translatedCode += (i == 0) ? this.expresion1[i].getTranslated() : `.${this.expresion1[i].getTranslated()}`;
+        }
+    
+        this.translatedCode += ` ${this.operationType.toString()} `;
+    
+        for (var i = 0; i < this.expresion2.length; i++) {
+            this.translatedCode += (i == 0) ? this.expresion2[i].getTranslated() : `.${this.expresion2[i].getTranslated()}`;
+        }
+    
         return this.translatedCode;
     }
 

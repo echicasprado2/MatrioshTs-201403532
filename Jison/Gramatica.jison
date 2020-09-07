@@ -150,7 +150,7 @@ SENTENCES: SENTENCES SENTENCE { $$ = $1; $$.push($2); }
         return E
         return 
         */
-        
+         
         /*TODO add recuperacion de error sintactico 
                 con ; y }
         */
@@ -334,13 +334,16 @@ E   : E '+'   E          { $$ = new Arithmetic(this._$.first_line,this._$.first_
     | ACCESS               { $$ = $1; }
     ;
 
+
+/* TODO make access to call function with params and not params
+*/
 ACCESS: ACCESS punto identificador                       { $$ = $1; $$.push(new Id(this._$.first_line,this._$.first_column,$3)); }
         | ACCESS punto identificador cor_izq E cor_der   {/* METODOS PARA  */}
         | ACCESS punto identificador par_izq par_der     {/* METODOS PARA  */}
         | ACCESS punto identificador par_izq L_E par_der {/* METODOS PARA  */}
-        | ACCESS punto identificador POST_FIXED          { $$ = $1; $$.push(new Unary(this.$.first_line,this._$.first_column,$5,$3)); }
+        | ACCESS punto identificador POST_FIXED          { $$ = $1; $$.push(new Unary(this._$.first_line,this._$.first_column,$5,$3)); }
         | identificador                                  { $$ = []; $$.push(new Id(this._$.first_line,this._$.first_column,$1)); }
-        | identificador POST_FIXED                       { $$ = []; $$.push(new Unary(this.$.first_line,this._$.first_column,$3,$1)); }
+        | identificador POST_FIXED                       { $$ = []; $$.push(new Unary(this._$.first_line,this._$.first_column,$3,new Id(this._$.first_line,this._$.first_column,$1))); }
         | identificador cor_izq E cor_der                { $$ = []; }
         | identificador cor_izq E cor_der POST_FIXED     { $$ = []; }
         | identificador par_izq par_der                  { $$ = []; }

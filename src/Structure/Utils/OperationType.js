@@ -6,7 +6,7 @@ var EnumOperationType;
     EnumOperationType["MINUS"] = "-";
     EnumOperationType["MULTIPLICATION"] = "*";
     EnumOperationType["DIVISION"] = "/";
-    EnumOperationType["POWER"] = "^";
+    EnumOperationType["POWER"] = "**";
     EnumOperationType["MODULE"] = "%";
     EnumOperationType["NEGATIVE"] = "-";
     EnumOperationType["AND"] = "&&";
