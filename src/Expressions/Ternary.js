@@ -1,25 +1,19 @@
-class CallFunction extends Expresion {
-
-    constructor(linea,column,identifier,parametros){
+class Ternary extends Expresion {
+    constructor(linea,column,condition,conditionTrue,conditionFalse){
         super(linea,column,null,null);
         this.nodeName = TreeGraph.getNumberNode();
-        this.identifier = identifier;
-        this.value = parametros;
-        this.graphcsCode = "";
+        this.condition = condition;
+        this.conditionTrue = conditionTrue;
+        this.conditionFalse = conditionFalse;
         this.translatedCode = "";
     }
 
     getTranslated(){
-        this.translatedCode += `${this.identifier}(`
-
-        for(var i = 0;i < this.value.length;i++){
-            this.translatedCode += (i == 0) ? this.value[i].getTranslated() : `, ${this.value[i].getTranslated()}`; 
-        }
-        this.translatedCode += ")";
-
-        if(this.parentesis){
+        this.translatedCode += `${this.condition.getTranslated()} ? ${this.conditionTrue.getTranslated()} : ${this.conditionFalse.getTranslated()}`
+        
+        if (this.parentesis) {
             return `(${this.translatedCode})`;
-        }else{
+        } else {
             return this.translatedCode;
         }
     }

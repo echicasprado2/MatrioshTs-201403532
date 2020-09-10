@@ -17,7 +17,6 @@ class AST {
    * obtengo el codigo traduccido de mi analisis
    */
   getTranslated() {
-    // TODO de este tengo que hacer la traduccion
     for (var i = 0; i < this.instruccions.length; i++) {
       this.translatedCode += this.instruccions[i].getTranslated();
     }
