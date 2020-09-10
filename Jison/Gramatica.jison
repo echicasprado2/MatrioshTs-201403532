@@ -91,7 +91,7 @@ lex_comentariomultilinea [/][*][^*]*[*]+([^/*][^*]*[*]+)*[/]
 "do"          return 'do'
 
 "console.log" return 'print'
-"grafica_ts"  return 'graficar_ts'
+"graficar_ts"  return 'graficar_ts'
 "function"    return 'function'
 
 //valores expresiones regulares
@@ -144,6 +144,15 @@ INIT: SENTENCES EOF { return $1; }
 
 SENTENCES: SENTENCES SENTENCE { $$ = $1; $$.push($2); }
         | SENTENCE            { $$ = []; $$.push($1); }
+        ;
+
+
+
+SENTENCE: FUNCTION    { $$ = $1; }
+        | PRINT       { $$ = $1; }
+        | GRAPH_TS    { $$ = $1; } 
+        | DECLARATION { $$ = $1; }
+        | ASSIGNMENT  { $$ = $1; }
         /*TODO add
         break
         continue
@@ -154,14 +163,6 @@ SENTENCES: SENTENCES SENTENCE { $$ = $1; $$.push($2); }
         /*TODO add recuperacion de error sintactico 
                 con ; y }
         */
-        ;
-
-
-
-SENTENCE: FUNCTION    { $$ = $1; }
-        | PRINT       { $$ = $1; } 
-        | DECLARATION { $$ = $1; }
-        | ASSIGNMENT  { $$ = $1; }
         ;
 
 BLOCK:    llave_izq SENTENCES llave_der { $$ = new Block($2); }
@@ -185,6 +186,16 @@ FUNCTION_SENTENCES: FUNCTION_SENTENCE FUNCTION_SENTENCES   { }
                 ;
     
 FUNCTION_SENTENCE: PRINT    
+                { 
+                        stack = eval('$$');
+                        for(var i = stack.length-2;i > 0; i--){
+                                if(stack[i] === '{' && stack[i-1] instanceof Function){
+                                        stack[i-1].addInstruction(stack[stack.length -1]);
+                                        break;
+                                }
+                        }
+                }
+                | GRAPH_TS
                 { 
                         stack = eval('$$');
                         for(var i = stack.length-2;i > 0; i--){
@@ -240,13 +251,12 @@ TYPE: void          { $$ = new Type(EnumType.VOID,""); }
     | identificador { $$ = new Type(EnumType.TYPE,$1); }
     ;
 
-/* TODO native functions
- console.log 
- graficar_ts
-*/
-PRINT: print par_izq E par_der punto_y_coma { $$ = new Print(this._$.first_line,this._$.first_column,$3); }
+PRINT: print par_izq E par_der PUNTO_Y_COMA { $$ = new Print(this._$.first_line,this._$.first_column,$3); }
     ;
-        
+
+GRAPH_TS: graficar_ts par_izq par_der PUNTO_Y_COMA { console.log("Si llego"); $$ = new GraphTs(this._$.first_line,this.$.first_column); } 
+        ;
+
 DECLARATION: TYPE_DECLARATION  L_ID TYPE_VARIABLE PUNTO_Y_COMA                         { $$ = new Declaration(this._$.first_line,this._$.first_column,$1,$2,$3,""); }
         |    TYPE_DECLARATION  L_ID TYPE_VARIABLE '=' E PUNTO_Y_COMA                   { $$ = new Declaration(this._$.first_line,this._$.first_column,$1,$2,$3,$5); }
         |    TYPE_DECLARATION  L_ID TYPE_VARIABLE L_DIMENSION PUNTO_Y_COMA             { $$ = new DeclarationArray(this._$.first_line,this._$.first_column,$1,$2,$3,$4,""); }
