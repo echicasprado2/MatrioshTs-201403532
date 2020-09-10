@@ -22,6 +22,7 @@ class AssignmentArray extends Instruction {
         /* TODO tengo que obtener todos los accesos y poner la expresion
         al analizar se ve que es lo mismo de la asignacion normal.
          */
+        // console.log(`asignacion de array id: ${this.listAccess}`);
         for(var i = 0;i < this.listAccess.length;i++){
             this.translatedCode += (i == 0) ? this.listAccess[i].getTranslated() : "." + this.listAccess[i].getTranslated(); 
         }

@@ -33,7 +33,12 @@ class AccessArray extends Expresion {
         this.translatedCode += `[${this.value[i].getTranslated()}]`;
       }
     }
-    return this.translatedCode;
+
+    if (this.parentesis) {
+      return `(${this.translatedCode})`;
+    } else {
+      return this.translatedCode;
+    }
   }
 
   getGraphsCode() {

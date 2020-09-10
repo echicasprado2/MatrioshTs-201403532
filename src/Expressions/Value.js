@@ -25,7 +25,11 @@ class Value extends Expresion {
      * obtener el codigo para la traduccion
      */
     getTranslated(){
-        return this.translatedCode;
+        if(this.parentesis){
+            return `(${this.translatedCode})`;
+        }else{
+            return this.translatedCode;
+        }
     }
 
     /**

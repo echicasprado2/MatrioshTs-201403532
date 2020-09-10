@@ -11,8 +11,6 @@ class Assignment extends Instruction {
         this.listAccess = access;
         this.value = expresion;
         this.nodeName = TreeGraph.getNumberNode();
-        // TODO no me sale la grafica de asignar
-        // tengo que crear un metodo para generar la grafica
         this.graphcsCode = TreeGraph.generateChieldren(this,"ASIGNACION",);
         this.translatedCode = "";
     }
@@ -23,15 +21,16 @@ class Assignment extends Instruction {
         }
         
         this.translatedCode += " = ";
-
         if(this.value instanceof Array){
+            this.translatedCode += "[";
             for(var i = 0;i < this.value.length;i++){
                 if(i == 0){
                     this.translatedCode += this.value[i].getTranslated();
                 }else{
-                    this.translatedCode += "." + this.value[i].getTranslated();
+                    this.translatedCode += "," + this.value[i].getTranslated();
                 }
             }
+            this.translatedCode += "]";
         }else{
             this.translatedCode += this.value.getTranslated();
         }

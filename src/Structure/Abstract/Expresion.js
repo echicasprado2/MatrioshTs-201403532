@@ -10,6 +10,7 @@ class Expresion extends Node {
         super(line, column);
         this.type = type;
         this.value = value || null;
+        this.parentesis = false;
     }
 
     /**

@@ -248,12 +248,12 @@ PRINT: print par_izq E par_der punto_y_coma { $$ = new Print(this._$.first_line,
     ;
         
 DECLARATION: TYPE_DECLARATION  L_ID TYPE_VARIABLE PUNTO_Y_COMA                         { $$ = new Declaration(this._$.first_line,this._$.first_column,$1,$2,$3,""); }
-        |    TYPE_DECLARATION  L_ID TYPE_VARIABLE '=' E PUNTO_Y_COMA                   { $$ = new Declaration(this._$.first_line,this._$.first_column,$1,$2,$3,$5); console.log($5); }
+        |    TYPE_DECLARATION  L_ID TYPE_VARIABLE '=' E PUNTO_Y_COMA                   { $$ = new Declaration(this._$.first_line,this._$.first_column,$1,$2,$3,$5); }
         |    TYPE_DECLARATION  L_ID TYPE_VARIABLE L_DIMENSION PUNTO_Y_COMA             { $$ = new DeclarationArray(this._$.first_line,this._$.first_column,$1,$2,$3,$4,""); }
         |    TYPE_DECLARATION  L_ID TYPE_VARIABLE L_DIMENSION '=' L_ARRAY PUNTO_Y_COMA { $$ = new DeclarationArray(this._$.first_line,this._$.first_column,$1,$2,$3,$4,new Value(new Type(EnumType.ARRAY,""),$6)); }
         ;
 
-L_ARRAY: L_ARRAY coma cor_izq E_ARRAY cor_der { $$ = $1; $$.push($3); }
+L_ARRAY: L_ARRAY coma cor_izq L_E cor_der { $$ = $1; $$.push($3); }
         | cor_izq L_E cor_der        { $$ = []; $$.push($2); }
         ;
 
@@ -275,6 +275,11 @@ L_DIMENSION: L_DIMENSION cor_izq cor_der { $$ = $1 + 1; }
 
 ASSIGNMENT: ID_ASSIGNMENT '=' E PUNTO_Y_COMA 
         { 
+                // if( $3 instanceof Array){
+                //         $$ = new AssignmentArray(this._$.first_line,this.$.first_column,$1,$3);
+                // }else{
+                //         $$ = new Assignment(this._$.first_line,this.$.first_column,$1,$3); 
+                // }
                 for(var i = 0; i < $1.length;i++){
                         if($1[i] instanceof AccessArray){
                                 $$ = new AssignmentArray(this._$.first_line,this.$.first_column,$1,$3);
@@ -328,26 +333,37 @@ E   : E '+'   E          { $$ = new Arithmetic(this._$.first_line,this._$.first_
     | val_verdadero      { $$ = new Value(new Type(EnumType.BOOLEAN,""),$1); }
     | val_falso          { $$ = new Value(new Type(EnumType.BOOLEAN,""),$1); }
     | val_nulo           { $$ = new Value(new Type(EnumType.NULL,""),$1); }
-    | par_izq E par_der  { $2.translatedCode = "("+ $2.translatedCode +")"; $$ = $2; }
-    | cor_izq L_E cor_der  { $$ = $2; }
+    | par_izq E par_der  { $$ = $2; $$.parentesis = true; }
+    | cor_izq L_E cor_der{ $$ = $2; }
     // TODO add ternario
-    | ACCESS               { $$ = $1; }
+    | ACCESS POST_FIXED { $$ = new Unary(this._$.first_line,this._$.first_column,$2,new Access(this._$.first_line,this._$.first_column,$1)); }
+    | ACCESS punto pop par_izq par_der
+    | ACCESS punto length par_izq par_der
+    | ACCESS punto push par_izq E par_der
+    | ACCESS               { $$ = new Access(this._$.first_line,this._$.first_column,$1); }//aqui tengo que poner un objecto encargado de crear el acceso a id o array
     ;
 
 
 /* TODO make access to call function with params and not params
 */
-ACCESS: ACCESS punto identificador                       { $$ = $1; $$.push(new Id(this._$.first_line,this._$.first_column,$3)); }
-        | ACCESS punto identificador cor_izq E cor_der   {/* METODOS PARA  */}
-        | ACCESS punto identificador par_izq par_der     {/* METODOS PARA  */}
-        | ACCESS punto identificador par_izq L_E par_der {/* METODOS PARA  */}
-        | ACCESS punto identificador POST_FIXED          { $$ = $1; $$.push(new Unary(this._$.first_line,this._$.first_column,$5,$3)); }
-        | identificador                                  { $$ = []; $$.push(new Id(this._$.first_line,this._$.first_column,$1)); }
-        | identificador POST_FIXED                       { $$ = []; $$.push(new Unary(this._$.first_line,this._$.first_column,$3,new Id(this._$.first_line,this._$.first_column,$1))); }
-        | identificador cor_izq E cor_der                { $$ = []; }
-        | identificador cor_izq E cor_der POST_FIXED     { $$ = []; }
-        | identificador par_izq par_der                  { $$ = []; }
-        | identificador par_izq L_E par_der              { $$ = []; }
+        //METODOS DE ARRAYS
+// ACCESS:   ACCESS punto pop par_izq par_der                       { $$ = $1; $$.push(new ArrayFunction(this._$.first_line,this._$.first_column,new TypeArrayMethod(EnumTypeArrayMethod.POP),$1,[])); }
+//         | ACCESS punto length par_izq par_der                    { $$ = $1; $$.push(new ArrayFunction(this._$.first_line,this._$.first_column,new TypeArrayMethod(EnumTypeArrayMethod.LENGTH),$1,[])); }
+//         | ACCESS punto push par_izq E par_der                    { $$ = $1; $$.push(new ArrayFunction(this._$.first_line,this._$.first_column,new TypeArrayMethod(EnumTypeArrayMethod.PUSH),$1,$5)); }
+ACCESS: ACCESS punto identificador                             { $$ = $1; $$.push(new Id(this._$.first_line,this._$.first_column,$3)); }
+        // | ACCESS punto identificador POST_FIXED                  { $$ = $1; $$.push(new Unary(this._$.first_line,this._$.first_column,$5,$3)); }
+        | ACCESS punto identificador ACCESS_DIMENSION            { $$ = $1; $$.push(new AccessArray(this._$.first_line,this._$.first_column,$3,$4)); }
+        // | ACCESS punto identificador ACCESS_DIMENSION POST_FIXED { $$ = $1; $$.push(new Unary(this._$.first_line,this._$.first_column,$5,new AccessArray(this._$.first_line,this._$.first_column,$3,$4))); }
+        | ACCESS punto identificador par_izq par_der             { $$ = $1; $$.push(new CallFunction(this._$.first_line,this._$.first_column,$3,[])); }
+        | ACCESS punto identificador par_izq L_E par_der         { $$ = $1; $$.push(new CallFunction(this._$.first_line,this._$.first_column,$3,$5)); }
+        //SIMPLES
+        | identificador                                          { $$ = []; $$.push(new Id(this._$.first_line,this._$.first_column,$1)); }
+        // | identificador POST_FIXED                               { $$ = []; $$.push(new Unary(this._$.first_line,this._$.first_column,$2,new Id(this._$.first_line,this._$.first_column,$1))); }
+        | identificador ACCESS_DIMENSION                         { $$ = []; $$.push(new AccessArray(this._$.first_line,this._$.first_column,$1,$2)); }
+        // | identificador ACCESS_DIMENSION POST_FIXED              { $$ = []; $$.push(new Unary(this._$.first_line,this._$.first_column,$3, new AccessArray(this._$.first_line,this._$.first_column,$1,$2))); }
+        | identificador par_izq par_der                          { $$ = []; $$.push(new CallFunction(this._$.first_line,this._$.first_column,$1,[])); }
+        | identificador par_izq L_E par_der                      { $$ = []; $$.push(new CallFunction(this._$.first_line,this._$.first_column,$1,$3)); }
+        
         ;
 
 POST_FIXED: '--' { $$ = new OperationType(EnumOperationType.MINUS_MINUS); }

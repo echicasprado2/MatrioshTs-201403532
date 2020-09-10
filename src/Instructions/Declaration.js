@@ -38,7 +38,6 @@ class Declaration extends Instruction {
 
         if(this.value != ""){
             if(this.value instanceof Array){
-                console.log(this.value);
                 for(var i =0;i< this.value.length;i++){
                     if(i == 0){
                         this.translatedCode += " = " + this.value[i].getTranslated();

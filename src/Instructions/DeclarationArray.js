@@ -47,9 +47,9 @@ class DeclarationArray extends Instruction {
             if(valueArray[i] instanceof Array){
                 cadena += this.makeArray(valueArray[i]);
             }else if(i == 0){
-                cadena += valueArray[i].value.toString();
+                cadena += valueArray[i].getTranslated();
             }else{
-                cadena += "," + valueArray[i].value.toString();
+                cadena += "," + valueArray[i].getTranslated();
             }
         }
         return cadena + "]";

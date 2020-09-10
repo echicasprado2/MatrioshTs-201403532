@@ -16,27 +16,20 @@
     /**
      * obtener el codigo para la traduccion
      */
-    getTranslated(){
-
-        console.log(this.expresion);
-
+    getTranslated(){    
         if(this.operationType == EnumOperationType.PLUS_PLUS || this.operationType == EnumOperationType.MINUS_MINUS){
-            
-            for(var i = 0;i < this.expresion.length;i++){
-                this.translatedCode += (i == 0) ? this.expresion[i].getTranslated() : "." + this.expresion[i].getTranslated(); 
-            }
-            this.translatedCode += this.operationType.toString();
-
+          this.translatedCode += this.expresion.getTranslated();
+          this.translatedCode += this.operationType.toString();
         }else{
-
             this.translatedCode = this.operationType.toString();
-
-            for(var i = 0;i < this.expresion.length;i++){
-                this.translatedCode += (i == 0) ? this.expresion[i].getTranslated() : "." + this.expresion[i].getTranslated(); 
-            }
+            this.translatedCode += this.expresion.getTranslated();
         }
 
-        return this.translatedCode;
+        if(this.parentesis){
+            return `(${this.translatedCode})`;
+        }else{
+            return this.translatedCode;
+        }
     }
 
     /**

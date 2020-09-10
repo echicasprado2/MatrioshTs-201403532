@@ -14,17 +14,15 @@ class Arithmetic extends Expresion {
    * obtener el codigo para la traduccion
    */
   getTranslated() {
-    for (var i = 0; i < this.expresion1.length; i++) {
-        this.translatedCode += (i == 0) ? this.expresion1[i].getTranslated() : `.${this.expresion1[i].getTranslated()}`;
-    }
-
+    this.translatedCode += this.expresion1.getTranslated();
     this.translatedCode += ` ${this.operationType.toString()} `;
-
-    for (var i = 0; i < this.expresion2.length; i++) {
-        this.translatedCode += (i == 0) ? this.expresion2[i].getTranslated() : `.${this.expresion2[i].getTranslated()}`;
+    this.translatedCode += this.expresion2.getTranslated();
+    
+    if (this.parentesis) {
+      return `(${this.translatedCode})`;
+    } else {
+      return this.translatedCode;
     }
-
-    return this.translatedCode;
   }
 
   /**
