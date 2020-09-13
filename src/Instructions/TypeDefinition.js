@@ -7,7 +7,6 @@ class TypeDefinition extends Instruction {
         this.declarations = declarations;
 
         this.nodeName = TreeGraph.getNumberNode();
-        this.graphcsCode = TreeGraph;
         this.translatedCode = "";
     }
 

@@ -260,15 +260,19 @@ GRAPH_TS: graficar_ts par_izq par_der PUNTO_Y_COMA { console.log("Si llego"); $$
 
 DECLARATION: TYPE_DECLARATION  L_ID TYPE_VARIABLE PUNTO_Y_COMA                         { $$ = new Declaration(this._$.first_line,this._$.first_column,$1,$2,$3,""); }
         |    TYPE_DECLARATION  L_ID TYPE_VARIABLE '=' E PUNTO_Y_COMA                   { $$ = new Declaration(this._$.first_line,this._$.first_column,$1,$2,$3,$5); }
-        //|    TYPE_DECLARATION  L_ID TYPE_VARIABLE '=' llave_izq llave_der PUNTO_Y_COMA { $$ = new Declaration(this._$.first_line,this._$.first_column,$1,$2,$3,$5); } //TODO terminar de implentar
         |    TYPE_DECLARATION  L_ID TYPE_VARIABLE L_DIMENSION PUNTO_Y_COMA             { $$ = new DeclarationArray(this._$.first_line,this._$.first_column,$1,$2,$3,$4,""); }
         |    TYPE_DECLARATION  L_ID TYPE_VARIABLE L_DIMENSION '=' L_ARRAY PUNTO_Y_COMA { $$ = new DeclarationArray(this._$.first_line,this._$.first_column,$1,$2,$3,$4,new Value(new Type(EnumType.ARRAY,""),$6)); }
+        |    TYPE_DECLARATION  L_ID TYPE_VARIABLE '=' llave_izq L_E_TYPE llave_der PUNTO_Y_COMA { $$ = new DeclarationTypes(this._$.first_line,this._$.first_column,$1,$2,$3,$6); }
+        // TODO add arrays of types
         ;
 
-//TODO terminar de implementar
-TYPE_VALUES: TYPE_VALUES coma identificador dos_puntos E {}
-        | identificador dos_puntos E                     {}
-        ;    
+L_E_TYPE: L_E_TYPE coma E_TYPE { $$ = $1; $$.push($3); }
+        | E_TYPE               { $$ = []; $$.push($1); }
+        ;
+
+E_TYPE: identificador dos_puntos E                              { $$ = new AttributeTypeAssignment(this._$.first_line,this._$.first_column,$1,$3); }
+        | identificador dos_puntos llave_izq L_E_TYPE llave_der { $$ = new TypeAssignment(this._$.first_line,this._$.first_column,$1,$4);}
+        ;   
 
 TYPES: type identificador '=' llave_izq ATTRIBUTES_TYPE llave_der PUNTO_Y_COMA { $$ = new TypeDefinition(this._$.first_line,this._$.first_column,$2,$5); }
         ;
@@ -277,8 +281,8 @@ ATTRIBUTES_TYPE: ATTRIBUTES_TYPE ATTRIBUTE_TYPE { $$ = $1; $$.push($2); }
                 | ATTRIBUTE_TYPE                { $$ = []; $$.push($1); }
                 ; 
 
-ATTRIBUTE_TYPE: identificador dos_puntos TYPE END_ATTRIBUTE_TYPE               { $$ = new TypeDeclaration(this._$.first_line,this._$.first_column,$1,$3); }
-                | identificador dos_puntos TYPE L_DIMENSION END_ATTRIBUTE_TYPE { $$ = new TypeDeclarationArray(this._$.first_line,this._$.first_column,$1,$3,$4); }
+ATTRIBUTE_TYPE: identificador dos_puntos TYPE END_ATTRIBUTE_TYPE               { $$ = new TypeAttributeDefinition(this._$.first_line,this._$.first_column,$1,$3); }
+                | identificador dos_puntos TYPE L_DIMENSION END_ATTRIBUTE_TYPE { $$ = new TypeAttributeArrayDefinition(this._$.first_line,this._$.first_column,$1,$3,$4); }
                 ;
 
 END_ATTRIBUTE_TYPE: coma        { $$ = $1; }
@@ -329,8 +333,6 @@ ACCESS_DIMENSION: ACCESS_DIMENSION cor_izq E cor_der { $$ = $1; $$.push($3); }
                 | cor_izq E cor_der                  { $$ = []; $$.push($2); }
                 ;
 
-// TODO make type
-
 /* TODO make sentences of control
         if - else
         while
@@ -368,7 +370,8 @@ E   : E '+'   E          { $$ = new Arithmetic(this._$.first_line,this._$.first_
     | val_falso          { $$ = new Value(new Type(EnumType.BOOLEAN,""),$1); }
     | val_nulo           { $$ = new Value(new Type(EnumType.NULL,""),$1); }
     | par_izq E par_der  { $$ = $2; $$.parentesis = true; }
-    | cor_izq L_E cor_der{ $$ = $2; }
+    | cor_izq L_E cor_der { $$ = $2; }
+//     | llave_izq L_E llave_der { $$ = $2; }
     | E '?' E dos_puntos E                { $$ = new Ternary(this._$.first_line,this._$.first_column,$1,$3,$5); }
     | ACCESS POST_FIXED                   { $$ = new Unary(this._$.first_line,this._$.first_column,$2,new Access(this._$.first_line,this._$.first_column,$1)); }
     | ACCESS punto pop par_izq par_der    { $$ = new ArrayFunction(this._$.first_line,this._$.first_column,new TypeArrayMethod(EnumTypeArrayMethod.POP),new Access(this._$.first_line,this._$.first_column,$1),""); }

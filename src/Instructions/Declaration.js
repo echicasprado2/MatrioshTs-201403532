@@ -9,14 +9,15 @@ class Declaration extends Instruction {
      */
     constructor(linea, column, typeDeclaration, ids, type, value){
         super(linea,column);
+        
         this.typeDeclaration = typeDeclaration;
         this.ids  = ids;
         this.type = type;
         this.value = value;
+        
         this.nodeName = TreeGraph.getNumberNode();
-        this.graphcsCode = TreeGraph.getCodeOfDeclaration(this,this.typeDeclaration,this.ids,this.type,this.value);
+        //this.graphcsCode = TreeGraph.getCodeOfDeclaration(this,this.typeDeclaration,this.ids,this.type,this.value);
         this.translatedCode = "";
-        // console.log(this.value);
     }
 
     getTranslated(){

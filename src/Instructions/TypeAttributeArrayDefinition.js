@@ -1,10 +1,11 @@
-class TypeDeclaration extends Instruction {
+class TypeAttributeArrayDefinition extends Instruction {
     
-    constructor(linea,column,identify,type){
+    constructor(linea,column,identify,type,dimentions){
         super(linea,column);
 
         this.identify = identify;
         this.type = type;
+        this.dimentions = dimentions;
 
         this.nodeName = TreeGraph.getNumberNode();
         this.graphcsCode = TreeGraph;
@@ -12,12 +13,6 @@ class TypeDeclaration extends Instruction {
     }
 
     getTranslated(){
-        this.translatedCode += `${this.identify} `
-
-        if(this.type.enumType != EnumType.NULL){
-            this.translatedCode += `: ${this.type.toString()}`;
-        }
-
         return this.translatedCode;
     }
 
