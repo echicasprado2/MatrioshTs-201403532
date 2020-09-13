@@ -1,4 +1,13 @@
 class Arithmetic extends Expresion {
+
+  /**
+   * 
+   * @param {*} linea 
+   * @param {*} column 
+   * @param {*} operationType 
+   * @param {*} expresion1 
+   * @param {*} expresion2 
+   */
   constructor(linea, column, operationType, expresion1, expresion2) {
     super(linea, column);
     this.operationType = operationType;

@@ -153,6 +153,7 @@ SENTENCE: FUNCTION    { $$ = $1; }
         | GRAPH_TS    { $$ = $1; } 
         | DECLARATION { $$ = $1; }
         | ASSIGNMENT  { $$ = $1; }
+        | TYPES       { $$ = $1; }
         /*TODO add
         break
         continue
@@ -259,9 +260,31 @@ GRAPH_TS: graficar_ts par_izq par_der PUNTO_Y_COMA { console.log("Si llego"); $$
 
 DECLARATION: TYPE_DECLARATION  L_ID TYPE_VARIABLE PUNTO_Y_COMA                         { $$ = new Declaration(this._$.first_line,this._$.first_column,$1,$2,$3,""); }
         |    TYPE_DECLARATION  L_ID TYPE_VARIABLE '=' E PUNTO_Y_COMA                   { $$ = new Declaration(this._$.first_line,this._$.first_column,$1,$2,$3,$5); }
+        //|    TYPE_DECLARATION  L_ID TYPE_VARIABLE '=' llave_izq llave_der PUNTO_Y_COMA { $$ = new Declaration(this._$.first_line,this._$.first_column,$1,$2,$3,$5); } //TODO terminar de implentar
         |    TYPE_DECLARATION  L_ID TYPE_VARIABLE L_DIMENSION PUNTO_Y_COMA             { $$ = new DeclarationArray(this._$.first_line,this._$.first_column,$1,$2,$3,$4,""); }
         |    TYPE_DECLARATION  L_ID TYPE_VARIABLE L_DIMENSION '=' L_ARRAY PUNTO_Y_COMA { $$ = new DeclarationArray(this._$.first_line,this._$.first_column,$1,$2,$3,$4,new Value(new Type(EnumType.ARRAY,""),$6)); }
         ;
+
+//TODO terminar de implementar
+TYPE_VALUES: TYPE_VALUES coma identificador dos_puntos E {}
+        | identificador dos_puntos E                     {}
+        ;    
+
+TYPES: type identificador '=' llave_izq ATTRIBUTES_TYPE llave_der PUNTO_Y_COMA { $$ = new TypeDefinition(this._$.first_line,this._$.first_column,$2,$5); }
+        ;
+
+ATTRIBUTES_TYPE: ATTRIBUTES_TYPE ATTRIBUTE_TYPE { $$ = $1; $$.push($2); }
+                | ATTRIBUTE_TYPE                { $$ = []; $$.push($1); }
+                ; 
+
+ATTRIBUTE_TYPE: identificador dos_puntos TYPE END_ATTRIBUTE_TYPE               { $$ = new TypeDeclaration(this._$.first_line,this._$.first_column,$1,$3); }
+                | identificador dos_puntos TYPE L_DIMENSION END_ATTRIBUTE_TYPE { $$ = new TypeDeclarationArray(this._$.first_line,this._$.first_column,$1,$3,$4); }
+                ;
+
+END_ATTRIBUTE_TYPE: coma        { $$ = $1; }
+                | punto_y_coma  { $$ = $1; }
+                | /* epsilon */ {$$ = ';'; }
+                ;
 
 L_ARRAY: L_ARRAY coma cor_izq L_E cor_der { $$ = $1; $$.push($3); }
         | cor_izq L_E cor_der        { $$ = []; $$.push($2); }
@@ -306,6 +329,8 @@ ACCESS_DIMENSION: ACCESS_DIMENSION cor_izq E cor_der { $$ = $1; $$.push($3); }
                 | cor_izq E cor_der                  { $$ = []; $$.push($2); }
                 ;
 
+// TODO make type
+
 /* TODO make sentences of control
         if - else
         while
@@ -315,6 +340,8 @@ ACCESS_DIMENSION: ACCESS_DIMENSION cor_izq E cor_der { $$ = $1; $$.push($3); }
         for in
         for of
 */
+
+
 
 /* EXPRESIONES */
 E   : E '+'   E          { $$ = new Arithmetic(this._$.first_line,this._$.first_column,new OperationType(EnumOperationType.PLUS),$1,$3); }
