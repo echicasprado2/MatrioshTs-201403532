@@ -148,12 +148,17 @@ SENTENCES: SENTENCES SENTENCE { $$ = $1; $$.push($2); }
 
 
 
-SENTENCE: FUNCTION    { $$ = $1; }
-        | PRINT       { $$ = $1; }
-        | GRAPH_TS    { $$ = $1; } 
-        | DECLARATION { $$ = $1; }
-        | ASSIGNMENT  { $$ = $1; }
-        | TYPES       { $$ = $1; }
+SENTENCE: FUNCTION          { $$ = $1; }
+        | PRINT             { $$ = $1; }
+        | GRAPH_TS          { $$ = $1; } 
+        | DECLARATION       { $$ = $1; }
+        | ASSIGNMENT        { $$ = $1; }
+        | TYPES             { $$ = $1; }
+        | SENTENCE_IF       { $$ = $1; }
+        | SENTENCE_WHILE    { $$ = $1; }
+        | SENTENCE_DO_WHILE { $$ = $1; }
+        | SENTENCE_SWITCH   { $$ = $1; }
+        | SENTENCE_FOR      { $$ = $1; }
         /*TODO add
         break
         continue
@@ -343,7 +348,41 @@ ACCESS_DIMENSION: ACCESS_DIMENSION cor_izq E cor_der { $$ = $1; $$.push($3); }
         for of
 */
 
+SENTENCE_IF: ELSE_IF else BLOCK {}
+        | ELSE_IF               {}
+        ;
 
+ELSE_IF: ELSE_IF else if par_izq E par_der BLOCK {}
+        | if par_izq E par_der Block             {}
+        ;
+
+SENTENCE_WHILE: while par_izq E par_der BLOCK PUNTO_Y_COMA {}
+                ;
+
+SENTENCE_DO_WHILE: do BLOCK while par_izq E par_der punto_y_coma {}
+                ;
+
+SENTENCE_SWITCH: switch par_izq E par_der BLOCK_SWITCH {}
+                ;
+
+BLOCK_SWITCH: llave_izq L_CASE llave_der {}
+        | llave_izq llave_der            {}
+        ;
+
+L_CASE: L_CASE CASE {}
+        | CASE      {}
+        ;
+
+CASE:     case E dos_puntos SENTENCES  {}
+        | case E dos_puntos            {}
+        | default dos_puntos SENTENCES {}
+        | default dos_puntos           {}
+        ;
+
+SENTENCE_FOR: for par_izq TYPE_DECLARATION identificador '=' E punto_y_coma E punto_y_coma E par_der BLOCK {}
+        | for par_izq TYPE_DECLARATION identificador in E par_der BLOCK {}
+        | for par_izq TYPE_DECLARATION identificador of E par_der BLOCK {}
+        ;
 
 /* EXPRESIONES */
 E   : E '+'   E          { $$ = new Arithmetic(this._$.first_line,this._$.first_column,new OperationType(EnumOperationType.PLUS),$1,$3); }
