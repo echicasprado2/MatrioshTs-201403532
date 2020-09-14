@@ -1,19 +1,26 @@
 class Block extends Instruction {
+  
+  /**
+   * 
+   * @param {*} sentences 
+   */
   constructor(sentences) {
     super(0, 0);
+
+    this.sentences = sentences;
+
     this.nodeName = TreeGraph.getNumberNode();
-    this.graphcsCode = TreeGraph.generateChieldren(this, "BLOCK", sentences);
     this.translatedCode = "";
   }
 
   getTranslated() {
-    this.translatedCode = "{";
+    this.translatedCode = "{\n";
 
-    for(var i = 0;i < sentences.length;i++){
-        this.translatedCode += sentences[i].getTranslated();
+    for(var i = 0;i < this.sentences.length;i++){
+        this.translatedCode += `\t${this.sentences[i].getTranslated()}`;
     }
 
-    this.translatedCode = "}"
+    this.translatedCode += "}"
     return this.translatedCode;
   }
 

@@ -1,4 +1,5 @@
 class Declaration extends Instruction {
+    
     /**
      * 
      * @param {*} linea 
@@ -6,6 +7,7 @@ class Declaration extends Instruction {
      * @param {*} typeDeclaration 
      * @param {*} ids 
      * @param {*} type 
+     * @param {*} value 
      */
     constructor(linea, column, typeDeclaration, ids, type, value){
         super(linea,column);
@@ -16,7 +18,6 @@ class Declaration extends Instruction {
         this.value = value;
         
         this.nodeName = TreeGraph.getNumberNode();
-        //this.graphcsCode = TreeGraph.getCodeOfDeclaration(this,this.typeDeclaration,this.ids,this.type,this.value);
         this.translatedCode = "";
     }
 

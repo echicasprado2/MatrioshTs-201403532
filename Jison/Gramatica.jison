@@ -148,27 +148,32 @@ SENTENCES: SENTENCES SENTENCE { $$ = $1; $$.push($2); }
 
 
 
-SENTENCE: FUNCTION          { $$ = $1; }
-        | PRINT             { $$ = $1; }
-        | GRAPH_TS          { $$ = $1; } 
-        | DECLARATION       { $$ = $1; }
-        | ASSIGNMENT        { $$ = $1; }
-        | TYPES             { $$ = $1; }
-        | SENTENCE_IF       { $$ = $1; }
-        | SENTENCE_WHILE    { $$ = $1; }
-        | SENTENCE_DO_WHILE { $$ = $1; }
-        | SENTENCE_SWITCH   { $$ = $1; }
-        | SENTENCE_FOR      { $$ = $1; }
-        /*TODO add
-        break
-        continue
-        return E
-        return 
-        */
-         
-        /*TODO add recuperacion de error sintactico 
-                con ; y }
-        */
+SENTENCE: FUNCTION           { $$ = $1; }
+        | PRINT              { $$ = $1; }
+        | GRAPH_TS           { $$ = $1; } 
+        | DECLARATION        { $$ = $1; }
+        | ASSIGNMENT         { $$ = $1; }
+        | TYPES              { $$ = $1; }
+        | SENTENCE_IF        { $$ = $1; }
+        | SENTENCE_WHILE     { $$ = $1; }
+        | SENTENCE_DO_WHILE  { $$ = $1; }
+        | SENTENCE_SWITCH    { $$ = $1; }
+        | SENTENCE_FOR       { $$ = $1; }
+        | RETURN             { $$ = $1; }
+        | BREAK              { $$ = $1; }
+        | CONITNUE           { $$ = $1; }
+        | error punto_y_coma { $$ = new InstructionError(); }
+        // | error llave_der       { $$ = $1; cosole.log("error recuperacion con }"); }
+        ;
+
+BREAK: break PUNTO_Y_COMA { $$ = new Break(this._$.first_line,this._$.first_column); }
+        ;
+
+CONITNUE: continue PUNTO_Y_COMA { $$ = new Continue(this._$.first_line,this._$.first_column); }
+        ;
+
+RETURN: return PUNTO_Y_COMA                     { $$ = new Return(this._$.first_line,this._$.first_column,""); }
+        | return par_izq E par_der PUNTO_Y_COMA { $$ = new Return(this._$.first_line,this._$.first_column,$3); }
         ;
 
 BLOCK:    llave_izq SENTENCES llave_der { $$ = new Block($2); }
@@ -176,7 +181,7 @@ BLOCK:    llave_izq SENTENCES llave_der { $$ = new Block($2); }
         ;
 
 PUNTO_Y_COMA: punto_y_coma { $$ = ";"; }
-            |              { $$ = ";"; }
+            |/* epsilon */ { $$ = ";"; }
             ;
 
 FUNCTION: FUNCTION_HEAD llave_izq FUNCTION_SENTENCES llave_der { $$ = $1; }
@@ -231,6 +236,86 @@ FUNCTION_SENTENCE: PRINT
                                 }
                         }
                 }
+                | SENTENCE_IF 
+                { 
+                        stack = eval('$$');
+                        for(var i = stack.length-2;i > 0; i--){
+                                if(stack[i] === '{' && stack[i-1] instanceof Function){
+                                        stack[i-1].addInstruction(stack[stack.length -1]);
+                                        break;
+                                }
+                        }
+                }
+                | SENTENCE_WHILE    
+                { 
+                        stack = eval('$$');
+                        for(var i = stack.length-2;i > 0; i--){
+                                if(stack[i] === '{' && stack[i-1] instanceof Function){
+                                        stack[i-1].addInstruction(stack[stack.length -1]);
+                                        break;
+                                }
+                        }
+                }
+                | SENTENCE_DO_WHILE 
+                { 
+                        stack = eval('$$');
+                        for(var i = stack.length-2;i > 0; i--){
+                                if(stack[i] === '{' && stack[i-1] instanceof Function){
+                                        stack[i-1].addInstruction(stack[stack.length -1]);
+                                        break;
+                                }
+                        }
+                }
+                | SENTENCE_SWITCH  
+                { 
+                        stack = eval('$$');
+                        for(var i = stack.length-2;i > 0; i--){
+                                if(stack[i] === '{' && stack[i-1] instanceof Function){
+                                        stack[i-1].addInstruction(stack[stack.length -1]);
+                                        break;
+                                }
+                        }
+                }
+                | SENTENCE_FOR    
+                { 
+                        stack = eval('$$');
+                        for(var i = stack.length-2;i > 0; i--){
+                                if(stack[i] === '{' && stack[i-1] instanceof Function){
+                                        stack[i-1].addInstruction(stack[stack.length -1]);
+                                        break;
+                                }
+                        }
+                }
+                | RETURN         
+                { 
+                        stack = eval('$$');
+                        for(var i = stack.length-2;i > 0; i--){
+                                if(stack[i] === '{' && stack[i-1] instanceof Function){
+                                        stack[i-1].addInstruction(stack[stack.length -1]);
+                                        break;
+                                }
+                        }
+                }
+                | BREAK       
+                { 
+                        stack = eval('$$');
+                        for(var i = stack.length-2;i > 0; i--){
+                                if(stack[i] === '{' && stack[i-1] instanceof Function){
+                                        stack[i-1].addInstruction(stack[stack.length -1]);
+                                        break;
+                                }
+                        }
+                }
+                | CONITNUE  
+                { 
+                        stack = eval('$$');
+                        for(var i = stack.length-2;i > 0; i--){
+                                if(stack[i] === '{' && stack[i-1] instanceof Function){
+                                        stack[i-1].addInstruction(stack[stack.length -1]);
+                                        break;
+                                }
+                        }
+                }
                 | FUNCTION  
                 { 
                         stack = eval('$$');
@@ -240,6 +325,16 @@ FUNCTION_SENTENCE: PRINT
                                         break;
                                 }
                         }       
+                }
+                | error punto_y_coma 
+                { 
+                        stack = eval('$$');
+                        for(var i = stack.length-2;i > 0; i--){
+                                if(stack[i] === '{' && stack[i-1] instanceof Function){
+                                        stack[i-1].addFunction(new InstructionError());
+                                        break;
+                                }
+                        }
                 }
                 ;
 
@@ -338,50 +433,101 @@ ACCESS_DIMENSION: ACCESS_DIMENSION cor_izq E cor_der { $$ = $1; $$.push($3); }
                 | cor_izq E cor_der                  { $$ = []; $$.push($2); }
                 ;
 
-/* TODO make sentences of control
-        if - else
-        while
-        do-while
-        switch - case
-        for 
-        for in
-        for of
-*/
-
-SENTENCE_IF: ELSE_IF else BLOCK {}
-        | ELSE_IF               {}
+SENTENCE_IF: ELSE_IF else BLOCK { $$ = new If(this._$.first_line,this._$.first_column,$1,$3,true); }
+        | ELSE_IF               { $$ = new If(this._$.first_line,this._$.first_column,$1,"",false); }
         ;
 
-ELSE_IF: ELSE_IF else if par_izq E par_der BLOCK {}
-        | if par_izq E par_der Block             {}
+ELSE_IF: ELSE_IF else if par_izq E par_der BLOCK { $$ = $1; $$.push(new BlockIf(this._$.first_line,this._$.first_column,$5,$7,true)); }
+        | if par_izq E par_der BLOCK             { $$ = []; $$.push(new BlockIf(this._$.first_line,this._$.first_column,$3,$5,false)); }
         ;
 
-SENTENCE_WHILE: while par_izq E par_der BLOCK PUNTO_Y_COMA {}
+SENTENCE_WHILE: while par_izq E par_der BLOCK PUNTO_Y_COMA {$$ = new While(this._$.first_line,this._$.first_column,$3,$5); }
                 ;
 
-SENTENCE_DO_WHILE: do BLOCK while par_izq E par_der punto_y_coma {}
+SENTENCE_DO_WHILE: do BLOCK while par_izq E par_der punto_y_coma {$$ = new Do(this._$.first_line,this._$.first_column,$2,$5); }
                 ;
 
-SENTENCE_SWITCH: switch par_izq E par_der BLOCK_SWITCH {}
+SENTENCE_SWITCH: switch par_izq E par_der BLOCK_SWITCH { $$ = new Switch(this._$.first_line,this._$.first_column,$3,$5); }
                 ;
 
-BLOCK_SWITCH: llave_izq L_CASE llave_der {}
-        | llave_izq llave_der            {}
+BLOCK_SWITCH: llave_izq L_CASE llave_der { $$ = $2; }
+        | llave_izq llave_der            { $$ = []; }
         ;
 
-L_CASE: L_CASE CASE {}
-        | CASE      {}
+L_CASE: L_CASE CASE { $$ = $1; $$.push($2); }
+        | CASE      { $$ = []; $$.push($1); }
         ;
 
-CASE:     case E dos_puntos SENTENCES  {}
-        | case E dos_puntos            {}
-        | default dos_puntos SENTENCES {}
-        | default dos_puntos           {}
+CASE:     case E dos_puntos SENTENCES  { $$ = new CaseSwitch(this._$.first_line,this._$.first_column,$2,new Block($4),true,true); }
+        | case E dos_puntos            { $$ = new CaseSwitch(this._$.first_line,this._$.first_column,$2,new Block([]),true,false); }
+        | default dos_puntos SENTENCES { $$ = new CaseSwitch(this._$.first_line,this._$.first_column,"",new Block($3),false,true); }
+        | default dos_puntos           { $$ = new CaseSwitch(this._$.first_line,this._$.first_column,"",new Block([]),false,false); }
         ;
 
-SENTENCE_FOR: for par_izq TYPE_DECLARATION identificador '=' E punto_y_coma E punto_y_coma E par_der BLOCK {}
-        | for par_izq TYPE_DECLARATION identificador in E par_der BLOCK {}
-        | for par_izq TYPE_DECLARATION identificador of E par_der BLOCK {}
+SENTENCE_FOR: for par_izq TYPE_DECLARATION L_ID '=' E punto_y_coma E punto_y_coma E par_der BLOCK 
+        { $$ = new For(
+                this._$.first_line,
+                this._$.first_column,
+                new Declaration(
+                        this._$.first_line,
+                        this._$.first_column,
+                        $3,
+                        $4,
+                        new Type(EnumType.NULL,""),
+                        $6),
+                $8,
+                $10,
+                $12); 
+        }
+        | for par_izq ID_ASSIGNMENT '=' E punto_y_coma E punto_y_coma E par_der BLOCK 
+        { $$ = new For(
+                this._$.first_line,
+                this._$.first_column,
+                new Assignment(this._$.first_line,
+                        this.$.first_column,
+                        $3,
+                        $5),
+                $7,
+                $9,
+                $11); 
+        }
+        | for par_izq identificador punto_y_coma E punto_y_coma E par_der BLOCK
+        { $$ = new For(
+                this._$.first_line,
+                this._$.first_column,
+                new Id(this._$.first_line,this._$.first_column,$3),
+                $5,
+                $7,
+                $9); 
+        }
+        | for par_izq TYPE_DECLARATION L_ID in E par_der BLOCK 
+        { $$ = new ForIn(
+                this._$.first_line,
+                this._$.first_column,
+                new Declaration(
+                        this._$.first_line,
+                        this._$.first_column,
+                        $3,
+                        $4,
+                        new Type(EnumType.NULL,""),
+                        ""),
+                $6,
+                $8);
+        }
+        | for par_izq TYPE_DECLARATION L_ID of E par_der BLOCK 
+        { $$ = new ForOf(
+                this._$.first_line,
+                this._$.first_column,
+                new Declaration(
+                        this._$.first_line,
+                        this._$.first_column,
+                        $3,
+                        $4,
+                        new Type(EnumType.NULL,""),
+                        ""),
+                $6,
+                $8);
+        }
         ;
 
 /* EXPRESIONES */
@@ -397,10 +543,8 @@ E   : E '+'   E          { $$ = new Arithmetic(this._$.first_line,this._$.first_
     | '-' E %prec UMENOS { $$ = new Unary(this._$.first_line, this._$.first_column, new OperationType(EnumOperationType.NEGATIVE), $2);}
     | E '!='  E          { $$ = new Relational(this._$.first_line,this._$.first_column,new OperationType(EnumOperationType.DIFFERENT_THAN),$1,$3); }
     | E '=='  E          { $$ = new Relational(this._$.first_line,this._$.first_column,new OperationType(EnumOperationType.LIKE_THAN),$1,$3); }
-    
     | E '>='  E          { $$ = new Relational(this._$.first_line,this._$.first_column,new OperationType(EnumOperationType.MORE_EQUAL_TO),$1,$3); }
     | E '>'   E          { $$ = new Relational(this._$.first_line,this._$.first_column,new OperationType(EnumOperationType.MORE_THAN),$1,$3); }
-    
     | E '<='  E          { $$ = new Relational(this._$.first_line,this._$.first_column,new OperationType(EnumOperationType.LESS_EQUAL_TO),$1,$3); }
     | E '<'   E          { $$ = new Relational(this._$.first_line,this._$.first_column,new OperationType(EnumOperationType.LESS_THAN),$1,$3); }
     | val_number         { $$ = new Value(new Type(EnumType.NUMBER,""),$1); }
@@ -410,7 +554,6 @@ E   : E '+'   E          { $$ = new Arithmetic(this._$.first_line,this._$.first_
     | val_nulo           { $$ = new Value(new Type(EnumType.NULL,""),$1); }
     | par_izq E par_der  { $$ = $2; $$.parentesis = true; }
     | cor_izq L_E cor_der { $$ = $2; }
-//     | llave_izq L_E llave_der { $$ = $2; }
     | E '?' E dos_puntos E                { $$ = new Ternary(this._$.first_line,this._$.first_column,$1,$3,$5); }
     | ACCESS POST_FIXED                   { $$ = new Unary(this._$.first_line,this._$.first_column,$2,new Access(this._$.first_line,this._$.first_column,$1)); }
     | ACCESS punto pop par_izq par_der    { $$ = new ArrayFunction(this._$.first_line,this._$.first_column,new TypeArrayMethod(EnumTypeArrayMethod.POP),new Access(this._$.first_line,this._$.first_column,$1),""); }

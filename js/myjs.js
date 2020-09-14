@@ -76,8 +76,17 @@ var consoleShow = CodeMirror.fromTextArea(document.getElementById('textarea-cons
     var myTranslated = getSalida();//creo un objeto donde mostrare la salida traducida de mi entrada
     myTranslated.setValue(result.getTranslated());//inserto el codigo traduccido
     
+  });
+
+  var execuse = document.getElementById('ejecutar');
+  execuse.addEventListener('click',(e)=>{
+    //TODO implement
+  });
+
+  //TODO make show translated tree
+  function showTranslatedTree(){
     //genera el arbol y da error
-    // var element = document.querySelector("myGraph");
+    // var element = document.querySelector("myGraphTranslated");
     // var insertSvg = function(svgCode){
     //   element.innerHTML = svgCode;
     // };
@@ -85,33 +94,77 @@ var consoleShow = CodeMirror.fromTextArea(document.getElementById('textarea-cons
     // var grapDefinition = `graph TD;\n ${treeCode}`;
     // console.log(grapDefinition);
     // var graph = mermaid.render('myGraph',grapDefinition,insertSvg);
-    
-    
-  });
+  }
 
+  //TODO make show execute tree
+  function showExecuseTree(){
+    //genera el arbol y da error
+    // var element = document.querySelector("myGraphExecuse");
+    // var insertSvg = function(svgCode){
+    //   element.innerHTML = svgCode;
+    // };
+    
+    // var grapDefinition = `graph TD;\n ${treeCode}`;
+    // console.log(grapDefinition);
+    // var graph = mermaid.render('myGraph',grapDefinition,insertSvg);
+  }
 
+//TODO make show translated table
   function showTableTranslatedSymbols(){
     /* FIXME buscar una forma de limpiar el tbody de la tabla o 
     * crear la tabla cada con html a la medida y luego hacer un innerhtml en el div 
     */
-    var table = document.getElementById('tableTranslated').getElementsByTagName('tbody')[0];
+    var html = "<h1>SI FUNCIONA</h1>";
     var nodes = TableReport.getNodesTranslated();
 
-    for(var i=0;i<nodes.length;i++){
-      var item = nodes[i];
-      var newRow = table.insertRow(table.rows.length);
-      var idCell = newRow.insertCell(0);
-      var nameCell = newRow.insertCell(1);
-      var environmentCell = newRow.insertCell(2);
+    // <h2>Tabla de simbolos traduccion</h2>
+    //                 <table class="table table-dark" id="tableTranslated">
+    //                     <thead class="thead-light">
+    //                         <tr>
+    //                             <th scope="col">#</th>
+    //                             <th scope="col">IDENTIFICADOR</th>
+    //                             <th scope="col">ENTORNO</th>
+    //                         </tr>
+    //                     </thead>
+    //                     <tbody>
+    //                     </tbody>
+    //                 </table>
+
+    // for(var i=0;i<nodes.length;i++){
+    //   var item = nodes[i];
+    //   var newRow = table.insertRow(table.rows.length);
+    //   var idCell = newRow.insertCell(0);
+    //   var nameCell = newRow.insertCell(1);
+    //   var environmentCell = newRow.insertCell(2);
       
-      var textIdCell = document.createTextNode((i+1).toString());
-      var textNameCell = document.createTextNode(item.name);
-      var textEnvironmentCell = document.createTextNode(item.typeEnviroment);
+    //   var textIdCell = document.createTextNode((i+1).toString());
+    //   var textNameCell = document.createTextNode(item.name);
+    //   var textEnvironmentCell = document.createTextNode(item.typeEnviroment);
 
-      idCell.appendChild(textIdCell);
-      nameCell.appendChild(textNameCell);
-      environmentCell.appendChild(textEnvironmentCell);
-    }
-
-
+    //   idCell.appendChild(textIdCell);
+    //   nameCell.appendChild(textNameCell);
+    //   environmentCell.appendChild(textEnvironmentCell);
+    // }
+    document.getElementById('tableTranslated').innerHTML = html;
   };
+
+//TODO make show execuse table
+  function showTableExecuse(){
+    // <h2>Tabla de simbolos ejecucion</h2>
+    //                 <table class="table table-dark" id="tableExecuse">
+    //                     <thead  class="thead-light">
+    //                         <tr>
+    //                             <th scope="col">#</th>
+    //                             <th scope="col">IDENTIFICADOR</th>
+    //                             <th scope="col">ENTORNO</th>
+    //                             <th scope="col">Valor</th>
+    //                             <th scope="col">Linea</th>
+    //                             <th scope="col">Columna</th>
+    //                         </tr>
+    //                     </thead>
+    //                     <tbody>
+    //                     </tbody>
+    //                 </table>
+    var html = "";
+    document.getElementById('tableExecuse').innerHTML = html;
+  }

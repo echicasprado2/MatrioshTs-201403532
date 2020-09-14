@@ -117,51 +117,32 @@ let arr4:number[];</textarea>
         </div>
         <br>
         <br>
-        <div>
-            <h2>Arbol</h2>
-            <div id="myGraph">
+        <div id="showTranslatedTree">
+            <h2>Arbol Traduccion</h2>
+            <div id="myGraphTranslated">
             </div>
         </div>
         <br>
         <br>
-        <div class="container" id="showTableTranslated">
+        <div class="container" >
             <div class="row justify-content-md-center">
-                <div class="col col-sm-12 col-md-10 col-lg-10 col-xl-10">
-                    <h2>Tabla de simbolos traduccion</h2>
-                    <table class="table table-dark" id="tableTranslated">
-                        <thead class="thead-light">
-                            <tr>
-                                <th scope="col">#</th>
-                                <th scope="col">IDENTIFICADOR</th>
-                                <th scope="col">ENTORNO</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                        </tbody>
-                    </table>
+                <div class="col col-sm-12 col-md-10 col-lg-10 col-xl-10" id="tableTranslated">
                 </div>
+            </div>
+        </div>
+        <br>
+        <br>
+        <div id="showExecuseTree">
+            <h2>Arbol Ejecucion</h2>
+            <div id="myGraphExecuse">
             </div>
         </div>
         <br>
         <br>
         <div class="container" id="showTableExecute">
             <div class="row justify-content-md-center">
-                <div class="col col-sm-12 col-md-10 col-lg-10 col-xl-10">
-                    <h2>Tabla de simbolos ejecucion</h2>
-                    <table class="table table-dark" id="tableExecuse">
-                        <thead  class="thead-light">
-                            <tr>
-                                <th scope="col">#</th>
-                                <th scope="col">IDENTIFICADOR</th>
-                                <th scope="col">ENTORNO</th>
-                                <th scope="col">Valor</th>
-                                <th scope="col">Linea</th>
-                                <th scope="col">Columna</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                        </tbody>
-                    </table>
+                <div class="col col-sm-12 col-md-10 col-lg-10 col-xl-10" id="tableExecuse">
+                    
                 </div>
             </div>
         </div>
@@ -197,6 +178,7 @@ let arr4:number[];</textarea>
     <script src="src/Structure/Utils/Type.js"></script>
     <script src="src/Structure/Utils/TableReport.js"></script>
     <script src="src/Structure/Utils/TypeArrayMethod.js"></script>
+    <script src="src/Structure/Utils/ErrorList.js"></script>
 
     <!-- ABSTRACT -->   
     <script src="src/Structure/Abstract/Node.js"></script>
@@ -237,6 +219,19 @@ let arr4:number[];</textarea>
     <script src="src/Instructions/DeclarationTypes.js"></script>
     <script src="src/Instructions/AttributeTypeAssignment.js"></script>
     <script src="src/Instructions/TypeAssignment.js"></script>
+    <script src="src/Instructions/BlockIf.js"></script>
+    <script src="src/Instructions/If.js"></script>
+    <script src="src/Instructions/While.js"></script>
+    <script src="src/Instructions/Do.js"></script>
+    <script src="src/Instructions/CaseSwitch.js"></script>
+    <script src="src/Instructions/Switch.js"></script>
+    <script src="src/Instructions/For.js"></script>
+    <script src="src/Instructions/ForIn.js"></script>
+    <script src="src/Instructions/ForOf.js"></script>
+    <script src="src/Instructions/Return.js"></script>
+    <script src="src/Instructions/Break.js"></script>
+    <script src="src/Instructions/Continue.js"></script>
+    <script src="src/Instructions/InstructionError.js"></script>
 
     <!-- AST -->
     <script src="src/AST.js"></script>
