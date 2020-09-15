@@ -16,8 +16,8 @@ class Value extends Expresion {
         else {
             this.esArray = false;
         }
+        
         this.nodeName = TreeGraph.getNumberNode();
-        this.graphcsCode = TreeGraph.generateLeafNodeExpresion(this);
         this.translatedCode = value.toString();
     }
 

@@ -30,7 +30,19 @@ class Switch extends Instruction {
     }
 
     executeSymbolsTable(e){
-        return "implementar";
+        TableReport.addTranslated(
+            new nodeTableSymbols(
+              this.linea,
+              this.column,
+              "SWITCH",
+              e.enviromentType,
+              null
+            )
+        );
+      
+        var env = new Environment(e,new EnvironmentType(EnumEnvironmentType.SWITCH,""));
+        this.expression.translatedSymbolsTable(env);
+        this.block.translatedSymbolsTable(env);
     }
 
     execute(e) {

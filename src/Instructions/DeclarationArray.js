@@ -7,7 +7,6 @@ class DeclarationArray extends Instruction {
         this.dimensions = dimensions;
         this.values = value;
         this.nodeName = TreeGraph.getNumberNode();
-        this.graphcsCode = TreeGraph.getCodeOfDeclarationArray(this,this.typeDeclaration,this.ids,this.type,this.dimensions,this.values);
         this.translatedCode = "";
     }
 

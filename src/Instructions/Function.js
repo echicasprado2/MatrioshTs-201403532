@@ -111,10 +111,8 @@ class Function extends Instruction {
         null
       )
     );
-    var envFunction = new Environment(
-      e,
-      new EnvironmentType(EnumEnvironmentType.FUNCTION, this.identifier)
-    );
+
+    var envFunction = new Environment(e,new EnvironmentType(EnumEnvironmentType.FUNCTION, this.identifier));
 
     for (var i = 0; i < this.instructions.length; i++) {
       this.instructions[i].translatedSymbolsTable(envFunction);
@@ -123,6 +121,7 @@ class Function extends Instruction {
     for (var i = 0; i < this.nestedFunctions.length; i++) {
       this.nestedFunctions[i].translatedSymbolsTable(envFunction);
     }
+    
   }
 
   /**

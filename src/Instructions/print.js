@@ -3,7 +3,6 @@ class Print extends Instruction {
         super(linea, column);
         this.value = expresion;
         this.nodeName = TreeGraph.getNumberNode();
-        this.graphcsCode = TreeGraph.generateOneChield(this,'PRINT',this.value);
         this.translatedCode = "console.log("+ this.value.getTranslated() +");\n";
     }
 

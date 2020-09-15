@@ -21,7 +21,7 @@ class TableReport {
   static nodesExecuse = [];
 
   static cleanTranslated() {
-    TableReport.nodes = [];
+    TableReport.nodesTranslated = [];
   }
 
   static cleanExecuse(){

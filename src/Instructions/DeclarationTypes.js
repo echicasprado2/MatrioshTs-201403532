@@ -9,7 +9,6 @@ class DeclarationTypes extends Instruction {
         this.value = value;
 
         this.nodeName = TreeGraph.getNumberNode();
-        // this.graphcsCode = TreeGraph;
         this.translatedCode = "";
     }
 
@@ -46,7 +45,17 @@ class DeclarationTypes extends Instruction {
     }
 
     translatedSymbolsTable(e){
-        return"implementar";
+        for(var i=0;i < this.ids.length;i++){
+            TableReport.addTranslated(
+                new nodeTableSymbols(
+                  this.line,
+                  this.column,
+                  this.ids[i],
+                  e.enviromentType,
+                  null
+                )
+            );
+        }
     }
 
     executeSymbolsTable(e){

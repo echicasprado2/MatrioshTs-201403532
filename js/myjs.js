@@ -111,40 +111,32 @@ var consoleShow = CodeMirror.fromTextArea(document.getElementById('textarea-cons
 
 //TODO make show translated table
   function showTableTranslatedSymbols(){
-    /* FIXME buscar una forma de limpiar el tbody de la tabla o 
-    * crear la tabla cada con html a la medida y luego hacer un innerhtml en el div 
-    */
-    var html = "<h1>SI FUNCIONA</h1>";
+    document.getElementById('tableTranslated').innerHTML = "";
+    
+    var html = "<h2>Tabla de simbolos traduccion</h2>\n";
+    
+    html += "<table class=\"table table-dark\" id=\"tableTranslated\">";
+    html += "<thead class=\"thead-light\">";
+    html += "<tr>";
+    html += "<th scope=\"col\">#</th>";
+    html += "<th scope=\"col\">IDENTIFICADOR</th>";
+    html += "<th scope=\"col\">ENTORNO</th>";
+    html += "</tr>";
+    html += " </thead>";
+    html += "<tbody>";
+  
     var nodes = TableReport.getNodesTranslated();
+    for(var i = 0; i < nodes.length; i++){
+      var item = nodes[i];
+      html += "<tr>";
+      html += `<td>${i + 1}</td>`;
+      html += `<td>${item.name}</td>`;
+      html += `<td>${item.typeEnviroment}</td>`;
+      html += "</tr>";
+    }
 
-    // <h2>Tabla de simbolos traduccion</h2>
-    //                 <table class="table table-dark" id="tableTranslated">
-    //                     <thead class="thead-light">
-    //                         <tr>
-    //                             <th scope="col">#</th>
-    //                             <th scope="col">IDENTIFICADOR</th>
-    //                             <th scope="col">ENTORNO</th>
-    //                         </tr>
-    //                     </thead>
-    //                     <tbody>
-    //                     </tbody>
-    //                 </table>
-
-    // for(var i=0;i<nodes.length;i++){
-    //   var item = nodes[i];
-    //   var newRow = table.insertRow(table.rows.length);
-    //   var idCell = newRow.insertCell(0);
-    //   var nameCell = newRow.insertCell(1);
-    //   var environmentCell = newRow.insertCell(2);
-      
-    //   var textIdCell = document.createTextNode((i+1).toString());
-    //   var textNameCell = document.createTextNode(item.name);
-    //   var textEnvironmentCell = document.createTextNode(item.typeEnviroment);
-
-    //   idCell.appendChild(textIdCell);
-    //   nameCell.appendChild(textNameCell);
-    //   environmentCell.appendChild(textEnvironmentCell);
-    // }
+    html += "</tbody>";
+    html += "</table>";
     document.getElementById('tableTranslated').innerHTML = html;
   };
 

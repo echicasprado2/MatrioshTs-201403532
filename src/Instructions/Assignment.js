@@ -11,7 +11,6 @@ class Assignment extends Instruction {
         this.listAccess = access;
         this.value = expresion;
         this.nodeName = TreeGraph.getNumberNode();
-        this.graphcsCode = TreeGraph.generateChieldren(this,"ASIGNACION",);
         this.translatedCode = "";
     }
 

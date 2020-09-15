@@ -22,7 +22,20 @@ class ForIn extends Instruction {
     }
 
     translatedSymbolsTable(e){
-        return"implementar";
+        TableReport.addTranslated(
+            new nodeTableSymbols(
+              this.linea,
+              this.column,
+              "FOR",
+              e.enviromentType,
+              null
+            )
+        );
+      
+        var env = new Environment(e,new EnvironmentType(EnumEnvironmentType.FOR,""));
+        this.declaration.translatedSymbolsTable(env);
+        this.expression.translatedSymbolsTable(env);
+        this.block.translatedSymbolsTable(env);
     }
 
     executeSymbolsTable(e){

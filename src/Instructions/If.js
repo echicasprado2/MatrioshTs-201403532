@@ -41,7 +41,22 @@ class If extends Instruction {
     }
 
     executeSymbolsTable(e){
-        return "implementar";
+        TableReport.addTranslated(
+            new nodeTableSymbols(
+              this.linea,
+              this.column,
+              "IF",
+              e.enviromentType,
+              null
+            )
+        );
+      
+        var env = new Environment(e,new EnvironmentType(EnumEnvironmentType.IF,""));
+        this.ifList.translatedSymbolsTable(env);
+        
+        if(this.haveElse){
+            this.blockElse.translatedSymbolsTable(env);
+        }
     }
 
     execute(e) {

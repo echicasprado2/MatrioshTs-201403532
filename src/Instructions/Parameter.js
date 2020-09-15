@@ -17,7 +17,6 @@ class Parameter extends Instruction{
             this.translatedCode = this.identifier + " : " + this.type.toString();
         }
         
-        this.graphcsCode = TreeGraph.generateChieldren(this,'PARAMETER',chieldren);
     }
 
     /**
@@ -39,7 +38,15 @@ class Parameter extends Instruction{
      * @param {Environment actual} e  
      */
     translatedSymbolsTable(e){
-        return "implementar este codigo";
+        TableReport.addTranslated(
+            new nodeTableSymbols(
+              this.line,
+              this.column,
+              this.identifier,
+              e.enviromentType,
+              null
+            )
+        );
     }
 
     /**

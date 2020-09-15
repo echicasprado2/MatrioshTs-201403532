@@ -5,10 +5,11 @@ class Return extends Instruction {
      * @param {*} linea 
      * @param {*} column 
      * @param {*} */ 
-    constructor(linea,column,expression){
+    constructor(linea,column,expression,returnExpresion){
         super(linea,column);
 
         this.expression = expression;
+        this.returnExpresion = returnExpresion;
 
         this.nodeName = TreeGraph.getNumberNode();
         this.translatedCode = "";
@@ -17,7 +18,7 @@ class Return extends Instruction {
     getTranslated(){
         this.translatedCode += "return ";
 
-        if(this.expression != ""){
+        if(this.returnExpresion){
             this.translatedCode += `(${this.expression.getTranslated()})`
         }
 

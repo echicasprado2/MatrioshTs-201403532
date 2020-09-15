@@ -1,7 +1,7 @@
 class AttributeTypeAssignment extends Instruction {
     
-    constructor(linea,column,identify,value){
-        super(linea,column);
+    constructor(line,column,identify,value){
+        super(line,column);
         
         this.identify = identify;
         this.value = value;
@@ -25,7 +25,15 @@ class AttributeTypeAssignment extends Instruction {
     }
 
     executeSymbolsTable(e){
-        return "implementar";
+        TableReport.addTranslated(
+            new nodeTableSymbols(
+                this.line,
+                this.column,
+                this.identify,
+                e.enviromentType,
+                null
+            )
+        );
     }
 
     execute(e) {

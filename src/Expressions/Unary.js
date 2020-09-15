@@ -4,10 +4,11 @@
 
  class Unary extends Expresion {
 
-    constructor(linea, column, operationType,expresion){
+    constructor(linea, column, operationType,expresion,isFinal){
         super(linea,column);
         this.operationType = operationType;
         this.expresion = expresion;
+        this.isFinal = isFinal;
         this.nodeName = TreeGraph.getNumberNode();
         this.graphcsCode = "";
         this.translatedCode = "";
@@ -17,8 +18,9 @@
      * obtener el codigo para la traduccion
      */
     getTranslated(){    
+        console.log(this.expresion);
         if(this.operationType == EnumOperationType.PLUS_PLUS || this.operationType == EnumOperationType.MINUS_MINUS){
-          this.translatedCode += this.expresion.getTranslated();
+            this.translatedCode += this.expresion.getTranslated();
           this.translatedCode += this.operationType.toString();
         }else{
             this.translatedCode = this.operationType.toString();
@@ -28,7 +30,11 @@
         if(this.parentesis){
             return `(${this.translatedCode})`;
         }else{
-            return this.translatedCode;
+            if(this.isFinal){
+                return `${this.translatedCode};\n`;
+            }else{
+                return this.translatedCode;
+            }
         }
     }
 

@@ -8,14 +8,15 @@
 
 // expresiones regulares
 lex_number               [0-9]+("."[0-9]+)?\b
-lex_string               [\"\'\`](([^\"\'\`\\])*([\\].)*)*[\"\'\`]
+lex_string_vacio         \"\"
+lex_string               [\"\'\`](([^\"\'\`\\])*([\\].)*)*[\"\'\`] // FIXME no funciona para ""
 lex_identificador        [A-Za-z_\ñ\Ñ][A-Za-z_0-9\ñ\Ñ]*
 lex_comentariounilinea   ["/"]["/"].*(\r|\n|\r\n)
 lex_comentariomultilinea [/][*][^*]*[*]+([^/*][^*]*[*]+)*[/]
 
 %%
 
-//ignorar de archivo
+//ignorar de archivo 
 {lex_comentariounilinea}    /* Omitir */
 {lex_comentariomultilinea}  /* Omitir */
 [\s\t\r\n]+                 /* Omitir */
@@ -95,8 +96,9 @@ lex_comentariomultilinea [/][*][^*]*[*]+([^/*][^*]*[*]+)*[/]
 "function"    return 'function'
 
 //valores expresiones regulares
-{lex_number}       return 'val_number'
+{lex_number}        return 'val_number'
 {lex_string}        return 'val_string'
+{lex_string_vacio}  return 'val_string_vacio'
 {lex_identificador} return 'identificador'
 <<EOF>> return 'EOF'
 
@@ -146,8 +148,6 @@ SENTENCES: SENTENCES SENTENCE { $$ = $1; $$.push($2); }
         | SENTENCE            { $$ = []; $$.push($1); }
         ;
 
-
-
 SENTENCE: FUNCTION           { $$ = $1; }
         | PRINT              { $$ = $1; }
         | GRAPH_TS           { $$ = $1; } 
@@ -162,9 +162,14 @@ SENTENCE: FUNCTION           { $$ = $1; }
         | RETURN             { $$ = $1; }
         | BREAK              { $$ = $1; }
         | CONITNUE           { $$ = $1; }
-        | error punto_y_coma { $$ = new InstructionError(); }
+        | CALL_FUNCTION      { $$ = $1; }
+        // | error punto_y_coma { $$ = new InstructionError(); }
         // | error llave_der       { $$ = $1; cosole.log("error recuperacion con }"); }
         ;
+
+CALL_FUNCTION:    identificador par_izq L_E par_der PUNTO_Y_COMA { $$ = new CallFunction(this._$.first_line,this._$.first_column,$1,$3,true); }
+                | identificador par_izq par_der     PUNTO_Y_COMA { $$ = new CallFunction(this._$.first_line,this._$.first_column,$1,[],true); }
+                ;
 
 BREAK: break PUNTO_Y_COMA { $$ = new Break(this._$.first_line,this._$.first_column); }
         ;
@@ -172,8 +177,8 @@ BREAK: break PUNTO_Y_COMA { $$ = new Break(this._$.first_line,this._$.first_colu
 CONITNUE: continue PUNTO_Y_COMA { $$ = new Continue(this._$.first_line,this._$.first_column); }
         ;
 
-RETURN: return PUNTO_Y_COMA                     { $$ = new Return(this._$.first_line,this._$.first_column,""); }
-        | return par_izq E par_der PUNTO_Y_COMA { $$ = new Return(this._$.first_line,this._$.first_column,$3); }
+RETURN:  return punto_y_coma    { $$ = new Return(this._$.first_line,this._$.first_column,"",false); }
+        | return E punto_y_coma { $$ = new Return(this._$.first_line,this._$.first_column,$2,true); }
         ;
 
 BLOCK:    llave_izq SENTENCES llave_der { $$ = new Block($2); }
@@ -190,6 +195,8 @@ FUNCTION: FUNCTION_HEAD llave_izq FUNCTION_SENTENCES llave_der { $$ = $1; }
 
 FUNCTION_HEAD: function identificador par_izq par_der dos_puntos TYPE          { $$ = new Function(this._$.first_line,this._$.first_column,$2,[],$6); }
         | function identificador par_izq L_PARAMETROS par_der dos_puntos TYPE  { $$ = new Function(this._$.first_line,this._$.first_column,$2,$4,$7); }
+        | function identificador par_izq par_der                               { $$ = new Function(this._$.first_line,this._$.first_column,$2,[],new Type(EnumType.VOID,"")); }
+        | function identificador par_izq L_PARAMETROS par_der                  { $$ = new Function(this._$.first_line,this._$.first_column,$2,$4,new Type(EnumType.VOID,"")); }
         ;
 
 FUNCTION_SENTENCES: FUNCTION_SENTENCE FUNCTION_SENTENCES   { }
@@ -316,6 +323,16 @@ FUNCTION_SENTENCE: PRINT
                                 }
                         }
                 }
+                | CALL_FUNCTION
+                {
+                        stack = eval('$$');
+                        for(var i = stack.length-2;i > 0; i--){
+                                if(stack[i] === '{' && stack[i-1] instanceof Function){
+                                        stack[i-1].addInstruction(stack[stack.length -1]);
+                                        break;
+                                }
+                        }
+                }
                 | FUNCTION  
                 { 
                         stack = eval('$$');
@@ -326,16 +343,16 @@ FUNCTION_SENTENCE: PRINT
                                 }
                         }       
                 }
-                | error punto_y_coma 
-                { 
-                        stack = eval('$$');
-                        for(var i = stack.length-2;i > 0; i--){
-                                if(stack[i] === '{' && stack[i-1] instanceof Function){
-                                        stack[i-1].addFunction(new InstructionError());
-                                        break;
-                                }
-                        }
-                }
+                // | error punto_y_coma 
+                // { 
+                //         stack = eval('$$');
+                //         for(var i = stack.length-2;i > 0; i--){
+                //                 if(stack[i] === '{' && stack[i-1] instanceof Function){
+                //                         stack[i-1].addFunction(new InstructionError());
+                //                         break;
+                //                 }
+                //         }
+                // }
                 ;
 
 L_PARAMETROS: L_PARAMETROS coma PARAMETRO  { $$ = $1; $$.push($3); }
@@ -420,7 +437,7 @@ ASSIGNMENT: ID_ASSIGNMENT '=' E PUNTO_Y_COMA
                 }
                 $$ = new Assignment(this._$.first_line,this.$.first_column,$1,$3); 
         }
-        | ID_ASSIGNMENT POST_FIXED PUNTO_Y_COMA { $$ = new Unary(this._$.first_line,this._$.first_column,$2,$1); }
+        | ID_ASSIGNMENT POST_FIXED PUNTO_Y_COMA { $$ = new Unary(this._$.first_line,this._$.first_column,$2,new Access(this._$.first_line,this._$.first_column,$1),true); }
         ;
 
 ID_ASSIGNMENT: ID_ASSIGNMENT punto identificador             { $$ = $1; $$.push(new Id(this._$.first_line,this._$.first_column,$3)); }
@@ -539,8 +556,8 @@ E   : E '+'   E          { $$ = new Arithmetic(this._$.first_line,this._$.first_
     | E '%'   E          { $$ = new Arithmetic(this._$.first_line,this._$.first_column,new OperationType(EnumOperationType.MODULE),$1,$3); }
     | E '&&'  E          { $$ = new Logic(this._$.first_line,this._$.first_column,new OperationType(EnumOperationType.AND),$1,$3); }
     | E '||'  E          { $$ = new Logic(this._$.first_line,this._$.first_column,new OperationType(EnumOperationType.OR),$1,$3); }
-    | '!'     E          { $$ = new Unary(this._$.first_line, this._$.first_column, new OperationType(EnumOperationType.NOT), $2); }
-    | '-' E %prec UMENOS { $$ = new Unary(this._$.first_line, this._$.first_column, new OperationType(EnumOperationType.NEGATIVE), $2);}
+    | '!'     E          { $$ = new Unary(this._$.first_line, this._$.first_column, new OperationType(EnumOperationType.NOT), $2,false); }
+    | '-' E %prec UMENOS { $$ = new Unary(this._$.first_line, this._$.first_column, new OperationType(EnumOperationType.NEGATIVE), $2,false);}
     | E '!='  E          { $$ = new Relational(this._$.first_line,this._$.first_column,new OperationType(EnumOperationType.DIFFERENT_THAN),$1,$3); }
     | E '=='  E          { $$ = new Relational(this._$.first_line,this._$.first_column,new OperationType(EnumOperationType.LIKE_THAN),$1,$3); }
     | E '>='  E          { $$ = new Relational(this._$.first_line,this._$.first_column,new OperationType(EnumOperationType.MORE_EQUAL_TO),$1,$3); }
@@ -549,13 +566,14 @@ E   : E '+'   E          { $$ = new Arithmetic(this._$.first_line,this._$.first_
     | E '<'   E          { $$ = new Relational(this._$.first_line,this._$.first_column,new OperationType(EnumOperationType.LESS_THAN),$1,$3); }
     | val_number         { $$ = new Value(new Type(EnumType.NUMBER,""),$1); }
     | val_string         { $$ = new Value(new Type(EnumType.STRING,""),$1); }
+    | val_string_vacio   { $$ = new Value(new Type(EnumType.STRING,""),""); }
     | val_verdadero      { $$ = new Value(new Type(EnumType.BOOLEAN,""),$1); }
     | val_falso          { $$ = new Value(new Type(EnumType.BOOLEAN,""),$1); }
     | val_nulo           { $$ = new Value(new Type(EnumType.NULL,""),$1); }
     | par_izq E par_der  { $$ = $2; $$.parentesis = true; }
     | cor_izq L_E cor_der { $$ = $2; }
     | E '?' E dos_puntos E                { $$ = new Ternary(this._$.first_line,this._$.first_column,$1,$3,$5); }
-    | ACCESS POST_FIXED                   { $$ = new Unary(this._$.first_line,this._$.first_column,$2,new Access(this._$.first_line,this._$.first_column,$1)); }
+    | ACCESS POST_FIXED                   { $$ = new Unary(this._$.first_line,this._$.first_column,$2,new Access(this._$.first_line,this._$.first_column,$1),false); }
     | ACCESS punto pop par_izq par_der    { $$ = new ArrayFunction(this._$.first_line,this._$.first_column,new TypeArrayMethod(EnumTypeArrayMethod.POP),new Access(this._$.first_line,this._$.first_column,$1),""); }
     | ACCESS punto length par_izq par_der { $$ = new ArrayFunction(this._$.first_line,this._$.first_column,new TypeArrayMethod(EnumTypeArrayMethod.LENGTH),new Access(this._$.first_line,this._$.first_column,$1),""); }
     | ACCESS punto push par_izq E par_der { $$ = new ArrayFunction(this._$.first_line,this._$.first_column,new TypeArrayMethod(EnumTypeArrayMethod.PUSH),new Access(this._$.first_line,this._$.first_column,$1),$5); }
@@ -564,13 +582,12 @@ E   : E '+'   E          { $$ = new Arithmetic(this._$.first_line,this._$.first_
 
 ACCESS: ACCESS punto identificador                       { $$ = $1; $$.push(new Id(this._$.first_line,this._$.first_column,$3)); }
         | ACCESS punto identificador ACCESS_DIMENSION    { $$ = $1; $$.push(new AccessArray(this._$.first_line,this._$.first_column,$3,$4)); }
-        | ACCESS punto identificador par_izq par_der     { $$ = $1; $$.push(new CallFunction(this._$.first_line,this._$.first_column,$3,[])); }
-        | ACCESS punto identificador par_izq L_E par_der { $$ = $1; $$.push(new CallFunction(this._$.first_line,this._$.first_column,$3,$5)); }
-        //SIMPLES
+        | ACCESS punto identificador par_izq par_der     { $$ = $1; $$.push(new CallFunction(this._$.first_line,this._$.first_column,$3,[],false)); }
+        | ACCESS punto identificador par_izq L_E par_der { $$ = $1; $$.push(new CallFunction(this._$.first_line,this._$.first_column,$3,$5,false)); }
         | identificador                                  { $$ = []; $$.push(new Id(this._$.first_line,this._$.first_column,$1)); }
         | identificador ACCESS_DIMENSION                 { $$ = []; $$.push(new AccessArray(this._$.first_line,this._$.first_column,$1,$2)); }
-        | identificador par_izq par_der                  { $$ = []; $$.push(new CallFunction(this._$.first_line,this._$.first_column,$1,[])); }
-        | identificador par_izq L_E par_der              { $$ = []; $$.push(new CallFunction(this._$.first_line,this._$.first_column,$1,$3)); }
+        | identificador par_izq par_der                  { $$ = []; $$.push(new CallFunction(this._$.first_line,this._$.first_column,$1,[],false)); }
+        | identificador par_izq L_E par_der              { $$ = []; $$.push(new CallFunction(this._$.first_line,this._$.first_column,$1,$3,false)); }
         ;
 
 POST_FIXED: '--' { $$ = new OperationType(EnumOperationType.MINUS_MINUS); }

@@ -26,7 +26,15 @@ class TypeAttributeDefinition extends Instruction {
     }
 
     translatedSymbolsTable(e){
-        return"implementar";
+        TableReport.addTranslated(
+            new nodeTableSymbols(
+              this.linea,
+              this.column,
+              this.identify,
+              e.enviromentType,
+              null
+            )
+        );
     }
 
     executeSymbolsTable(e){

@@ -30,7 +30,21 @@ class TypeDefinition extends Instruction {
     }
 
     translatedSymbolsTable(e){
-        return"implementar";
+        TableReport.addTranslated(
+            new nodeTableSymbols(
+              this.line,
+              this.column,
+              this.identify,
+              e.enviromentType,
+              null
+            )
+        );
+        
+        var envTypeDefinition = new Environment(e,new EnvironmentType(EnumEnvironmentType.TYPE, this.identify));
+
+        for(var i = 0; i < this.declarations.length; i++){
+          this.declarations[i].translatedSymbolsTable(envTypeDefinition);
+        }
     }
 
     executeSymbolsTable(e){
