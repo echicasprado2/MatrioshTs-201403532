@@ -75,7 +75,7 @@ var consoleShow = CodeMirror.fromTextArea(document.getElementById('textarea-cons
     // EJECUTO EL METODO TRADUCIR
     var myTranslated = getSalida();//creo un objeto donde mostrare la salida traducida de mi entrada
     myTranslated.setValue(result.getTranslated());//inserto el codigo traduccido
-    
+    showTranslatedTree(editor.getValue());
   });
 
   var execuse = document.getElementById('ejecutar');
@@ -84,16 +84,18 @@ var consoleShow = CodeMirror.fromTextArea(document.getElementById('textarea-cons
   });
 
   //TODO make show translated tree
-  function showTranslatedTree(){
-    //genera el arbol y da error
-    // var element = document.querySelector("myGraphTranslated");
-    // var insertSvg = function(svgCode){
-    //   element.innerHTML = svgCode;
-    // };
+  function showTranslatedTree(file){
+    var ast = GraphGrammar.parse(file);
+    var code = ast.stringFinalTree(ast.totalString(ast));
     
-    // var grapDefinition = `graph TD;\n ${treeCode}`;
-    // console.log(grapDefinition);
-    // var graph = mermaid.render('myGraph',grapDefinition,insertSvg);
+    //genera el arbol y da error
+    var element = document.querySelector("myGraphTranslated");
+    var insertSvg = function(svgCode){
+      element.innerHTML = svgCode;
+    };
+    
+    console.log(code);
+    var graph = mermaid.render('myGraph',code,insertSvg);
   }
 
   //TODO make show execute tree
