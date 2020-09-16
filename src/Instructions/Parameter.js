@@ -3,26 +3,26 @@ class Parameter extends Instruction{
     constructor(line,column,identifier,type,expresion){
         super(line,column);
         this.identifier = identifier;
-        this.type = type
+        this.type = type;
+        this.expresion = expresion;
         this.nodeName = TreeGraph.getNumberNode();
-
-        var identifierNode = new Value(new Type(EnumType.STRING,""),this.identifier);
-        var chieldren = [identifierNode,this.type];
-
-        if(expresion != null){
-            this.expresion = expresion;
-            chieldren.push(this.expresion);    
-            this.translatedCode = this.identifier + " : " + this.type.toString() + " = " + this.expresion.value;
-        }else{
-            this.translatedCode = this.identifier + " : " + this.type.toString();
-        }
-        
     }
 
     /**
      * obtener el codigo para la traduccion
      */
     getTranslated(){
+        this.translatedCode = "";
+        this.translatedCode += this.identifier;
+        
+        if(this.type.enumType != EnumType.NULL){
+            this.translatedCode += `:${this.type.toString()}`;
+        }
+
+        if(this.expresion != null){
+            this.translatedCode += ` = ${this.expresion.getTranslated()}`;
+        }
+
         return this.translatedCode;
     }
 

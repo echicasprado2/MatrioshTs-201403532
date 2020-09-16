@@ -69,10 +69,10 @@ var consoleShow = CodeMirror.fromTextArea(document.getElementById('textarea-cons
     var editor = getEditor();
     
     var result = new AST(Gramatica.parse(editor.getValue()));// obtengo el ast al correr el analizador
-    var treeCode = result.getGraphCode();// codigo para hace el grafo
     result.translatedSymbolsTable();//obtengo la tabla de simbolos para la traduccion
     showTableTranslatedSymbols();//muestro la tabla de simbolos para la traduccion
   
+    // EJECUTO EL METODO TRADUCIR
     var myTranslated = getSalida();//creo un objeto donde mostrare la salida traducida de mi entrada
     myTranslated.setValue(result.getTranslated());//inserto el codigo traduccido
     
