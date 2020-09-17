@@ -8,10 +8,9 @@
 
 // expresiones regulares
 lex_number               [0-9]+("."[0-9]+)?\b
-lex_string_vacio         \"\"
-lex_string               [\"\'\`](([^\"\'\`\\])*([\\].)*)*[\"\'\`] // FIXME no funciona para ""
+lex_string               [\"\'\`](([^\"\'\`\\])*([\\].)*)*[\"\'\`]
 lex_identificador        [A-Za-z_\ñ\Ñ][A-Za-z_0-9\ñ\Ñ]*
-lex_comentariounilinea   ["/"]["/"].*(\r|\n|\r\n)
+lex_comentariounilinea   "/""/".*(\r|\n|\r\n|<<EOF>>)
 lex_comentariomultilinea [/][*][^*]*[*]+([^/*][^*]*[*]+)*[/]
 
 %%
@@ -98,7 +97,7 @@ lex_comentariomultilinea [/][*][^*]*[*]+([^/*][^*]*[*]+)*[/]
 //valores expresiones regulares
 {lex_number}        return 'val_number'
 {lex_string}        return 'val_string'
-{lex_string_vacio}  return 'val_string_vacio'
+// {lex_string_2}      return 'val_string'
 {lex_identificador} return 'identificador'
 <<EOF>> return 'EOF'
 
@@ -565,13 +564,14 @@ E   : E '+'   E          { $$ = new Arithmetic(this._$.first_line,this._$.first_
     | E '<='  E          { $$ = new Relational(this._$.first_line,this._$.first_column,new OperationType(EnumOperationType.LESS_EQUAL_TO),$1,$3); }
     | E '<'   E          { $$ = new Relational(this._$.first_line,this._$.first_column,new OperationType(EnumOperationType.LESS_THAN),$1,$3); }
     | val_number         { $$ = new Value(new Type(EnumType.NUMBER,""),$1); }
-    | val_string         { $$ = new Value(new Type(EnumType.STRING,""),$1); }
-    | val_string_vacio   { $$ = new Value(new Type(EnumType.STRING,""),""); }
+    | val_string         { console.log($1); $$ = new Value(new Type(EnumType.STRING,""),$1); }
     | val_verdadero      { $$ = new Value(new Type(EnumType.BOOLEAN,""),$1); }
     | val_falso          { $$ = new Value(new Type(EnumType.BOOLEAN,""),$1); }
     | val_nulo           { $$ = new Value(new Type(EnumType.NULL,""),$1); }
-    | par_izq E par_der  { $$ = $2; $$.parentesis = true; }
+
+    | par_izq E par_der   { $$ = $2; $$.parentesis = true; }
     | cor_izq L_E cor_der { $$ = $2; }
+
     | E '?' E dos_puntos E                { $$ = new Ternary(this._$.first_line,this._$.first_column,$1,$3,$5); }
     | ACCESS POST_FIXED                   { $$ = new Unary(this._$.first_line,this._$.first_column,$2,new Access(this._$.first_line,this._$.first_column,$1),false); }
     | ACCESS punto pop par_izq par_der    { $$ = new ArrayFunction(this._$.first_line,this._$.first_column,new TypeArrayMethod(EnumTypeArrayMethod.POP),new Access(this._$.first_line,this._$.first_column,$1),""); }

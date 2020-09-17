@@ -16,22 +16,13 @@ class AccessArray extends Expresion {
   }
 
   getTranslated() {
+    console.log(this.value);
     this.translatedCode = `${this.identifier}`;
 
     for (var i = 0; i < this.value.length; i++) {
-      if (this.value[i] instanceof Array) {
         this.translatedCode += "[";
-        for (var j = 0; j < this.value[i].length; j++) {
-          if (j == 0) {
-            this.translatedCode += this.value[i][j].getTranslated();
-          } else {
-            this.translatedCode += "." + this.value[i][j].getTranslated();
-          }
-        }
+        this.translatedCode += this.value[i].getTranslated();
         this.translatedCode += "]";
-      } else {
-        this.translatedCode += `[${this.value[i].getTranslated()}]`;
-      }
     }
 
     if (this.parentesis) {

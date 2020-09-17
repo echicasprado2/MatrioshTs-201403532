@@ -4,7 +4,7 @@ class Switch extends Instruction {
         super(linea,column);
 
         this.expression = expression;
-        this.block = block;
+        this.blockSwitch = block;
 
         this.nodeName = TreeGraph.getNumberNode();
         this.translatedCode = "";
@@ -13,8 +13,8 @@ class Switch extends Instruction {
     getTranslated(){
         this.translatedCode += `switch (${this.expression.getTranslated()}){\n`;
 
-        for(var i = 0; i < this.block.length; i++){
-            this.translatedCode += this.block[i].getTranslated();
+        for(var i = 0; i < this.blockSwitch.length; i++){
+            this.translatedCode += this.blockSwitch[i].getTranslated();
         }
 
         this.translatedCode += "}\n\n";
@@ -42,7 +42,7 @@ class Switch extends Instruction {
       
         var env = new Environment(e,new EnvironmentType(EnumEnvironmentType.SWITCH,""));
         this.expression.translatedSymbolsTable(env);
-        this.block.translatedSymbolsTable(env);
+        this.blockSwitch.translatedSymbolsTable(env);
     }
 
     execute(e) {

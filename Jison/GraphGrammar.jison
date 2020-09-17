@@ -408,7 +408,7 @@ END_ATTRIBUTE_TYPE: coma        { $$ = $1; }
                 ;
 
 L_ARRAY: L_ARRAY coma cor_izq L_E cor_der { $$ = $1; $$.push($3); }
-        | cor_izq L_E cor_der        { $$ = []; $$.push($2); }
+        | cor_izq L_E cor_der             { $$ = []; $$.push($2); }
         ;
 
 TYPE_DECLARATION: let   { $$ = new DeclarationType(EnumDeclarationType.LET); }

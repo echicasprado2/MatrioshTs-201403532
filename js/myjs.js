@@ -85,17 +85,17 @@ var consoleShow = CodeMirror.fromTextArea(document.getElementById('textarea-cons
 
   //TODO make show translated tree
   function showTranslatedTree(file){
-    var ast = GraphGrammar.parse(file);
-    var code = ast.stringFinalTree(ast.totalString(ast));
+    // var ast = GraphGrammar.parse(file);
+    // var code = ast.stringFinalTree(ast.totalString(ast));
     
-    //genera el arbol y da error
-    var element = document.querySelector("myGraphTranslated");
-    var insertSvg = function(svgCode){
-      element.innerHTML = svgCode;
-    };
+    // //genera el arbol y da error
+    // var element = document.querySelector("myGraphTranslated");
+    // var insertSvg = function(svgCode){
+    //   element.innerHTML = svgCode;
+    // };
     
-    console.log(code);
-    var graph = mermaid.render('myGraph',code,insertSvg);
+    // console.log(code);
+    // var graph = mermaid.render('myGraph',code,insertSvg);
   }
 
   //TODO make show execute tree

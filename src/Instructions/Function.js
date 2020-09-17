@@ -13,12 +13,14 @@ class Function extends Instruction {
     this.parameters = Parameters || [];
     this.instructions = []; //array de instrucciones
     this.type = type;
-    this.nodeName = TreeGraph.getNumberNode();// TODO eliminar
-    this.graphcsCode = "";// TODO eliminar
+
     this.translatedCode = "";
     this.nestedFunctions = [];
     this.chieldren = [];
     this.numberSentence = 0;
+
+    this.copyIdentifierOfDeclarations = [];
+    this.copyIdentifierOfNestedFuncions = [];
   }
 
   /**
@@ -51,34 +53,32 @@ class Function extends Instruction {
    * obtener el codigo para la traduccion
    */
   getTranslated() {
-
     /* TODO tengo que hacer una copia de las declaraciones en el entorno de funcion
       luego las declaraciones tengo que cambiarles el nombre
       luego tengo que buscar las asignaciones, id o llamadas de funcion que conicidan los 
       nombres de declaraciones que guardo y tengo que cambiarles el nombre
     */
-    var codeDeclaration = "";
-    var codeNestedFunction = "";
     var codeParams = "";
-    var copyDeclaration = [];
+    var codeNestedFunction = "";
 
-    copyDeclaration = this.getCopyDeclaration();
-    // this.changeNameOfDeclaration();
+    this.getCopyIdentifierOfDeclarations();
+    this.getCopyIdentifierOfNestedFuncion();
+
     this.changeNameOfNestedFunction();
     this.addParamsInNestedFunction();
+    this.addValuesForCallFunction();
+    this.changeNameAndAddParamsOfNestedFunctions();
 
-    codeDeclaration = this.getCodeOfDeclaration();
     codeParams = this.getCodeOfParams();
     codeNestedFunction = this.getCodeOfNestedFunction();
 
     this.translatedCode += `function ${this.identifier}(`;
     this.translatedCode += codeParams;
     this.translatedCode += `):${this.type.toString()}{\n`;
-    this.translatedCode += codeDeclaration;
 
     for (var i = 0; i < this.chieldren.length; i++) {
       var item = this.chieldren[i].instruction;
-      if (!(item instanceof Function) && !(item instanceof Declaration)) {
+      if (!(item instanceof Function)) {
         this.translatedCode += item.getTranslated();
       }
     }
@@ -88,72 +88,50 @@ class Function extends Instruction {
     return this.translatedCode;
   }
 
-  getCopyDeclaration() {
-    var copyDeclaration = [];
+  getCopyIdentifierOfDeclarations() {
+    var item;
+    this.copyIdentifierOfDeclarations = [];
 
     for (var i = 0; i < this.chieldren.length; i++) {
-      var item = this.chieldren[i].instruction;
-      
-      if (item instanceof Function) {
-        copyDeclaration.push(item.identifier); 
-      }else if(item instanceof Declaration){
-        for(var j = 0; j < item.ids.length;j++){
-          copyDeclaration.push(item.ids[j]);
-        }
-      }
-    }
-    return copyDeclaration;
-  }
+      item = this.chieldren[i].instruction;
 
-  changeNameOfDeclaration(){
-    for (var i = 0; i < this.chieldren.length; i++) {
-      var item = this.chieldren[i].instruction;
-      
-      if(item instanceof Declaration){
-        for(var j = 0; j < item.ids.length;j++){
-          item.ids[j] = `${this.identifier}_${item.ids[j]}`;
+      if (item instanceof Declaration) {
+        for (var j = 0; j < item.ids.length; j++) {
+          this.copyIdentifierOfDeclarations.push(item.ids[j]);
         }
       }
     }
   }
 
-  changeNameOfNestedFunction(){
-    for (var i = 0; i < this.chieldren.length; i++) {
-      var item = this.chieldren[i].instruction;
-      if (item instanceof Function) {
-        item.identifier = `${this.identifier}_${item.identifier}`;
-      }
+  getCopyIdentifierOfNestedFuncion() {
+    this.copyIdentifierOfNestedFuncions = [];
+    for (var i = 0; i < this.nestedFunctions.length; i++) {
+      this.copyIdentifierOfNestedFuncions.push(
+        this.nestedFunctions[i].identifier
+      );
     }
   }
 
-  getCodeOfDeclaration(){
-    var codeDeclaration = "";
-
-    for (var i = 0; i < this.chieldren.length; i++) {
-      var item = this.chieldren[i].instruction;
-      
-      if(item instanceof Declaration){
-        codeDeclaration += item.getTranslated();
-      }
+  changeNameOfNestedFunction() {
+    for (var i = 0; i < this.nestedFunctions.length; i++) {
+      var item = this.nestedFunctions[i];
+      item.identifier = `${this.identifier}_${item.identifier}`;
     }
-    return codeDeclaration;
   }
 
-  getCodeOfNestedFunction(){
+  getCodeOfNestedFunction() {
     var code = "";
-    for (var i = 0; i < this.chieldren.length; i++) {
-      var item = this.chieldren[i].instruction;
-      if (item instanceof Function) {
-        code += item.getTranslated();
-      }
+    for (var i = 0; i < this.nestedFunctions.length; i++) {
+      var item = this.nestedFunctions[i];
+      code += item.getTranslated();
     }
     return code;
   }
 
-  getCodeOfParams(){
-    var item
+  getCodeOfParams() {
+    var item;
     var code = "";
-    
+
     for (var i = 0; i < this.parameters.length; i++) {
       item = this.parameters[i];
       code += item.getTranslated();
@@ -164,46 +142,212 @@ class Function extends Instruction {
     return code;
   }
 
-  addParamsInNestedFunction(){
-    var declarationInFunction = [];//lista de parametros
-    
+  addParamsInNestedFunction() {
+    var declarationInFunction = []; //lista de parametros
+
     for (var i = 0; i < this.chieldren.length; i++) {
       var item = this.chieldren[i].instruction;
 
       if (item instanceof Declaration) {
-        for(var j = 0; j < item.ids.length; j++){
-          declarationInFunction.push(
-            new Parameter(
-              item.linea,
-              item.column,
-              item.ids[j],
-              item.type,
-              null)
-          );
+        for (var j = 0; j < item.ids.length; j++) {
+          if (item.type.enumType == EnumType.NULL) {
+            declarationInFunction.push(
+              new Parameter(
+                item.linea,
+                item.column,
+                item.ids[j],
+                new Type(EnumType.VOID),
+                null
+              )
+            );
+          } else {
+            declarationInFunction.push(
+              new Parameter(
+                item.linea,
+                item.column,
+                item.ids[j],
+                item.type,
+                null
+              )
+            );
+          }
         }
       }
     }
-    
+
     // parametros del padre
-    for (var i = 0; i < this.chieldren.length; i++) {
-      var item = this.chieldren[i].instruction;
+    for (var i = 0; i < this.nestedFunctions.length; i++) {
+      var item = this.nestedFunctions[i];
 
-      if (item instanceof Function) {
+      for (var j = 0; j < this.parameters.length; j++) {
+        item.parameters.push(this.parameters[j]);
+      }
 
-        for(var j = 0; j < this.parameters.length; j++){
-          item.parameters.push(this.parameters[j]);
-        }
-
-        for(var j = 0; j < declarationInFunction.length; j++){
-          item.parameters.push(declarationInFunction[j]);
-        }
-
+      for (var j = 0; j < declarationInFunction.length; j++) {
+        item.parameters.push(declarationInFunction[j]);
       }
     }
   }
 
-  addValuesForCallFunction(){
-    
+  addValuesForCallFunction() {
+    for (var i = 0; i < this.chieldren.length; i++) {
+      var item = this.chieldren[i].instruction;
+      if (item instanceof CallFunction) {
+        for (var j = 0; j < this.copyIdentifierOfNestedFuncions.length; j++) {
+          if (item.identifier === this.copyIdentifierOfNestedFuncions[j]) {
+            item.identifier = `${this.identifier}_${item.identifier}`;
+
+            for (var k = 0; k < this.parameters.length; k++) {
+              item.value.push(
+                new Id(this.line, this.column, this.parameters[k].identifier)
+              );
+            }
+
+            for (var k = 0; k < this.copyIdentifierOfDeclarations.length; k++) {
+              item.value.push(
+                new Id(
+                  this.line,
+                  this.column,
+                  this.copyIdentifierOfDeclarations[k]
+                )
+              );
+            }
+          }
+        }
+      }
+    }
+  }
+
+  changeNameAndAddParamsOfNestedFunctions() {
+    var item;
+    for (var i = 0; i < this.chieldren.length; i++) {
+      item = this.chieldren[i].instruction;
+      if (!(item instanceof Function)) {
+        this.changeNameOfCallFunctionsIntoSentences(item);
+      }
+    }
+  }
+
+  changeNameOfCallFunctionsIntoSentences(node) {
+    //TODO recursivo para cambiar nombre y agregar values a call function
+    if (node instanceof Declaration) {
+      this.changeNameOfCallFunctionsIntoSentences(node.value);
+
+    }else if(node instanceof If){
+      
+      for(var i = 0; i < node.ifList.length;i++){
+        this.changeNameOfCallFunctionsIntoSentences(node.ifList[i]);
+      }
+
+      if(node.haveElse){
+        this.changeNameOfCallFunctionsIntoSentences(node.blockElse);
+      }
+
+    } else if (node instanceof Assignment){
+      this.changeNameOfCallFunctionsIntoSentences(node.value);
+    } else if (node instanceof AssignmentArray){
+      this.changeNameOfCallFunctionsIntoSentences(node.value);
+    } else if (node instanceof Block){
+      for(var i = 0; i < node.sentences.length; i++){
+        this.changeNameOfCallFunctionsIntoSentences(node.sentences[i]);
+      }
+    } else if (node instanceof BlockIf){
+      this.changeNameOfCallFunctionsIntoSentences(node.expresion);
+
+      for(var i = 0; i < node.block.length; i++){
+        this.changeNameOfCallFunctionsIntoSentences(node.sentences[i]);
+      }
+
+    } else if (node instanceof CaseSwitch){
+      if(node.isCase){
+        this.changeNameOfCallFunctionsIntoSentences(node.expression);
+      }
+
+      if(node.haveBlock){
+        this.changeNameOfCallFunctionsIntoSentences(node.block);
+      }
+    } else if (node instanceof DeclarationArray){
+      var obj;
+      for(var i = 0; i < node.values.length;i ++){
+        obj = node.values[i]; // lista de E
+        for(var j =0; j < obj.length; j++){
+          this.changeNameOfCallFunctionsIntoSentences(obj[j]);
+        }
+      }
+    } else if (node instanceof Do){
+      this.changeNameOfCallFunctionsIntoSentences(node.expression);
+      this.changeNameOfCallFunctionsIntoSentences(node.block);
+    } else if (node instanceof For){
+      this.changeNameOfCallFunctionsIntoSentences(node.declaration);
+      this.changeNameOfCallFunctionsIntoSentences(node.condition);
+      this.changeNameOfCallFunctionsIntoSentences(node.expression);
+      this.changeNameOfCallFunctionsIntoSentences(node.block);
+    } else if (node instanceof ForIn){
+      this.changeNameOfCallFunctionsIntoSentences(node.declaration);
+      this.changeNameOfCallFunctionsIntoSentences(node.expression);
+      this.changeNameOfCallFunctionsIntoSentences(node.block);
+    } else if (node instanceof ForOf){
+      this.changeNameOfCallFunctionsIntoSentences(node.declaration);
+      this.changeNameOfCallFunctionsIntoSentences(node.expression);
+      this.changeNameOfCallFunctionsIntoSentences(node.block);
+    } else if (node instanceof Print){
+      this.changeNameOfCallFunctionsIntoSentences(node.expresion);
+    } else if (node instanceof Return){
+      if(node.returnExpresion){
+        this.changeNameOfCallFunctionsIntoSentences(node.expression);
+      }
+    } else if (node instanceof Switch){
+      this.changeNameOfCallFunctionsIntoSentences(node.expression);
+      for(var i =0; i < node.blockSwitch.length; i++){
+        this.changeNameOfCallFunctionsIntoSentences(node.blockSwitch);
+      }
+    } else if (node instanceof TypeAssignment){
+      for(var i = 0; i < node.attributes.length; i++){
+        this.changeNameOfCallFunctionsIntoSentences(node.attributes[i]);
+      }
+    } else if (node instanceof AttributeTypeAssignment){
+      this.changeNameOfCallFunctionsIntoSentences(node.value);
+    } else if (node instanceof While){
+      this.changeNameOfCallFunctionsIntoSentences(node.expression);
+      this.changeNameOfCallFunctionsIntoSentences(node.block);
+    } else if (node instanceof Access){
+      for(var i = 0; i < node.value.length; i++){
+        this.changeNameOfCallFunctionsIntoSentences(node.value[i]);
+      }
+    } else if (node instanceof AccessArray){
+      for(var i = 0;i < node.value.length;i++){
+        this.changeNameOfCallFunctionsIntoSentences(node.value[i]);
+      }
+    } else if (node instanceof Arithmetic){
+      this.changeNameOfCallFunctionsIntoSentences(node.expresion1);
+      this.changeNameOfCallFunctionsIntoSentences(node.expresion2);
+    } else if (node instanceof Logic){
+      this.changeNameOfCallFunctionsIntoSentences(node.expresion1);
+      this.changeNameOfCallFunctionsIntoSentences(node.expresion2);
+    } else if (node instanceof Relational){
+      this.changeNameOfCallFunctionsIntoSentences(node.expresion1);
+      this.changeNameOfCallFunctionsIntoSentences(node.expresion2);
+    } else if (node instanceof Ternary){
+      this.changeNameOfCallFunctionsIntoSentences(node.condition);
+      this.changeNameOfCallFunctionsIntoSentences(node.conditionTrue);
+      this.changeNameOfCallFunctionsIntoSentences(node.conditionFalse);
+    } else if (node instanceof Unary){
+      this.changeNameOfCallFunctionsIntoSentences(node.expresion);
+    } else if (node instanceof CallFunction) {
+      for (var j = 0; j < this.copyIdentifierOfNestedFuncions.length; j++) {
+        if (node.identifier === this.copyIdentifierOfNestedFuncions[j]) {
+          node.identifier = `${this.identifier}_${node.identifier}`;
+
+          for (var k = 0; k < this.parameters.length; k++) {
+            node.value.push(new Id(this.line, this.column, this.parameters[k].identifier));
+          }
+
+          for (var k = 0; k < this.copyIdentifierOfDeclarations.length; k++) {
+            node.value.push(new Id(this.line,this.column,this.copyIdentifierOfDeclarations[k]));
+          }
+        }
+      }
+    }
   }
 
   /**
@@ -228,7 +372,10 @@ class Function extends Instruction {
       )
     );
 
-    var envFunction = new Environment(e,new EnvironmentType(EnumEnvironmentType.FUNCTION, this.identifier));
+    var envFunction = new Environment(
+      e,
+      new EnvironmentType(EnumEnvironmentType.FUNCTION, this.identifier)
+    );
 
     for (var i = 0; i < this.instructions.length; i++) {
       this.instructions[i].translatedSymbolsTable(envFunction);
@@ -237,7 +384,6 @@ class Function extends Instruction {
     for (var i = 0; i < this.nestedFunctions.length; i++) {
       this.nestedFunctions[i].translatedSymbolsTable(envFunction);
     }
-    
   }
 
   /**
