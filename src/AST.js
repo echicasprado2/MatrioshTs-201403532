@@ -49,6 +49,7 @@ class AST {
   translatedSymbolsTable() {
     //e es environment translated
     TableReport.cleanTranslated();
+    console.log(this.instruccions);
     for (var i = 0; i < this.instruccions.length; i++) {
       this.instruccions[i].translatedSymbolsTable(this.environmentTranslated);
     }

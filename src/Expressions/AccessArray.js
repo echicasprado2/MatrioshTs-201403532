@@ -16,7 +16,6 @@ class AccessArray extends Expresion {
   }
 
   getTranslated() {
-    console.log(this.value);
     this.translatedCode = `${this.identifier}`;
 
     for (var i = 0; i < this.value.length; i++) {

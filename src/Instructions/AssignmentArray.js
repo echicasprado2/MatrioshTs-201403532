@@ -10,7 +10,7 @@ class AssignmentArray extends Instruction {
     constructor(linea,column,access,expresion){
         super(linea,column);
         this.nodeName = TreeGraph.getNumberNode();
-
+        
         this.listAccess = access;
         this.value = expresion;
 
@@ -24,16 +24,11 @@ class AssignmentArray extends Instruction {
         }
         
         this.translatedCode += " = ";
-        //FIXME no se que hace
-        if(this.value instanceof Array){
-            for(var i = 0;i < this.value.length;i++){
-                if(i == 0){
-                    this.translatedCode += this.value[i].getTranslated();
-                }else{
-                    this.translatedCode += "." + this.value[i].getTranslated();
-                }
-            }
-        }else{
+
+        console.log(this.value);
+        if(this.value instanceof Value && this.value.type.enumType == EnumType.NULL){
+            this.translatedCode += "[]";
+        }else {
             this.translatedCode += this.value.getTranslated();
         }
 
