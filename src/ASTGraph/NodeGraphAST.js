@@ -6,9 +6,9 @@ class NodeGraphAST{
         this.children = [];
     }
 
-    stringFinalTree(string){
+    stringFinalTreeTranslated(string){
         NumberNode.cleanNumberNode();
-        var codeGraph = `graph TD\n${string}`;
+        var codeGraph = `graph TD\nNote(AST TRADUCCION)\n${string}`;
         return codeGraph;
     }
 
