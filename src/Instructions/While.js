@@ -18,8 +18,6 @@ class While extends Instruction {
     }
 
     getTranslated(){
-        console.log(this.expression);
-        console.log(this.block);
         this.translatedCode += `while(${this.expression.getTranslated()})`
         this.translatedCode += this.block.getTranslated();
         return `${this.translatedCode}\n\n`;
