@@ -429,7 +429,6 @@ L_DIMENSION: L_DIMENSION cor_izq cor_der { $$ = $1 + 1; }
         ;
 
 ASSIGNMENT: ID_ASSIGNMENT '=' E PUNTO_Y_COMA 
-        //FIXME con valores de array []
         { 
                 for(var i = 0; i < $1.length;i++){
                         if($1[i] instanceof AccessArray){

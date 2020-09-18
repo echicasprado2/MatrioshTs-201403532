@@ -41,7 +41,6 @@ class TypeDefinition extends Instruction {
         );
         
         var envTypeDefinition = new Environment(e,new EnvironmentType(EnumEnvironmentType.TYPE, this.identify));
-
         for(var i = 0; i < this.declarations.length; i++){
           this.declarations[i].translatedSymbolsTable(envTypeDefinition);
         }

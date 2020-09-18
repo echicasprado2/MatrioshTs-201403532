@@ -18,7 +18,6 @@
      * obtener el codigo para la traduccion
      */
     getTranslated(){    
-        console.log(this.expresion);
         if(this.operationType == EnumOperationType.PLUS_PLUS || this.operationType == EnumOperationType.MINUS_MINUS){
             this.translatedCode += this.expresion.getTranslated();
           this.translatedCode += this.operationType.toString();

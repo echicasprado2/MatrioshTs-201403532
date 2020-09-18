@@ -31,7 +31,7 @@ class TypeAttributeDefinition extends Instruction {
               this.linea,
               this.column,
               this.identify,
-              e.enviromentType,
+              e.enviromentType.name,
               null
             )
         );

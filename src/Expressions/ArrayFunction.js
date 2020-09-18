@@ -17,8 +17,10 @@ class ArrayFunction extends Expresion {
   getTranslated() {
     if (this.type.enumType == EnumTypeArrayMethod.PUSH) {
       this.translatedCode += `${this.identify.getTranslated()}.${this.type.toString()}(${this.value.getTranslated()})`;
-    } else {
+    } else if(this.type.enumType == EnumTypeArrayMethod.POP) {
       this.translatedCode += `${this.identify.getTranslated()}.${this.type.toString()}()`;
+    }else{
+      this.translatedCode += `${this.identify.getTranslated()}.${this.type.toString()}`;
     }
 
     if (this.parentesis) {

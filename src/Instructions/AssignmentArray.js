@@ -25,7 +25,6 @@ class AssignmentArray extends Instruction {
         
         this.translatedCode += " = ";
 
-        console.log(this.value);
         if(this.value instanceof Value && this.value.type.enumType == EnumType.NULL){
             this.translatedCode += "[]";
         }else {

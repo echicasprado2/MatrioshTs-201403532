@@ -358,6 +358,7 @@ L_PARAMETROS: L_PARAMETROS coma PARAMETRO  { $$ = $1; $$.push($3); }
             ;
 
 PARAMETRO: identificador dos_puntos TYPE { $$ = new Parameter(this._$.first_line,this._$.first_column,$1,$3,null); }
+        | identificador dos_puntos TYPE L_DIMENSION  { $$ = new Parameter(this._$.first_line,this._$.first_column,$1,$3,null,true,$4); }
         ;
 
 TYPE: void          { $$ = new Type(EnumType.VOID,""); }
@@ -367,12 +368,12 @@ TYPE: void          { $$ = new Type(EnumType.VOID,""); }
     | identificador { $$ = new Type(EnumType.TYPE,$1); }
     ;
 
-PRINT: print par_izq E par_der PUNTO_Y_COMA { $$ = new NodeGraphAST("PRITN",NumberNode.getNumber()); $$.children.push($3); }
+PRINT: print par_izq L_E par_der PUNTO_Y_COMA { $$ = new NodeGraphAST("PRITN",NumberNode.getNumber()); $$.children.push($3); }
     ;
 
 GRAPH_TS: graficar_ts par_izq par_der PUNTO_Y_COMA { $$ = new GraphTs(this._$.first_line,this.$.first_column); } 
         ;
-
+//FIXME con let a = 0, b=0;
 DECLARATION: TYPE_DECLARATION  L_ID TYPE_VARIABLE PUNTO_Y_COMA                         { $$ = new Declaration(this._$.first_line,this._$.first_column,$1,$2,$3,""); }
         |    TYPE_DECLARATION  L_ID TYPE_VARIABLE '=' E PUNTO_Y_COMA                   { $$ = new Declaration(this._$.first_line,this._$.first_column,$1,$2,$3,$5); }
         |    TYPE_DECLARATION  L_ID TYPE_VARIABLE L_DIMENSION PUNTO_Y_COMA             { $$ = new DeclarationArray(this._$.first_line,this._$.first_column,$1,$2,$3,$4,""); }
@@ -407,6 +408,7 @@ END_ATTRIBUTE_TYPE: coma        { $$ = $1; }
 
 L_ARRAY: L_ARRAY coma cor_izq L_E cor_der { $$ = $1; $$.push($3); }
         | cor_izq L_E cor_der             { $$ = []; $$.push($2); }
+        | cor_izq cor_der                 {}
         ;
 
 TYPE_DECLARATION: let   { $$ = new DeclarationType(EnumDeclarationType.LET); }
@@ -435,7 +437,18 @@ ASSIGNMENT: ID_ASSIGNMENT '=' E PUNTO_Y_COMA
                 }
                 $$ = new Assignment(this._$.first_line,this.$.first_column,$1,$3); 
         }
+        | ID_ASSIGNMENT '=' cor_izq cor_der PUNTO_Y_COMA
+        {
+                for(var i = 0; i < $1.length;i++){
+                        if($1[i] instanceof AccessArray){
+                                $$ = new AssignmentArray(this._$.first_line,this.$.first_column,$1,new Value(new Type(EnumType.NULL),""));
+                                return;
+                        }
+                }
+                $$ = new Assignment(this._$.first_line,this.$.first_column,$1,new Value(new Type(EnumType.NULL),""));
+        }
         | ID_ASSIGNMENT POST_FIXED PUNTO_Y_COMA { $$ = new Unary(this._$.first_line,this._$.first_column,$2,new Access(this._$.first_line,this._$.first_column,$1),true); }
+        | ID_ASSIGNMENT '=' llave_izq L_E_TYPE llave_der PUNTO_Y_COMA { $$ = new AssignmentType(this._$.first_line,this._$.first_column,$1,$4); }
         ;
 
 ID_ASSIGNMENT: ID_ASSIGNMENT punto identificador             { $$ = $1; $$.push(new Id(this._$.first_line,this._$.first_column,$3)); }
@@ -569,7 +582,7 @@ E   : E '+'   E           { $$ = new NodeGraphAST($2,NumberNode.getNumber()); $$
     | E '?' E dos_puntos E                { $$ = new NodeGraphAST("TERNARIO",NumberNode.getNumber()); $$.children.push($1,$3,$5); }
     | ACCESS POST_FIXED                   { $$ = new NodeGraphAST($2,NumberNode.getNumber()); $$.children.push($1); }
     | ACCESS punto pop par_izq par_der    { $$ = new NodeGraphAST("FUNCTION_ARRAY",NumberNode.getNumber()); $$.children.push($1,new NodeGraphAST($3,NumberNode.getNumber())); }
-    | ACCESS punto length par_izq par_der { $$ = new NodeGraphAST("FUNCTION_ARRAY",NumberNode.getNumber()); $$.children.push($1,new NodeGraphAST($3,NumberNode.getNumber())); }
+    | ACCESS punto length                 { $$ = new NodeGraphAST("FUNCTION_ARRAY",NumberNode.getNumber()); $$.children.push($1,new NodeGraphAST($3,NumberNode.getNumber())); }
     | ACCESS punto push par_izq E par_der { $$ = new NodeGraphAST("FUNCTION_ARRAY",NumberNode.getNumber()); $$.children.push($1,new NodeGraphAST($3,NumberNode.getNumber())); }
     | ACCESS                              { $$ = $1; }
     ;

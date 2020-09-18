@@ -21,19 +21,19 @@ class AttributeTypeAssignment extends Instruction {
     }
 
     translatedSymbolsTable(e){
-        return"implementar";
-    }
-
-    executeSymbolsTable(e){
         TableReport.addTranslated(
             new nodeTableSymbols(
                 this.line,
                 this.column,
                 this.identify,
-                e.enviromentType,
+                e.name,
                 null
             )
         );
+    }
+
+    executeSymbolsTable(e){
+        return "";
     }
 
     execute(e) {
