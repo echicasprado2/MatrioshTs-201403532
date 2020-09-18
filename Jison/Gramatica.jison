@@ -97,7 +97,6 @@ lex_comentariomultilinea [/][*][^*]*[*]+([^/*][^*]*[*]+)*[/]
 //valores expresiones regulares
 {lex_number}        return 'val_number'
 {lex_string}        return 'val_string'
-// {lex_string_2}      return 'val_string'
 {lex_identificador} return 'identificador'
 <<EOF>> return 'EOF'
 
@@ -358,7 +357,8 @@ L_PARAMETROS: L_PARAMETROS coma PARAMETRO  { $$ = $1; $$.push($3); }
             | PARAMETRO                    { $$ = []; $$.push($1); }
             ;
 
-PARAMETRO: identificador dos_puntos TYPE { $$ = new Parameter(this._$.first_line,this._$.first_column,$1,$3,null); }
+PARAMETRO: identificador dos_puntos TYPE             { $$ = new Parameter(this._$.first_line,this._$.first_column,$1,$3,null,false,0); }
+        | identificador dos_puntos TYPE L_DIMENSION  { $$ = new Parameter(this._$.first_line,this._$.first_column,$1,$3,null,true,$4); }
         ;
 
 TYPE: void          { $$ = new Type(EnumType.VOID,""); }
@@ -368,13 +368,14 @@ TYPE: void          { $$ = new Type(EnumType.VOID,""); }
     | identificador { $$ = new Type(EnumType.TYPE,$1); }
     ;
 
-PRINT: print par_izq E par_der PUNTO_Y_COMA { $$ = new Print(this._$.first_line,this._$.first_column,$3); }
+PRINT: print par_izq L_E par_der PUNTO_Y_COMA { $$ = new Print(this._$.first_line,this._$.first_column,$3); }
     ;
 
-GRAPH_TS: graficar_ts par_izq par_der PUNTO_Y_COMA { console.log("Si llego"); $$ = new GraphTs(this._$.first_line,this.$.first_column); } 
+GRAPH_TS: graficar_ts par_izq par_der PUNTO_Y_COMA { $$ = new GraphTs(this._$.first_line,this.$.first_column); } 
         ;
 
 DECLARATION: TYPE_DECLARATION  L_ID TYPE_VARIABLE PUNTO_Y_COMA                         { $$ = new Declaration(this._$.first_line,this._$.first_column,$1,$2,$3,""); }
+        //FIXME con let a = 0, b=0;
         |    TYPE_DECLARATION  L_ID TYPE_VARIABLE '=' E PUNTO_Y_COMA                   { $$ = new Declaration(this._$.first_line,this._$.first_column,$1,$2,$3,$5); }
         |    TYPE_DECLARATION  L_ID TYPE_VARIABLE L_DIMENSION PUNTO_Y_COMA             { $$ = new DeclarationArray(this._$.first_line,this._$.first_column,$1,$2,$3,$4,""); }
         |    TYPE_DECLARATION  L_ID TYPE_VARIABLE L_DIMENSION '=' L_ARRAY PUNTO_Y_COMA { $$ = new DeclarationArray(this._$.first_line,this._$.first_column,$1,$2,$3,$4,new Value(new Type(EnumType.ARRAY,""),$6)); }
@@ -407,7 +408,8 @@ END_ATTRIBUTE_TYPE: coma        { $$ = $1; }
                 ;
 
 L_ARRAY: L_ARRAY coma cor_izq L_E cor_der { $$ = $1; $$.push($3); }
-        | cor_izq L_E cor_der        { $$ = []; $$.push($2); }
+        | cor_izq L_E cor_der             { $$ = []; $$.push($2); }
+        | cor_izq cor_der                 { $$ = []; $$.push(new Value(new Type(EnumType.NULL),"")); }
         ;
 
 TYPE_DECLARATION: let   { $$ = new DeclarationType(EnumDeclarationType.LET); }
@@ -427,6 +429,7 @@ L_DIMENSION: L_DIMENSION cor_izq cor_der { $$ = $1 + 1; }
         ;
 
 ASSIGNMENT: ID_ASSIGNMENT '=' E PUNTO_Y_COMA 
+        //FIXME con valores de array []
         { 
                 for(var i = 0; i < $1.length;i++){
                         if($1[i] instanceof AccessArray){
@@ -436,7 +439,18 @@ ASSIGNMENT: ID_ASSIGNMENT '=' E PUNTO_Y_COMA
                 }
                 $$ = new Assignment(this._$.first_line,this.$.first_column,$1,$3); 
         }
+        | ID_ASSIGNMENT '=' cor_izq cor_der PUNTO_Y_COMA
+        {
+                for(var i = 0; i < $1.length;i++){
+                        if($1[i] instanceof AccessArray){
+                                $$ = new AssignmentArray(this._$.first_line,this.$.first_column,$1,new Value(new Type(EnumType.NULL),""));
+                                return;
+                        }
+                }
+                $$ = new Assignment(this._$.first_line,this.$.first_column,$1,new Value(new Type(EnumType.NULL),""));
+        }
         | ID_ASSIGNMENT POST_FIXED PUNTO_Y_COMA { $$ = new Unary(this._$.first_line,this._$.first_column,$2,new Access(this._$.first_line,this._$.first_column,$1),true); }
+        | ID_ASSIGNMENT '=' llave_izq L_E_TYPE llave_der PUNTO_Y_COMA { $$ = new AssignmentType(this._$.first_line,this._$.first_column,$1,$4); }
         ;
 
 ID_ASSIGNMENT: ID_ASSIGNMENT punto identificador             { $$ = $1; $$.push(new Id(this._$.first_line,this._$.first_column,$3)); }
@@ -564,7 +578,7 @@ E   : E '+'   E          { $$ = new Arithmetic(this._$.first_line,this._$.first_
     | E '<='  E          { $$ = new Relational(this._$.first_line,this._$.first_column,new OperationType(EnumOperationType.LESS_EQUAL_TO),$1,$3); }
     | E '<'   E          { $$ = new Relational(this._$.first_line,this._$.first_column,new OperationType(EnumOperationType.LESS_THAN),$1,$3); }
     | val_number         { $$ = new Value(new Type(EnumType.NUMBER,""),$1); }
-    | val_string         { console.log($1); $$ = new Value(new Type(EnumType.STRING,""),$1); }
+    | val_string         { $$ = new Value(new Type(EnumType.STRING,""),$1); }
     | val_verdadero      { $$ = new Value(new Type(EnumType.BOOLEAN,""),$1); }
     | val_falso          { $$ = new Value(new Type(EnumType.BOOLEAN,""),$1); }
     | val_nulo           { $$ = new Value(new Type(EnumType.NULL,""),$1); }
@@ -575,7 +589,7 @@ E   : E '+'   E          { $$ = new Arithmetic(this._$.first_line,this._$.first_
     | E '?' E dos_puntos E                { $$ = new Ternary(this._$.first_line,this._$.first_column,$1,$3,$5); }
     | ACCESS POST_FIXED                   { $$ = new Unary(this._$.first_line,this._$.first_column,$2,new Access(this._$.first_line,this._$.first_column,$1),false); }
     | ACCESS punto pop par_izq par_der    { $$ = new ArrayFunction(this._$.first_line,this._$.first_column,new TypeArrayMethod(EnumTypeArrayMethod.POP),new Access(this._$.first_line,this._$.first_column,$1),""); }
-    | ACCESS punto length par_izq par_der { $$ = new ArrayFunction(this._$.first_line,this._$.first_column,new TypeArrayMethod(EnumTypeArrayMethod.LENGTH),new Access(this._$.first_line,this._$.first_column,$1),""); }
+    | ACCESS punto length                 { $$ = new ArrayFunction(this._$.first_line,this._$.first_column,new TypeArrayMethod(EnumTypeArrayMethod.LENGTH),new Access(this._$.first_line,this._$.first_column,$1),""); }
     | ACCESS punto push par_izq E par_der { $$ = new ArrayFunction(this._$.first_line,this._$.first_column,new TypeArrayMethod(EnumTypeArrayMethod.PUSH),new Access(this._$.first_line,this._$.first_column,$1),$5); }
     | ACCESS                              { $$ = new Access(this._$.first_line,this._$.first_column,$1); }
     ;

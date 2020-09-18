@@ -20,6 +20,7 @@ class Assignment extends Instruction {
         }
         
         this.translatedCode += " = ";
+        //FIXME con array
         if(this.value instanceof Array){
             this.translatedCode += "[";
             for(var i = 0;i < this.value.length;i++){

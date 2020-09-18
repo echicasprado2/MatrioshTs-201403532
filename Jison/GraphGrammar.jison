@@ -8,10 +8,9 @@
 
 // expresiones regulares
 lex_number               [0-9]+("."[0-9]+)?\b
-lex_string_vacio         \"\"
-lex_string               [\"\'\`](([^\"\'\`\\])*([\\].)*)*[\"\'\`] // FIXME no funciona para ""
+lex_string               [\"\'\`](([^\"\'\`\\])*([\\].)*)*[\"\'\`]
 lex_identificador        [A-Za-z_\ñ\Ñ][A-Za-z_0-9\ñ\Ñ]*
-lex_comentariounilinea   ["/"]["/"].*(\r|\n|\r\n)
+lex_comentariounilinea   "/""/".*(\r|\n|\r\n|<<EOF>>)
 lex_comentariomultilinea [/][*][^*]*[*]+([^/*][^*]*[*]+)*[/]
 
 %%
@@ -98,7 +97,6 @@ lex_comentariomultilinea [/][*][^*]*[*]+([^/*][^*]*[*]+)*[/]
 //valores expresiones regulares
 {lex_number}        return 'val_number'
 {lex_string}        return 'val_string'
-{lex_string_vacio}  return 'val_string_vacio'
 {lex_identificador} return 'identificador'
 <<EOF>> return 'EOF'
 

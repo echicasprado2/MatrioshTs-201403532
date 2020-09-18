@@ -42,15 +42,18 @@ class DeclarationArray extends Instruction {
     makeArray(valueArray){
         var cadena = "[";
 
-        for(var i = 0;i< valueArray.length;i++){
-            if(valueArray[i] instanceof Array){
-                cadena += this.makeArray(valueArray[i]);
-            }else if(i == 0){
-                cadena += valueArray[i].getTranslated();
-            }else{
-                cadena += "," + valueArray[i].getTranslated();
+        if(this.values != null){
+            for(var i = 0;i< valueArray.length;i++){
+                if(valueArray[i] instanceof Array){
+                    cadena += this.makeArray(valueArray[i]);
+                }else if(i == 0){
+                    cadena += valueArray[i].getTranslated();
+                }else{
+                    cadena += "," + valueArray[i].getTranslated();
+                }
             }
         }
+        
         return cadena + "]";
     }
 

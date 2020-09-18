@@ -53,11 +53,6 @@ class Function extends Instruction {
    * obtener el codigo para la traduccion
    */
   getTranslated() {
-    /* TODO tengo que hacer una copia de las declaraciones en el entorno de funcion
-      luego las declaraciones tengo que cambiarles el nombre
-      luego tengo que buscar las asignaciones, id o llamadas de funcion que conicidan los 
-      nombres de declaraciones que guardo y tengo que cambiarles el nombre
-    */
     var codeParams = "";
     var codeNestedFunction = "";
 
@@ -229,7 +224,6 @@ class Function extends Instruction {
   }
 
   changeNameOfCallFunctionsIntoSentences(node) {
-    //TODO recursivo para cambiar nombre y agregar values a call function
     if (node instanceof Declaration) {
       this.changeNameOfCallFunctionsIntoSentences(node.value);
 

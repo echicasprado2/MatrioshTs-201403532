@@ -5,6 +5,7 @@ var EnumDeclarationType;
 (function (EnumDeclarationType) {
     EnumDeclarationType["LET"] = "LET";
     EnumDeclarationType["CONST"] = "CONST";
+    EnumDeclarationType["VOID"] = "VOID";
 })(EnumDeclarationType || (EnumDeclarationType = {}));
 /**
  * @class type use for type anyone expresion with value

@@ -24,7 +24,7 @@ class AssignmentArray extends Instruction {
         }
         
         this.translatedCode += " = ";
-
+        //FIXME no se que hace
         if(this.value instanceof Array){
             for(var i = 0;i < this.value.length;i++){
                 if(i == 0){

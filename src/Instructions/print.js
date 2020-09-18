@@ -1,15 +1,20 @@
 class Print extends Instruction {
     constructor(linea, column, expresion) {
         super(linea, column);
-        this.value = expresion;
+        this.values = expresion;
         this.nodeName = TreeGraph.getNumberNode();
-        this.translatedCode = "console.log("+ this.value.getTranslated() +");\n";
+        this.translatedCode = "";
     }
-
+    
     /**
      * obtener el codigo para la traduccion
      */
     getTranslated(){
+        this.translatedCode = "console.log(";
+        for(var i = 0;i < this.values.length;i++){
+            this.translatedCode += (i == 0)? this.values[i].getTranslated() : `, ${this.values[i].getTranslated()}`;
+        }
+        this.translatedCode += ");\n";
         return this.translatedCode;
     }
 
