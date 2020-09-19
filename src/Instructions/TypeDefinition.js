@@ -26,7 +26,7 @@ class TypeDefinition extends Instruction {
 
     translatedSymbolsTable(e){
         TableReport.addTranslated(
-            new nodeTableSymbols(
+            new NodeTableSymbols(
               this.line,
               this.column,
               this.identify,
@@ -51,6 +51,7 @@ class TypeDefinition extends Instruction {
         // console.log(exists);
         if(exists === null){
             e.insert(this.identify,new Symbol(this.identify,new Type(EnumType.TYPE),this));
+            TableReport.addExecute(new NodeTableSymbols(this.line,this.column,this.identify,e.enviromentType,null));
         }else{
             ErrorList.addError(new ErrorNode(this.line,this.column,new ErrorType(EnumErrorType.SEMANTIC),`El type: "${this.identify}" ya se encuentra definido`,e.enviromentType));
         }

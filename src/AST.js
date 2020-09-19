@@ -34,6 +34,9 @@ class AST {
   executeSymbolsTable() {}
   
   execute(){
+    TableReport.cleanExecute();
+    PrintConsole.cleanConsole();
+    ErrorList.cleanErrorList();
 
     for(var i = 0; i < this.instruccions.length;i++){
       if(this.instruccions[i] instanceof TypeDefinition){
@@ -41,9 +44,8 @@ class AST {
       }
     }
 
-
-
-    printConsole.printLine("fin ejecucion");
+    ErrorList.showErrors();
+    PrintConsole.printLine("fin ejecucion");
   }
 
 }

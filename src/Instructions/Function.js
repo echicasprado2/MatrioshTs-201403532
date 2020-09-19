@@ -350,7 +350,7 @@ class Function extends Instruction {
    */
   translatedSymbolsTable(e) {
     TableReport.addTranslated(
-      new nodeTableSymbols(
+      new NodeTableSymbols(
         this.line,
         this.column,
         this.identifier,

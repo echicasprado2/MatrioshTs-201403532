@@ -11,7 +11,7 @@ class GraphTs extends Instruction {
 
     translatedSymbolsTable(e){
         TableReport.addTranslated(
-            new nodeTableSymbols(
+            new NodeTableSymbols(
               this.linea,
               this.column,
               "graph_ts",

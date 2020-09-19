@@ -59,7 +59,7 @@ class DeclarationArray extends Instruction {
     translatedSymbolsTable(e){
         for(var i=0;i < this.ids.length;i++){
             TableReport.addTranslated(
-                new nodeTableSymbols(
+                new NodeTableSymbols(
                   this.line,
                   this.column,
                   this.ids[i],

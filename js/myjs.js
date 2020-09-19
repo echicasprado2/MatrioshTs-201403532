@@ -60,7 +60,7 @@ var consoleShow = CodeMirror.fromTextArea(document.getElementById('textarea-cons
     reader.readAsText(fileUpload[0]);
   });
 
-
+  // TRADUCIR
   var translate = document.getElementById('traducir');
   translate.addEventListener('click',(e)=>{
     
@@ -87,12 +87,11 @@ var consoleShow = CodeMirror.fromTextArea(document.getElementById('textarea-cons
     // result.executeSymbolsTable();// TODO tengo duda esta lo debe de generar la traduccion
     // showTableExecute();// TODO implementar
     
-    printConsole.cleanConsole();
     result.execute();
     
-    ErrorList.showErrors();
-    myConsole.setValue(printConsole.getPrintConsole());
-
+    myConsole.setValue(PrintConsole.getPrintConsole());
+    showTableExecute();
+    showTableErrors();
     showExecuteTree(editor.getValue());
   });
 
@@ -132,7 +131,6 @@ var consoleShow = CodeMirror.fromTextArea(document.getElementById('textarea-cons
     document.getElementById('tableTranslated').innerHTML = "";
     
     var html = "<h2>Tabla de simbolos traduccion</h2>\n";
-    
     html += "<table class=\"table table-dark\" id=\"tableTranslated\">";
     html += "<thead class=\"thead-light\">";
     html += "<tr>";
@@ -160,21 +158,74 @@ var consoleShow = CodeMirror.fromTextArea(document.getElementById('textarea-cons
 
 //TODO make show execute table
   function showTableExecute(){
-    // <h2>Tabla de simbolos ejecucion</h2>
-    //                 <table class="table table-dark" id="tableExecute">
-    //                     <thead  class="thead-light">
-    //                         <tr>
-    //                             <th scope="col">#</th>
-    //                             <th scope="col">IDENTIFICADOR</th>
-    //                             <th scope="col">ENTORNO</th>
-    //                             <th scope="col">Valor</th>
-    //                             <th scope="col">Linea</th>
-    //                             <th scope="col">Columna</th>
-    //                         </tr>
-    //                     </thead>
-    //                     <tbody>
-    //                     </tbody>
-    //                 </table>
-    var html = "";
+    document.getElementById('tableExecute').innerHTML = "";
+
+    var html = "<h2>Tabla de simbolos ejecucion</h2>\n";
+    html += "<table class=\"table table-dark\" id=\"tableExecute\">";
+    html += "<thead class=\"thead-light\">";
+    html += "<tr>";
+    html += "<th scope=\"col\">#</th>";
+    html += "<th scope=\"col\">IDENTIFICADOR</th>";
+    html += "<th scope=\"col\">ENTORNO</th>";
+    html += "<th scope=\"col\">LINEA</th>";
+    html += "<th scope=\"col\">COLUMNA</th>";
+    html += "<th scope=\"col\">VALOR</th>";
+    html += "</tr>";
+    html += " </thead>";
+    html += "<tbody>";
+
+    console.log(html);
+
+    var nodes = TableReport.getNodesExecute();
+    for(var i = 0; i < nodes.length; i++){
+      var item = nodes[i];
+      html += "<tr>";
+      html += `<td>${i + 1}</td>`;
+      html += `<td>${item.name}</td>`;
+      html += `<td>${item.typeEnviroment}</td>`;
+      html += `<td>${item.line}</td>`;
+      html += `<td>${item.column}</td>`;
+      html += `<td>${item.value}</td>`;
+      html += "</tr>";
+    }
+
+    html += "</tbody>";
+    html += "</table>";
     document.getElementById('tableExecute').innerHTML = html;
+  }
+
+  // TABLA DE ERRORES
+  function showTableErrors(){
+    document.getElementById('tableErrors').innerHTML = "";
+
+    var html = "<h2>Tabla de errores</h2>\n";
+    html += "<table class=\"table table-dark\" id=\"tableErrors\">";
+    html += "<thead class=\"thead-light\">";
+    html += "<tr>";
+    html += "<th scope=\"col\">#</th>";
+    html += "<th scope=\"col\">LINEA</th>";
+    html += "<th scope=\"col\">COLUMNA</th>";
+    html += "<th scope=\"col\">TIPO DE ERROR</th>";
+    html += "<th scope=\"col\">DESCRIPCION</th>";
+    html += "<th scope=\"col\">ENTORNO</th>";
+    html += "</tr>";
+    html += " </thead>";
+    html += "<tbody>";
+
+    var nodes = ErrorList.getErrorList();
+    for(var i = 0; i < nodes.length; i++){
+      var item = nodes[i];
+      html += "<tr>";
+      html += `<td>${i + 1}</td>`;
+      html += `<td>${item.line}</td>`;
+      html += `<td>${item.column}</td>`;
+      html += `<td>${item.errorType.toString()}</td>`;
+      html += `<td>${item.description}</td>`;
+      html += `<td>${item.environmentType.toString()}</td>`;
+      html += "</tr>";
+    }
+
+    html += "</tbody>";
+    html += "</table>";
+    document.getElementById('tableErrors').innerHTML = html;
   }

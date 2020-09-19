@@ -37,7 +37,7 @@ class If extends Instruction {
 
     executeSymbolsTable(e){
         TableReport.addTranslated(
-            new nodeTableSymbols(
+            new NodeTableSymbols(
               this.linea,
               this.column,
               "IF",

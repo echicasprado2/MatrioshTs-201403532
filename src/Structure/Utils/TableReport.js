@@ -1,4 +1,4 @@
-class nodeTableSymbols{
+class NodeTableSymbols{
     /**
      * 
      * @param {*} line 
@@ -18,14 +18,14 @@ class nodeTableSymbols{
 
 class TableReport {
   static nodesTranslated = [];
-  static nodesExecuse = [];
+  static nodesExecute = [];
 
   static cleanTranslated() {
     TableReport.nodesTranslated = [];
   }
 
-  static cleanExecuse(){
-    TableReport.nodesExecuse = [];
+  static cleanExecute(){
+    TableReport.nodesExecute = [];
   }
 
   static addTranslated(node) {
@@ -39,12 +39,12 @@ class TableReport {
     return TableReport.nodesTranslated;
   }
 
-  static addExecuse(node){
-    TableReport.nodesExecuse.push(node);
+  static addExecute(node){
+    TableReport.nodesExecute.push(node);
   }
 
-  static getNodesExecuse(){
-    return TableReport.nodesExecuse;
+  static getNodesExecute(){
+    return TableReport.nodesExecute;
   }
 
 }

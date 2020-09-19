@@ -15,6 +15,7 @@ class ErrorType {
     constructor(enumErrorType) {
         this.enumErrorType = enumErrorType;
     }
+    
     toString() {
         return this.enumErrorType.toString();
     }

@@ -21,7 +21,7 @@ class TypeAttributeDefinition extends Instruction {
 
     translatedSymbolsTable(e){
         TableReport.addTranslated(
-            new nodeTableSymbols(
+            new NodeTableSymbols(
               this.linea,
               this.column,
               this.identify,

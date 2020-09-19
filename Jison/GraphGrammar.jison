@@ -128,8 +128,6 @@ lex_comentariomultilinea [/][*][^*]*[*]+([^/*][^*]*[*]+)*[/]
 %left '}'
 %left 'EOF'
 
-//TODO add error lexico
-
 %start INIT
 
 %ebnf
@@ -231,13 +229,12 @@ PRINT: print par_izq L_E par_der PUNTO_Y_COMA { $$ = new NodeGraphAST("PRITN",Nu
 
 GRAPH_TS: graficar_ts par_izq par_der PUNTO_Y_COMA { $$ = new NodeGraphAST("GRAFICAR_TS",NumberNode.getNumber()); } 
         ;
-//FIXME con let a = 0, b=0;
+        
 DECLARATION: TYPE_DECLARATION  L_ID TYPE_VARIABLE PUNTO_Y_COMA                                  { $$ = new NodeGraphAST("DECLARACION",NumberNode.getNumber()); $$.children.push($1,$2,$3); }
         |    TYPE_DECLARATION  L_ID TYPE_VARIABLE '=' E PUNTO_Y_COMA                            { $$ = new NodeGraphAST("DECLARACION",NumberNode.getNumber()); $$.children.push($1,$2,$3,$5); }
         |    TYPE_DECLARATION  L_ID TYPE_VARIABLE L_DIMENSION PUNTO_Y_COMA                      { $$ = new NodeGraphAST("DECLARACION_ARRAY",NumberNode.getNumber()); $$.children.push($1,$2,$3,$4); }
         |    TYPE_DECLARATION  L_ID TYPE_VARIABLE L_DIMENSION '=' L_ARRAY PUNTO_Y_COMA          { $$ = new NodeGraphAST("DECLARACION_ARRAY",NumberNode.getNumber()); $$.children.push($1,$2,$3,$4,$6); }
         |    TYPE_DECLARATION  L_ID TYPE_VARIABLE '=' llave_izq L_E_TYPE llave_der PUNTO_Y_COMA { $$ = new NodeGraphAST("DECLARACION_TYPE",NumberNode.getNumber()); $$.children.push($1,$2,$3,$6); }
-        // TODO add arrays of types
         ;
 
 TYPES: type identificador '=' llave_izq ATTRIBUTES_TYPE llave_der PUNTO_Y_COMA { $$ = new NodeGraphAST("TYPE",NumberNode.getNumber()); $$.children.push(new NodeGraphAST($2,NumberNode.getNumber()),$5); }
