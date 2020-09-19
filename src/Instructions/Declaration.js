@@ -17,7 +17,6 @@ class Declaration extends Instruction {
         this.type = type;
         this.value = value;
         
-        this.nodeName = TreeGraph.getNumberNode();
         this.translatedCode = "";
     }
 
@@ -52,10 +51,6 @@ class Declaration extends Instruction {
             }
         }
         return this.translatedCode + ";\n";
-    }
-
-    getGraphsCode(){
-        return this.graphcsCode;
     }
 
     translatedSymbolsTable(e){

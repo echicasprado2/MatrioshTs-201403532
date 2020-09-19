@@ -6,18 +6,12 @@ class AttributeTypeAssignment extends Instruction {
         this.identify = identify;
         this.value = value;
         
-        this.nodeName = TreeGraph.getNumberNode();
         this.translatedCode = "";
     }
 
     getTranslated(){
         this.translatedCode += `${this.identify}: ${this.value.getTranslated()}`
         return this.translatedCode;
-    }
-
-    getGraphsCode(){
-        this.translatedCode = `${this.identify}: ${this.value.getTranslated}`
-        return this.graphcsCode;
     }
 
     translatedSymbolsTable(e){

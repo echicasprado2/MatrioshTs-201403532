@@ -7,7 +7,6 @@ class ForOf extends Instruction {
         this.expression = expression;
         this.block = block;
 
-        this.nodeName = TreeGraph.getNumberNode();
         this.translatedCode = "";
     }
 
@@ -15,10 +14,6 @@ class ForOf extends Instruction {
         this.translatedCode += `for(${this.declaration.getTranslated().replace("\n","").replace(";","")} of ${this.expression.getTranslated()})`;
         this.translatedCode += `${this.block.getTranslated()}\n\n`;
         return this.translatedCode;
-    }
-
-    getGraphsCode(){
-        return this.graphcsCode;
     }
 
     translatedSymbolsTable(e){

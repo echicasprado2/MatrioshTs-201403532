@@ -2,11 +2,9 @@ class CallFunction extends Expresion {
 
     constructor(linea,column,identifier,parametros,isFinal){
         super(linea,column,null,null);
-        this.nodeName = TreeGraph.getNumberNode();
         this.identifier = identifier;
         this.value = parametros;
         this.isFinal = isFinal;
-        this.graphcsCode = "";
         this.translatedCode = "";
     }
 
@@ -26,10 +24,6 @@ class CallFunction extends Expresion {
             }
             return this.translatedCode;
         }
-    }
-
-    getGraphsCode(){
-        return this.graphcsCode;
     }
 
     translatedSymbolsTable(e){

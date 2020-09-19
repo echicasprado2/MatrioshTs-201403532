@@ -6,7 +6,6 @@ class DeclarationArray extends Instruction {
         this.type = type;
         this.dimensions = dimensions;
         this.values = value;
-        this.nodeName = TreeGraph.getNumberNode();
         this.translatedCode = "";
     }
 
@@ -55,10 +54,6 @@ class DeclarationArray extends Instruction {
         }
         
         return cadena + "]";
-    }
-
-    getGraphsCode(){
-        return this.graphcsCode;
     }
 
     translatedSymbolsTable(e){

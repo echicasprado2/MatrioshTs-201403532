@@ -8,10 +8,6 @@ class InstructionError extends Instruction {
         return "";
     }
 
-    getGraphsCode(){
-        return this.graphcsCode;
-    }
-
     translatedSymbolsTable(e){
         return "";
     }

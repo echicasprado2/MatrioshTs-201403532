@@ -6,17 +6,12 @@ class Do extends Instruction {
         this.expression = expression;
         this.block = block;
 
-        this.nodeName = TreeGraph.getNumberNode();
         this.translatedCode = "";
     }
 
     getTranslated(){
         this.translatedCode += `do ${this.block.getTranslated()}while(${this.expression.getTranslated()});\n\n`;
         return this.translatedCode;
-    }
-
-    getGraphsCode(){
-        return this.graphcsCode;
     }
 
     translatedSymbolsTable(e){

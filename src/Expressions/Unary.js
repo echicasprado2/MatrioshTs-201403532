@@ -9,8 +9,6 @@
         this.operationType = operationType;
         this.expresion = expresion;
         this.isFinal = isFinal;
-        this.nodeName = TreeGraph.getNumberNode();
-        this.graphcsCode = "";
         this.translatedCode = "";
     }
 
@@ -35,13 +33,6 @@
                 return this.translatedCode;
             }
         }
-    }
-
-    /**
-     * obtengo el codigo para agregar al grafo del ast
-     */
-    getGraphsCode(){
-        return this.graphcsCode;
     }
 
     /**

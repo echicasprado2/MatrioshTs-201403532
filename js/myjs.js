@@ -81,9 +81,19 @@ var consoleShow = CodeMirror.fromTextArea(document.getElementById('textarea-cons
   var execuse = document.getElementById('ejecutar');
   execuse.addEventListener('click',(e)=>{
     //TODO implement
+    TreeGraph.cleanNodeNumber();
+    var editor = getSalida();
+    
+    var result = new AST(Gramatica.parse(editor.getValue()));
+    showExecuseTree(editor.getValue());
+
+    // result.execuseSymbolsTable();// TODO tengo duda esta lo debe de generar la traduccion
+    // showTableExecuse();// TODO implementar
+
+    result.execuse();
+
   });
 
-  //TODO make show translated tree
   function showTranslatedTree(file){
     var ast = GraphGrammar.parse(file);
     var code = ast.stringFinalTreeTranslated(ast.totalString(ast));
@@ -111,7 +121,6 @@ var consoleShow = CodeMirror.fromTextArea(document.getElementById('textarea-cons
     // var graph = mermaid.render('myGraph',grapDefinition,insertSvg);
   }
 
-//TODO make show translated table
   function showTableTranslatedSymbols(){
     document.getElementById('tableTranslated').innerHTML = "";
     

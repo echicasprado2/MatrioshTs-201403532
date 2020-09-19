@@ -17,7 +17,6 @@ class Value extends Expresion {
             this.esArray = false;
         }
         
-        this.nodeName = TreeGraph.getNumberNode();
         this.translatedCode = value.toString();
     }
 
@@ -30,13 +29,6 @@ class Value extends Expresion {
         }else{
             return this.translatedCode;
         }
-    }
-
-    /**
-     * obtengo el codigo para agregar al grafo del ast
-     */
-    getGraphsCode(){
-        return this.graphcsCode;
     }
 
     /**

@@ -6,8 +6,6 @@ class TypeAttributeDefinition extends Instruction {
         this.identify = identify;
         this.type = type;
 
-        this.nodeName = TreeGraph.getNumberNode();
-        this.graphcsCode = TreeGraph;
         this.translatedCode = "";
     }
 
@@ -19,10 +17,6 @@ class TypeAttributeDefinition extends Instruction {
         }
 
         return this.translatedCode;
-    }
-
-    getGraphsCode(){
-        return this.graphcsCode;
     }
 
     translatedSymbolsTable(e){

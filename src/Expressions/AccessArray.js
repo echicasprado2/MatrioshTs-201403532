@@ -10,8 +10,6 @@ class AccessArray extends Expresion {
     this.identifier = id;
     this.value = expresion;
 
-    this.nodeName = TreeGraph.getNumberNode();
-    this.graphcsCode = TreeGraph;
     this.translatedCode = "";
   }
 
@@ -29,10 +27,6 @@ class AccessArray extends Expresion {
     } else {
       return this.translatedCode;
     }
-  }
-
-  getGraphsCode() {
-    return this.graphcsCode;
   }
 
   translatedSymbolsTable(e) {

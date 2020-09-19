@@ -6,7 +6,6 @@ class AssignmentType extends Instruction {
         this.access = access;
         this.values = values;
 
-        this.nodeName = TreeGraph.getNumberNode();
         this.translatedCode = "";
     }
 
@@ -27,10 +26,6 @@ class AssignmentType extends Instruction {
 
         return `${this.translatedCode}};\n`;
         return this.translatedCode;
-    }
-
-    getGraphsCode(){
-        return this.graphcsCode;
     }
 
     translatedSymbolsTable(e){

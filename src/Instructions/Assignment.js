@@ -10,7 +10,6 @@ class Assignment extends Instruction {
         super(linea,column);
         this.listAccess = access;
         this.value = expresion;
-        this.nodeName = TreeGraph.getNumberNode();
         this.translatedCode = "";
     }
 
@@ -36,10 +35,6 @@ class Assignment extends Instruction {
         }
 
         return this.translatedCode + ";\n";
-    }
-
-    getGraphsCode(){
-        //return this.graphcsCode;
     }
 
     translatedSymbolsTable(e){

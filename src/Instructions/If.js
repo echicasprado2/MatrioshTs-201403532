@@ -15,7 +15,6 @@ class If extends Instruction {
         this.haveElse = haveElse;
         this.blockElse = blockElse;
 
-        this.nodeName = TreeGraph.getNumberNode();
         this.translatedCode = "";
     }
 
@@ -30,10 +29,6 @@ class If extends Instruction {
         }
 
         return `${this.translatedCode}\n\n`;
-    }
-
-    getGraphsCode(){
-        return this.graphcsCode;
     }
 
     translatedSymbolsTable(e){

@@ -1,7 +1,6 @@
 class Id extends Expresion {
     constructor(linea,column,identifier){
         super(linea,column,null,identifier);
-        this.nodeName = TreeGraph.getNumberNode();
         this.translatedCode = identifier;
     }
 
@@ -11,10 +10,6 @@ class Id extends Expresion {
         }else{
             return this.translatedCode;
         }
-    }
-
-    getGraphsCode(){
-        return this.graphcsCode;
     }
 
     translatedSymbolsTable(e){

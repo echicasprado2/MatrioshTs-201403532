@@ -345,13 +345,6 @@ class Function extends Instruction {
   }
 
   /**
-   * obtengo el codigo para agregar al grafo del ast
-   */
-  getGraphsCode() {
-    return "";
-  }
-
-  /**
    *
    * @param {Environment actual} e
    */

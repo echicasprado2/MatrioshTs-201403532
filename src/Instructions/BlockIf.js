@@ -16,7 +16,6 @@ class BlockIf extends Instruction {
         this.conditionTrue = false;
         this.isElseIf =isElseIf;
 
-        this.nodeName = TreeGraph.getNumberNode();
         this.translatedCode = "";
     }
 
@@ -31,10 +30,6 @@ class BlockIf extends Instruction {
         this.translatedCode += `${this.block.getTranslated()}`;
 
         return this.translatedCode;
-    }
-
-    getGraphsCode(){
-        return this.graphcsCode;
     }
 
     translatedSymbolsTable(e){

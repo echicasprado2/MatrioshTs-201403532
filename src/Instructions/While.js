@@ -13,7 +13,6 @@ class While extends Instruction {
         this.expression = expression;
         this.block = block;
 
-        this.nodeName = TreeGraph.getNumberNode();
         this.translatedCode = "";
     }
 
@@ -21,10 +20,6 @@ class While extends Instruction {
         this.translatedCode += `while(${this.expression.getTranslated()})`
         this.translatedCode += this.block.getTranslated();
         return `${this.translatedCode}\n\n`;
-    }
-
-    getGraphsCode(){
-        return this.graphcsCode;
     }
 
     translatedSymbolsTable(e){

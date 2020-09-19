@@ -7,17 +7,11 @@ class TypeAttributeArrayDefinition extends Instruction {
         this.type = type;
         this.dimentions = dimentions;
 
-        this.nodeName = TreeGraph.getNumberNode();
-        this.graphcsCode = TreeGraph;
         this.translatedCode = "";
     }
 
     getTranslated(){
         return this.translatedCode;
-    }
-
-    getGraphsCode(){
-        return this.graphcsCode;
     }
 
     translatedSymbolsTable(e){

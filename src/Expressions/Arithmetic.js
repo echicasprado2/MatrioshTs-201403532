@@ -13,9 +13,7 @@ class Arithmetic extends Expresion {
     this.operationType = operationType;
     this.expresion1 = expresion1;
     this.expresion2 = expresion2;
-    this.nodeName = TreeGraph.getNumberNode();
-
-    this.graphcsCode = "";
+  
     this.translatedCode = "";
   }
 
@@ -32,13 +30,6 @@ class Arithmetic extends Expresion {
     } else {
       return this.translatedCode;
     }
-  }
-
-  /**
-   * obtengo el codigo para agregar al grafo del ast
-   */
-  getGraphsCode() {
-    return this.graphcsCode;
   }
 
   /**

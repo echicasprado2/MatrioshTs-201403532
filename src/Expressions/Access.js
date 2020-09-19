@@ -1,8 +1,6 @@
 class Access extends Expresion {
     constructor(linea,column,identifiers){
         super(linea,column,null,identifiers);
-        this.nodeName = TreeGraph.getNumberNode();
-        this.graphcsCode = "";
         this.translatedCode = "";
     }
 
@@ -16,10 +14,6 @@ class Access extends Expresion {
         }else{
             return this.translatedCode;
         }
-    }
-
-    getGraphsCode(){
-        return this.graphcsCode;
     }
 
     translatedSymbolsTable(e){

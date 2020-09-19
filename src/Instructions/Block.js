@@ -8,8 +8,6 @@ class Block extends Instruction {
     super(0, 0);
 
     this.sentences = sentences;
-
-    this.nodeName = TreeGraph.getNumberNode();
     this.translatedCode = "";
   }
 
@@ -22,10 +20,6 @@ class Block extends Instruction {
 
     this.translatedCode += "}"
     return this.translatedCode;
-  }
-
-  getGraphsCode() {
-    return this.graphcsCode;
   }
 
   translatedSymbolsTable(e) {

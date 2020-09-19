@@ -6,7 +6,6 @@ class Switch extends Instruction {
         this.expression = expression;
         this.blockSwitch = block;
 
-        this.nodeName = TreeGraph.getNumberNode();
         this.translatedCode = "";
     }
 
@@ -19,10 +18,6 @@ class Switch extends Instruction {
 
         this.translatedCode += "}\n\n";
         return this.translatedCode;
-    }
-
-    getGraphsCode(){
-        return this.graphcsCode;
     }
 
     translatedSymbolsTable(e){

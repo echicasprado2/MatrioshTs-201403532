@@ -17,7 +17,6 @@ class CaseSwitch extends Instruction {
         this.isCase = isCase;
         this.haveBlock = haveBlock;
 
-        this.nodeName = TreeGraph.getNumberNode();
         this.translatedCode = "";
     }
 
@@ -40,10 +39,6 @@ class CaseSwitch extends Instruction {
         this.translatedCode += tmp;
 
         return this.translatedCode;
-    }
-
-    getGraphsCode(){
-        return this.graphcsCode;
     }
 
     translatedSymbolsTable(e){

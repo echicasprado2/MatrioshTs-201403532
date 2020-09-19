@@ -2,7 +2,6 @@ class Print extends Instruction {
     constructor(linea, column, expresion) {
         super(linea, column);
         this.values = expresion;
-        this.nodeName = TreeGraph.getNumberNode();
         this.translatedCode = "";
     }
     
@@ -16,13 +15,6 @@ class Print extends Instruction {
         }
         this.translatedCode += ");\n";
         return this.translatedCode;
-    }
-
-    /**
-     * obtengo el codigo para agregar al grafo del ast
-     */
-    getGraphsCode(){
-        return this.graphcsCode;
     }
 
     /**

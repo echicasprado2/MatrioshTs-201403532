@@ -7,8 +7,6 @@ class Parameter extends Instruction{
         this.expresion = expresion;
         this.isArray = isArray;
         this.dimensions = dimentions;
-
-        this.nodeName = TreeGraph.getNumberNode();
     }
 
     /**
@@ -33,13 +31,6 @@ class Parameter extends Instruction{
         }
 
         return this.translatedCode;
-    }
-
-    /**
-     * obtengo el codigo para agregar al grafo del ast
-     */
-    getGraphsCode(){
-        return this.graphcsCode;
     }
 
     /**

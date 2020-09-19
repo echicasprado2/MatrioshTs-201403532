@@ -9,12 +9,10 @@ class AssignmentArray extends Instruction {
      */
     constructor(linea,column,access,expresion){
         super(linea,column);
-        this.nodeName = TreeGraph.getNumberNode();
         
         this.listAccess = access;
         this.value = expresion;
 
-        this.graphcsCode = TreeGraph;
         this.translatedCode = "";
     }
 
@@ -32,10 +30,6 @@ class AssignmentArray extends Instruction {
         }
 
         return this.translatedCode + ";\n";
-    }
-
-    getGraphsCode(){
-        return this.graphcsCode;
     }
 
     translatedSymbolsTable(e){

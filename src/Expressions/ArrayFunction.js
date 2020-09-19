@@ -30,10 +30,6 @@ class ArrayFunction extends Expresion {
     }
   }
 
-  getGraphsCode() {
-    return this.graphcsCode;
-  }
-
   translatedSymbolsTable(e) {
     return "implementar";
   }

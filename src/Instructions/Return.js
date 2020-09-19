@@ -11,7 +11,6 @@ class Return extends Instruction {
         this.expression = expression;
         this.returnExpresion = returnExpresion;
 
-        this.nodeName = TreeGraph.getNumberNode();
         this.translatedCode = "";
     }
 
@@ -23,10 +22,6 @@ class Return extends Instruction {
         }
 
         return `${this.translatedCode};\n`;
-    }
-
-    getGraphsCode(){
-        return this.graphcsCode;
     }
 
     translatedSymbolsTable(e){

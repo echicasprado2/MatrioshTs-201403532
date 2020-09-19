@@ -1,7 +1,6 @@
 class Ternary extends Expresion {
     constructor(linea,column,condition,conditionTrue,conditionFalse){
         super(linea,column,null,null);
-        this.nodeName = TreeGraph.getNumberNode();
         this.condition = condition;
         this.conditionTrue = conditionTrue;
         this.conditionFalse = conditionFalse;
@@ -16,10 +15,6 @@ class Ternary extends Expresion {
         } else {
             return this.translatedCode;
         }
-    }
-
-    getGraphsCode(){
-        return this.graphcsCode;
     }
 
     translatedSymbolsTable(e){
