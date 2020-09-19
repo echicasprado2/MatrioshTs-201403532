@@ -47,8 +47,7 @@ class TypeDefinition extends Instruction {
 
     execute(e) {
         var exists = e.searchSymbol(this.identify);
-
-        // console.log(exists);
+        
         if(exists === null){
             e.insert(this.identify,new Symbol(this.identify,new Type(EnumType.TYPE),this));
             TableReport.addExecute(new NodeTableSymbols(this.line,this.column,this.identify,e.enviromentType,null));

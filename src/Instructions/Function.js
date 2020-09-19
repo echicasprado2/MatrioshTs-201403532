@@ -386,6 +386,15 @@ class Function extends Instruction {
    * @param {Environment} e
    */
   execute(e) {
-    throw new Error("Method not implemented.");
+    var exists = e.searchSymbol(this.identifier);
+    
+    if(exists == null){
+      e.insert(this.identifier,new Symbol(this.identifier,new Type(EnumType.FUNCTION),this));
+      TableReport.addExecute(new NodeTableSymbols(this.line,this.column,this.identifier,e.enviromentType,null));
+    }else{
+      ErrorList.addError(new ErrorNode(this.line,this.column,new ErrorType(EnumErrorType.SEMANTIC),`La funcion: "${this.identifier}" ya se encuentra definida`,e.enviromentType));
+    }
+
+    return null;
   }
 }
