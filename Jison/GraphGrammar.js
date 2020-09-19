@@ -966,7 +966,7 @@ case 62:return 22
 break;
 case 63:return 5
 break;
-case 64:return 'INVALID';
+case 64:;
 break;
 }
 },

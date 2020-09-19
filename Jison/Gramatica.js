@@ -207,13 +207,13 @@ case 62:
  this.$ = new GraphTs(this._$.first_line,this.$.first_column); 
 break;
 case 63:
- this.$ = new Declaration(this._$.first_line,this._$.first_column,$$[$0-3],$$[$0-2],$$[$0-1],""); 
+ this.$ = new Declaration(this._$.first_line,this._$.first_column,$$[$0-3],$$[$0-2],$$[$0-1],null); 
 break;
 case 64:
  this.$ = new Declaration(this._$.first_line,this._$.first_column,$$[$0-5],$$[$0-4],$$[$0-3],$$[$0-1]); 
 break;
 case 65:
- this.$ = new DeclarationArray(this._$.first_line,this._$.first_column,$$[$0-4],$$[$0-3],$$[$0-2],$$[$0-1],""); 
+ this.$ = new DeclarationArray(this._$.first_line,this._$.first_column,$$[$0-4],$$[$0-3],$$[$0-2],$$[$0-1],null); 
 break;
 case 66:
  this.$ = new DeclarationArray(this._$.first_line,this._$.first_column,$$[$0-6],$$[$0-5],$$[$0-4],$$[$0-3],new Value(new Type(EnumType.ARRAY,""),$$[$0-1])); 
@@ -1001,129 +1001,129 @@ case 1:/* Omitir */
 break;
 case 2:/* Omitir */
 break;
-case 3:return 110
+case 3:return 110;
 break;
-case 4:return 109
+case 4:return 109;
 break;
-case 5:return 86
+case 5:return 86;
 break;
-case 6:return 84
+case 6:return 84;
 break;
-case 7:return 85
+case 7:return 85;
 break;
-case 8:return 87
+case 8:return 87;
 break;
-case 9:return 88
+case 9:return 88;
 break;
-case 10:return 89
+case 10:return 89;
 break;
-case 11:return 103
+case 11:return 103;
 break;
-case 12:return 101
+case 12:return 101;
 break;
-case 13:return 102
+case 13:return 102;
 break;
-case 14:return 95
+case 14:return 95;
 break;
-case 15:return 96
+case 15:return 96;
 break;
-case 16:return 97
+case 16:return 97;
 break;
-case 17:return 98
+case 17:return 98;
 break;
-case 18:return 94
+case 18:return 94;
 break;
-case 19:return 93
+case 19:return 93;
 break;
-case 20:return 54
+case 20:return 54;
 break;
-case 21:return 90
+case 21:return 90;
 break;
-case 22:return 91
+case 22:return 91;
 break;
-case 23:return 92
+case 23:return 92;
 break;
-case 24:return 30
+case 24:return 30;
 break;
-case 25:return 38
+case 25:return 38;
 break;
-case 26:return 68
+case 26:return 68;
 break;
-case 27:return 23
+case 27:return 23;
 break;
-case 28:return 25
+case 28:return 25;
 break;
-case 29:return 33
+case 29:return 33;
 break;
-case 30:return 34
+case 30:return 34;
 break;
-case 31:return 62
+case 31:return 62;
 break;
-case 32:return 63
+case 32:return 63;
 break;
-case 33:return 42
+case 33:return 42;
 break;
-case 34:return 104
+case 34:return 104;
 break;
-case 35:return 46
+case 35:return 46;
 break;
-case 36:return 45
+case 36:return 45;
 break;
-case 37:return 48
+case 37:return 48;
 break;
-case 38:return 58
+case 38:return 58;
 break;
-case 39:return 65
+case 39:return 65;
 break;
-case 40:return 64
+case 40:return 64;
 break;
-case 41:return 108
+case 41:return 108;
 break;
-case 42:return 106
+case 42:return 106;
 break;
-case 43:return 107
+case 43:return 107;
 break;
-case 44:return 72
+case 44:return 72;
 break;
-case 45:return 71
+case 45:return 71;
 break;
-case 46:return 75
+case 46:return 75;
 break;
-case 47:return 79
+case 47:return 79;
 break;
-case 48:return 80
+case 48:return 80;
 break;
-case 49:return 27
+case 49:return 27;
 break;
-case 50:return 28
+case 50:return 28;
 break;
-case 51:return 29
+case 51:return 29;
 break;
-case 52:return 81
+case 52:return 81;
 break;
-case 53:return 83
+case 53:return 83;
 break;
-case 54:return 82
+case 54:return 82;
 break;
-case 55:return 73
+case 55:return 73;
 break;
-case 56:return 74
+case 56:return 74;
 break;
-case 57:return 49
+case 57:return 49;
 break;
-case 58:return 50
+case 58:return 50;
 break;
-case 59:return 37
+case 59:return 37;
 break;
-case 60:return 99
+case 60:return 99;
 break;
-case 61:return 100
+case 61:return 100;
 break;
-case 62:return 22
+case 62:return 22;
 break;
-case 63:return 5
+case 63:return 5;
 break;
-case 64:return 'INVALID';
+case 64: ErrorList.addError(new ErrorNode(yy_.yylloc.first_line,yy_.yylloc.first_column,new ErrorType(EnumErrorType.LEXICO),`El caracter: "${yy_.yytext}" no pertenece al lenguaje`,new EnvironmentType(EnumEnvironmentType.NULL, ""))); 
 break;
 }
 },

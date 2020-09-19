@@ -30,6 +30,7 @@ class TypeDefinition extends Instruction {
               this.line,
               this.column,
               this.identify,
+              null,
               e.enviromentType,
               null
             )
@@ -49,7 +50,7 @@ class TypeDefinition extends Instruction {
         var exists = e.searchSymbol(this.identify);
         
         if(exists === null){
-            e.insert(this.identify,new Symbol(this.identify,new Type(EnumType.TYPE),this));
+            e.insert(this.identify,new Symbol(this.identify,new Type(EnumType.TYPE),new DeclarationType(EnumDeclarationType.NULL),this));
             TableReport.addExecute(new NodeTableSymbols(this.line,this.column,this.identify,e.enviromentType,null));
         }else{
             ErrorList.addError(new ErrorNode(this.line,this.column,new ErrorType(EnumErrorType.SEMANTIC),`El type: "${this.identify}" ya se encuentra definido`,e.enviromentType));

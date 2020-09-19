@@ -21,7 +21,8 @@ class ForOf extends Instruction {
             new NodeTableSymbols(
               this.linea,
               this.column,
-              "FOR",
+              "FOR OF",
+              null,
               e.enviromentType,
               null
             )

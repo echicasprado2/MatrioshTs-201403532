@@ -41,6 +41,7 @@ class If extends Instruction {
               this.linea,
               this.column,
               "IF",
+              null,
               e.enviromentType,
               null
             )

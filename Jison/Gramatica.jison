@@ -21,87 +21,87 @@ lex_comentariomultilinea [/][*][^*]*[*]+([^/*][^*]*[*]+)*[/]
 [\s\t\r\n]+                 /* Omitir */
 
 //aritmeticos
-"++" return '++'
-"--" return '--'
-"**" return '**'
-"+"  return '+'
-"-"  return '-'
-"*"  return '*'
-"/"  return '/'
-"%"  return '%'
+"++" return '++';
+"--" return '--';
+"**" return '**';
+"+"  return '+';
+"-"  return '-';
+"*"  return '*';
+"/"  return '/';
+"%"  return '%';
 
 //valores
-"null"  return 'val_nulo'
-"true"  return 'val_verdadero'
-"false" return 'val_falso'
+"null"  return 'val_nulo';
+"true"  return 'val_verdadero';
+"false" return 'val_falso';
 
 //relacionales
-">=" return '>='
-">"  return '>'
-"<=" return '<='
-"<"  return '<'
+">=" return '>=';
+">"  return '>';
+"<=" return '<=';
+"<"  return '<';
 
 //comparacion
-"=="  return '=='
-"!="  return '!='
-"="   return '='
+"=="  return '==';
+"!="  return '!=';
+"="   return '=';
 
 //logicos
-"&&" return '&&'
-"||" return '||'
-"!" return '!'
+"&&" return '&&';
+"||" return '||';
+"!" return '!';
 
 //simbolos
-";"  return 'punto_y_coma'
-":"  return 'dos_puntos'
-"."  return 'punto'
-"("  return 'par_izq'
-")"  return 'par_der'
-"{"  return 'llave_izq'
-"}"  return 'llave_der'
-"["  return 'cor_izq'
-"]"  return 'cor_der'
-","  return 'coma'
-"?"  return '?'
+";"  return 'punto_y_coma';
+":"  return 'dos_puntos';
+"."  return 'punto';
+"("  return 'par_izq';
+")"  return 'par_der';
+"{"  return 'llave_izq';
+"}"  return 'llave_der';
+"["  return 'cor_izq';
+"]"  return 'cor_der';
+","  return 'coma';
+"?"  return '?';
 
 //PALABRAS RESERVADAS
-"number"      return 'number'
-"void"        return 'void'
-"boolean"     return 'boolean'
-"type"        return 'type'
+"number"      return 'number';
+"void"        return 'void';
+"boolean"     return 'boolean';
+"type"        return 'type';
 
-"const"       return 'const'
-"let"         return 'let'
-"push"        return 'push'
-"pop"         return 'pop'
-"length"      return 'length'
+"const"       return 'const';
+"let"         return 'let';
+"push"        return 'push';
+"pop"         return 'pop';
+"length"      return 'length';
 
-"if"          return 'if'
-"else"        return 'else'
-"switch"      return 'switch'
-"case"        return 'case'
-"default"     return 'default'
-"break"       return 'break'
-"continue"    return 'continue'
-"return"      return 'return'
-"for"         return 'for'
-"of"          return 'of'
-"in"          return 'in'
-"while"       return 'while'
-"do"          return 'do'
+"if"          return 'if';
+"else"        return 'else';
+"switch"      return 'switch';
+"case"        return 'case';
+"default"     return 'default';
+"break"       return 'break';
+"continue"    return 'continue';
+"return"      return 'return';
+"for"         return 'for';
+"of"          return 'of';
+"in"          return 'in';
+"while"       return 'while';
+"do"          return 'do';
 
-"console.log" return 'print'
-"graficar_ts"  return 'graficar_ts'
-"function"    return 'function'
+"console.log" return 'print';
+"graficar_ts"  return 'graficar_ts';
+"function"    return 'function';
 
 //valores expresiones regulares
-{lex_number}        return 'val_number'
-{lex_string}        return 'val_string'
-{lex_identificador} return 'identificador'
-<<EOF>> return 'EOF'
+{lex_number}        return 'val_number';
+{lex_string}        return 'val_string';
+{lex_identificador} return 'identificador';
+<<EOF>> return 'EOF';
 
 /* ERROR */
-.       return 'INVALID';
+. { ErrorList.addError(new ErrorNode(yylloc.first_line,yylloc.first_column,new ErrorType(EnumErrorType.LEXICO),`El caracter: "${yytext}" no pertenece al lenguaje`,new EnvironmentType(EnumEnvironmentType.NULL, ""))); }
 
 /lex
 
@@ -375,9 +375,9 @@ GRAPH_TS: graficar_ts par_izq par_der PUNTO_Y_COMA { $$ = new GraphTs(this._$.fi
         ;
 
 //FIXME con let a = 0, b=0; update en gramatica de grafo
-DECLARATION: TYPE_DECLARATION  L_ID TYPE_VARIABLE PUNTO_Y_COMA                         { $$ = new Declaration(this._$.first_line,this._$.first_column,$1,$2,$3,""); }
+DECLARATION: TYPE_DECLARATION  L_ID TYPE_VARIABLE PUNTO_Y_COMA                         { $$ = new Declaration(this._$.first_line,this._$.first_column,$1,$2,$3,null); }
         |    TYPE_DECLARATION  L_ID TYPE_VARIABLE '=' E PUNTO_Y_COMA                   { $$ = new Declaration(this._$.first_line,this._$.first_column,$1,$2,$3,$5); }
-        |    TYPE_DECLARATION  L_ID TYPE_VARIABLE L_DIMENSION PUNTO_Y_COMA             { $$ = new DeclarationArray(this._$.first_line,this._$.first_column,$1,$2,$3,$4,""); }
+        |    TYPE_DECLARATION  L_ID TYPE_VARIABLE L_DIMENSION PUNTO_Y_COMA             { $$ = new DeclarationArray(this._$.first_line,this._$.first_column,$1,$2,$3,$4,null); }
         |    TYPE_DECLARATION  L_ID TYPE_VARIABLE L_DIMENSION '=' L_ARRAY PUNTO_Y_COMA { $$ = new DeclarationArray(this._$.first_line,this._$.first_column,$1,$2,$3,$4,new Value(new Type(EnumType.ARRAY,""),$6)); }
         |    TYPE_DECLARATION  L_ID TYPE_VARIABLE '=' llave_izq L_E_TYPE llave_der PUNTO_Y_COMA { $$ = new DeclarationTypes(this._$.first_line,this._$.first_column,$1,$2,$3,$6); }
         // TODO add arrays of types update en gramatica de grafo

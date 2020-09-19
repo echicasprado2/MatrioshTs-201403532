@@ -25,6 +25,7 @@ class TypeAttributeDefinition extends Instruction {
               this.linea,
               this.column,
               this.identify,
+              this.type,
               e.enviromentType.name,
               null
             )

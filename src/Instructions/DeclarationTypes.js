@@ -1,3 +1,7 @@
+/**
+ * @class para la definir types
+ * 
+ */
 class DeclarationTypes extends Instruction {
     
     constructor(linea,column, typeDeclaration, ids, type, value){
@@ -46,6 +50,7 @@ class DeclarationTypes extends Instruction {
                   this.line,
                   this.column,
                   this.ids[i],
+                  this.type,
                   e.enviromentType,
                   null
                 )

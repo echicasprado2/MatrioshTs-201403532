@@ -7,6 +7,7 @@ var EnumEnvironmentType;
     EnumEnvironmentType["DO"] = "DO";
     EnumEnvironmentType["FUNCTION"] = "FUNCION";
     EnumEnvironmentType["TYPE"] = "TYPE";
+    EnumEnvironmentType["NULL"] = "NULL";
 })(EnumEnvironmentType || (EnumEnvironmentType = {}));
 class EnvironmentType {
     /**

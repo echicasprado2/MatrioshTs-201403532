@@ -20,6 +20,7 @@ class Do extends Instruction {
               this.linea,
               this.column,
               "DO",
+              null,
               e.enviromentType,
               null
             )

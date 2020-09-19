@@ -14,7 +14,8 @@ class GraphTs extends Instruction {
             new NodeTableSymbols(
               this.linea,
               this.column,
-              "graph_ts",
+              "GRAPTH_TS",
+              null,
               e.enviromentType,
               null
             )

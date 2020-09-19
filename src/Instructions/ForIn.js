@@ -21,7 +21,8 @@ class ForIn extends Instruction {
             new NodeTableSymbols(
               this.linea,
               this.column,
-              "FOR",
+              "FOR IN",
+              null,
               e.enviromentType,
               null
             )

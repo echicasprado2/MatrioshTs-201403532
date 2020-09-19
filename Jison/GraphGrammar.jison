@@ -101,7 +101,7 @@ lex_comentariomultilinea [/][*][^*]*[*]+([^/*][^*]*[*]+)*[/]
 <<EOF>>             return 'EOF'
 
 /* ERROR */
-.       return 'INVALID';
+.   ;
 
 /lex
 

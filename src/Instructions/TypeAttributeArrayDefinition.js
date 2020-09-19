@@ -20,6 +20,7 @@ class TypeAttributeArrayDefinition extends Instruction {
               this.linea,
               this.column,
               this.identify,
+              this.type,
               e.enviromentType,
               null
             )

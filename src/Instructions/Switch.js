@@ -30,6 +30,7 @@ class Switch extends Instruction {
               this.linea,
               this.column,
               "SWITCH",
+              null,
               e.enviromentType,
               null
             )

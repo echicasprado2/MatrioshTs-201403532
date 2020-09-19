@@ -12,9 +12,15 @@ class AST {
    * obtengo el codigo traduccido de mi analisis
    */
   getTranslated() {
+    // ErrorList.cleanErrorList();
+    PrintConsole.cleanConsole();
+
     for (var i = 0; i < this.instruccions.length; i++) {
       this.translatedCode += this.instruccions[i].getTranslated();
     }
+
+    ErrorList.showErrors();
+    PrintConsole.printLine("fin traduccion");
     return this.translatedCode;
   }
 
@@ -36,7 +42,6 @@ class AST {
   execute(){
     TableReport.cleanExecute();
     PrintConsole.cleanConsole();
-    ErrorList.cleanErrorList();
 
     for(var i = 0; i < this.instruccions.length;i++){
       if(this.instruccions[i] instanceof TypeDefinition){
@@ -50,8 +55,15 @@ class AST {
       }
     }
 
+    for(var i = 0; i < this.instruccions.length; i++){
+      if(this.instruccions[i] instanceof Declaration){
+        (this.instruccions[i]).execute(this.environmentExecute);
+      }
+    }
+
     ErrorList.showErrors();
     PrintConsole.printLine("fin ejecucion");
+    return null;
   }
 
 }

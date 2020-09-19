@@ -28,6 +28,7 @@ class While extends Instruction {
               this.linea,
               this.column,
               "WHILE",
+              null,
               e.enviromentType,
               null
             )

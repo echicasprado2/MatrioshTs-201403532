@@ -6,10 +6,11 @@ class NodeTableSymbols{
      * @param {*} name 
      * @param {*} typeEnviroment 
      */
-    constructor(line,column,name,typeEnviroment,value){
+    constructor(line,column,name,type,typeEnviroment,value){
         this.line = line;
         this.column = column;
         this.name = name;
+        this.type = type;
         this.typeEnviroment = typeEnviroment;
         this.value = value;
     }

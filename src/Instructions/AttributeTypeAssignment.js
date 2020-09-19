@@ -20,6 +20,7 @@ class AttributeTypeAssignment extends Instruction {
                 this.line,
                 this.column,
                 this.identify,
+                null,
                 e.name,
                 null
             )

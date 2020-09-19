@@ -63,6 +63,7 @@ class DeclarationArray extends Instruction {
                   this.line,
                   this.column,
                   this.ids[i],
+                  this.type,
                   e.enviromentType,
                   null
                 )

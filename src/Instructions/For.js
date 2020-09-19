@@ -32,6 +32,7 @@ class For extends Instruction {
               this.linea,
               this.column,
               "FOR",
+              null,
               e.enviromentType,
               null
             )

@@ -29,6 +29,7 @@ class TypeAssignment extends Instruction {
               this.linea,
               this.column,
               this.identify,
+              null,
               e.enviromentType,
               null
             )

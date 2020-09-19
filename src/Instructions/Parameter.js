@@ -43,6 +43,7 @@ class Parameter extends Instruction{
               this.line,
               this.column,
               this.identifier,
+              this.type,
               e.enviromentType,
               null
             )
