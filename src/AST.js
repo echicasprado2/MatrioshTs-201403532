@@ -33,4 +33,17 @@ class AST {
    */
   executeSymbolsTable() {}
   
+  execute(){
+
+    for(var i = 0; i < this.instruccions.length;i++){
+      if(this.instruccions[i] instanceof TypeDefinition){
+        (this.instruccions[i]).execute(this.environmentExecute);
+      }
+    }
+
+
+
+    printConsole.printLine("fin ejecucion");
+  }
+
 }

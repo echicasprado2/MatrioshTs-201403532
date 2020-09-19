@@ -12,6 +12,12 @@ class NodeGraphAST{
         return codeGraph;
     }
 
+    stringFinalTreeExecute(string){
+        NumberNode.cleanNumberNode();
+        var codeGraph = `graph TD\nNote(AST EJECUCION)\n${string}`;
+        return codeGraph;
+    }
+
     totalString(root){
         var codeGraph = "";
         var nodeN = `node${root.numberNode}(("${root.tag}"))\n`;

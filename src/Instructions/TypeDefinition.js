@@ -46,7 +46,16 @@ class TypeDefinition extends Instruction {
     }
 
     execute(e) {
-        throw new Error("Method not implemented.");
+        var exists = e.searchSymbol(this.identify);
+
+        // console.log(exists);
+        if(exists === null){
+            e.insert(this.identify,new Symbol(this.identify,new Type(EnumType.TYPE),this));
+        }else{
+            ErrorList.addError(new ErrorNode(this.line,this.column,new ErrorType(EnumErrorType.SEMANTIC),`El type: "${this.identify}" ya se encuentra definido`,e.enviromentType));
+        }
+
+        return null;
     }
 
 }

@@ -9,8 +9,9 @@
 
     <!-- CSS only -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.52.2/codemirror.min.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.52.2/theme/monokai.min.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.57.0/theme/material-ocean.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.52.2/theme/dracula.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.57.0/theme/lucario.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.57.0/theme/colorforth.min.css">
     <link rel="stylesheet" href="./css/mycss.css">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
         integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
@@ -91,23 +92,11 @@ matrix3[i] = [];</textarea>
                             aria-selected="true">Consola
                         </button>
                     </li>
-
-                    <li class="nav-item">
-                        <button type="button" class="nav-link" id="salida-editor-tab" data-toggle="tab"
-                            data-target="#editor-content-salida" role="tab" aria-controls="editor-content-salida"
-                            aria-selected="false">Salida
-                        </button>
-                    </li>
-
                 </ul>
                 <div class="tab-content" id="myTabEditorContent">
                     <div class="tab-pane fade show active" id="console-content" role="tabpanel"
                         aria-labelledby="console-tab">
                         <textarea id="textarea-console"></textarea>
-                    </div>
-                    <div class="tab-pane fade active" id="editor-content-salida" role="tabpanel"
-                        aria-labelledby="salida-editor-tab">
-                        <textarea id="textarea-editor-salida"></textarea>
                     </div>
                 </div>
             </div>
@@ -157,11 +146,11 @@ matrix3[i] = [];</textarea>
     <script src="src/Structure/Utils/EnvironmentType.js"></script>
     <script src="src/Structure/Utils/ErrorType.js"></script>
     <script src="src/Structure/Utils/OperationType.js"></script>
-    <script src="src/Structure/Utils/TreeGraph.js"></script>
     <script src="src/Structure/Utils/Type.js"></script>
     <script src="src/Structure/Utils/TableReport.js"></script>
     <script src="src/Structure/Utils/TypeArrayMethod.js"></script>
     <script src="src/Structure/Utils/ErrorList.js"></script>
+    <script src="src/Structure/Utils/printConsole.js"></script>
 
     <!-- ABSTRACT -->   
     <script src="src/Structure/Abstract/Node.js"></script>
@@ -225,7 +214,6 @@ matrix3[i] = [];</textarea>
     <script src="Jison/GraphGrammar.js"></script>
     <script src="src/ASTGraph/NumberNode.js"></script>
     <script src="src/ASTGraph/NodeGraphAST.js"></script>
-    <script src="src/ASTGraph/GraphTree.js"></script>
 
 </body>
 

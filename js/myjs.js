@@ -2,19 +2,19 @@
 // CODEMIRROR
 var editEntrada = CodeMirror.fromTextArea(document.getElementById('textarea-editor-entrada'),{
     mode: "javascript",
-    theme: "monokai",
+    theme: "dracula",
     lineNumbers: true
 });
 
-var editEntrada = CodeMirror.fromTextArea(document.getElementById('textarea-editor-salida'),{
+var editSalida = CodeMirror.fromTextArea(document.getElementById('textarea-editor-salida'),{
     mode: "javascript",
-    theme: "material-ocean",
+    theme: "lucario",
     lineNumbers: true
 });
 
 var consoleShow = CodeMirror.fromTextArea(document.getElementById('textarea-console'),{
-    mode: "",
-    theme: "material-ocean",
+    mode: "javascript",
+    theme: "colorforth",
     lineNumbers: false
 });
 
@@ -63,38 +63,42 @@ var consoleShow = CodeMirror.fromTextArea(document.getElementById('textarea-cons
 
   var translate = document.getElementById('traducir');
   translate.addEventListener('click',(e)=>{
-
-    TreeGraph.cleanNodeNumber();
     
     var editor = getEditor();
-    
     var result = new AST(Gramatica.parse(editor.getValue()));// obtengo el ast al correr el analizador
+    
     result.translatedSymbolsTable();//obtengo la tabla de simbolos para la traduccion
     showTableTranslatedSymbols();//muestro la tabla de simbolos para la traduccion
   
     // EJECUTO EL METODO TRADUCIR
     var myTranslated = getSalida();//creo un objeto donde mostrare la salida traducida de mi entrada
     myTranslated.setValue(result.getTranslated());//inserto el codigo traduccido
+    
     showTranslatedTree(editor.getValue());
   });
 
-  var execuse = document.getElementById('ejecutar');
-  execuse.addEventListener('click',(e)=>{
+  var execute = document.getElementById('ejecutar');
+  execute.addEventListener('click',(e)=>{
     //TODO implement
-    TreeGraph.cleanNodeNumber();
     var editor = getSalida();
-    
+    var myConsole = getConsole();
     var result = new AST(Gramatica.parse(editor.getValue()));
-    showExecuseTree(editor.getValue());
+    
+    // result.executeSymbolsTable();// TODO tengo duda esta lo debe de generar la traduccion
+    // showTableExecute();// TODO implementar
+    
+    printConsole.cleanConsole();
+    result.execute();
+    
+    ErrorList.showErrors();
+    myConsole.setValue(printConsole.getPrintConsole());
 
-    // result.execuseSymbolsTable();// TODO tengo duda esta lo debe de generar la traduccion
-    // showTableExecuse();// TODO implementar
-
-    result.execuse();
-
+    showExecuteTree(editor.getValue());
   });
 
   function showTranslatedTree(file){
+    NumberNode.cleanNumberNode();
+
     var ast = GraphGrammar.parse(file);
     var code = ast.stringFinalTreeTranslated(ast.totalString(ast));
     
@@ -104,21 +108,24 @@ var consoleShow = CodeMirror.fromTextArea(document.getElementById('textarea-cons
       element.innerHTML = svgCode;
     };
     
-    console.log(code);
+    // console.log(code);
     var graph = mermaid.render('showTranslatedTree',code,insertSvg);
   }
 
-  //TODO make show execute tree
-  function showExecuseTree(){
-    //genera el arbol y da error
-    // var element = document.querySelector("myGraphExecuse");
-    // var insertSvg = function(svgCode){
-    //   element.innerHTML = svgCode;
-    // };
-    
-    // var grapDefinition = `graph TD;\n ${treeCode}`;
-    // console.log(grapDefinition);
-    // var graph = mermaid.render('myGraph',grapDefinition,insertSvg);
+  function showExecuteTree(file){
+    NumberNode.cleanNumberNode();
+
+    var ast = GraphGrammar.parse(file);
+    var code = ast.stringFinalTreeExecute(ast.totalString(ast));
+
+    // genera el arbol y da error
+    var element = document.querySelector("myGraphExecute");
+    var insertSvg = function(svgCode){
+      element.innerHTML = svgCode;
+    };
+
+    // console.log(code);
+    var graph = mermaid.render('myGraphExecute',code,insertSvg);
   }
 
   function showTableTranslatedSymbols(){
@@ -151,10 +158,10 @@ var consoleShow = CodeMirror.fromTextArea(document.getElementById('textarea-cons
     document.getElementById('tableTranslated').innerHTML = html;
   };
 
-//TODO make show execuse table
-  function showTableExecuse(){
+//TODO make show execute table
+  function showTableExecute(){
     // <h2>Tabla de simbolos ejecucion</h2>
-    //                 <table class="table table-dark" id="tableExecuse">
+    //                 <table class="table table-dark" id="tableExecute">
     //                     <thead  class="thead-light">
     //                         <tr>
     //                             <th scope="col">#</th>
@@ -169,5 +176,5 @@ var consoleShow = CodeMirror.fromTextArea(document.getElementById('textarea-cons
     //                     </tbody>
     //                 </table>
     var html = "";
-    document.getElementById('tableExecuse').innerHTML = html;
+    document.getElementById('tableExecute').innerHTML = html;
   }
