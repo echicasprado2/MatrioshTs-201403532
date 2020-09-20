@@ -89,16 +89,29 @@ class Declaration extends Instruction {
       exists = e.searchSymbol(this.ids[i]);
   
       if (exists != null) {
-        ErrorList.addError(new ErrorNode(this.line,this.column,new ErrorType(EnumErrorType.SEMANTIC),`La funcion: "${this.ids[i]}" ya se encuentra definida`,e.enviromentType));
+        ErrorList.addError(new ErrorNode(this.line,this.column,new ErrorType(EnumErrorType.SEMANTIC),`Error La variable: "${this.ids[i]}" ya se encuentra definida`,e.enviromentType));
       }else{
-
+        
         if(this.value == null){
-          e.insert(this.identifier,new Symbol(this.ids[i],this.type,this.typeDeclaration,null));
-          TableReport.addExecute(new NodeTableSymbols(this.line,this.column,this.ids[i],e.enviromentType,null));
-        }else{
-          var result  = this.value.getValue(e);
-          e.insert(this.identifier,new Symbol(this.ids[i],new Type(EnumType.VARIABLE),this.typeDeclaration,result));
-          TableReport.addExecute(new NodeTableSymbols(this.line,this.column,this.ids[i],e.enviromentType,result));
+          e.insert(this.ids[i],new Symbol(this.ids[i],this.type,this.typeDeclaration,null));
+          TableReport.addExecute(
+            new NodeTableSymbols(this.line,this.column,this.ids[i],this.type,e.enviromentType,null)
+            );
+          }else{
+            var result  = this.value.getValue(e);
+            
+            if(this.type.enumType == EnumType.NULL){
+              this.type = result.type;
+              e.insert(this.ids[i],new Symbol(this.ids[i],new Type(EnumType.VARIABLE),this.typeDeclaration,result));
+              TableReport.addExecute(new NodeTableSymbols(this.line,this.column,this.ids[i],this.type,e.enviromentType,result.value));
+            }else if(this.type.enumType != result.type.enumType){
+              ErrorList.addError(new ErrorNode(this.line,this.column,new ErrorType(EnumErrorType.SEMANTIC),`El tipo de la variable no es el mismo que su valor : ${this.type.toString()} != ${result.type.toString()}`,e.enviromentType));
+              return null;
+            }else{
+              e.insert(this.ids[i],new Symbol(this.ids[i],new Type(EnumType.VARIABLE),this.typeDeclaration,result));
+              TableReport.addExecute(new NodeTableSymbols(this.line,this.column,this.ids[i],this.type,e.enviromentType,result.value));
+            }
+
         }
 
       }

@@ -184,11 +184,11 @@ function showTableExecuteSymbols() {
   html += "<tr>";
   html += '<th scope="col">#</th>';
   html += '<th scope="col">IDENTIFICADOR</th>';
-  html += '<th scope="col">ENTORNO</th>';
   html += '<th scope="col">TIPO</th>';
   html += '<th scope="col">LINEA</th>';
   html += '<th scope="col">COLUMNA</th>';
   html += '<th scope="col">VALOR</th>';
+  html += '<th scope="col">ENTORNO</th>';
   html += "</tr>";
   html += " </thead>";
   html += "<tbody>";
@@ -199,11 +199,12 @@ function showTableExecuteSymbols() {
     html += "<tr>";
     html += `<td>${i + 1}</td>`;
     html += `<td>${item.name}</td>`;
-    html += `<td>${item.tipo}</td>`;
-    html += `<td>${item.typeEnviroment}</td>`;
+    console.log(item.tipo);
+    html += `<td>${item.type}</td>`;
     html += `<td>${item.line}</td>`;
     html += `<td>${item.column}</td>`;
     html += `<td>${item.value}</td>`;
+    html += `<td>${item.typeEnviroment}</td>`;
     html += "</tr>";
   }
 

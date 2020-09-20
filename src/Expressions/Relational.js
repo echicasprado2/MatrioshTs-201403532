@@ -36,6 +36,7 @@ class Relational extends Expresion {
    * @param {Enviroment} e
    */
   executeSymbolsTable(e) {
+    //TODO implemented this
     return "implementar este codigo";
   }
 }

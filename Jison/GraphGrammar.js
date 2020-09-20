@@ -339,7 +339,7 @@ case 151:
  this.$ = new NodeGraphAST("ACCESO",NumberNode.getNumber()); this.$.children.push($$[$0-5],new NodeGraphAST($$[$0-3],NumberNode.getNumber()),$$[$0-1]);
 break;
 case 153:
- this.$ = new NodeGraphAST("ACCESO_ARRAY",NumberNode.getNumber()); this.$.children.push(new NodeGraphAST($$[$0-1],NumberNode.getNumber()),$$[$01]);
+ this.$ = new NodeGraphAST("ACCESO_ARRAY",NumberNode.getNumber()); this.$.children.push(new NodeGraphAST($$[$0-1],NumberNode.getNumber()),$$[$0]);
 break;
 case 154:
  this.$ = new NodeGraphAST("LLAMADA_FUNCION",NumberNode.getNumber()); this.$.children.push(new NodeGraphAST($$[$0-2],NumberNode.getNumber()));

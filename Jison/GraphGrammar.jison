@@ -380,7 +380,7 @@ ACCESS: ACCESS punto identificador                       { $$ = new NodeGraphAST
         | ACCESS punto identificador par_izq par_der     { $$ = new NodeGraphAST("ACCESO",NumberNode.getNumber()); $$.children.push($1,new NodeGraphAST($3,NumberNode.getNumber()));}
         | ACCESS punto identificador par_izq L_E par_der { $$ = new NodeGraphAST("ACCESO",NumberNode.getNumber()); $$.children.push($1,new NodeGraphAST($3,NumberNode.getNumber()),$5);}
         | identificador                                  { $$ = new NodeGraphAST($1,NumberNode.getNumber()); }
-        | identificador ACCESS_DIMENSION                 { $$ = new NodeGraphAST("ACCESO_ARRAY",NumberNode.getNumber()); $$.children.push(new NodeGraphAST($1,NumberNode.getNumber()),$3);}
+        | identificador ACCESS_DIMENSION                 { $$ = new NodeGraphAST("ACCESO_ARRAY",NumberNode.getNumber()); $$.children.push(new NodeGraphAST($1,NumberNode.getNumber()),$2);}
         | identificador par_izq par_der                  { $$ = new NodeGraphAST("LLAMADA_FUNCION",NumberNode.getNumber()); $$.children.push(new NodeGraphAST($1,NumberNode.getNumber()));}
         | identificador par_izq L_E par_der              { $$ = new NodeGraphAST("LLAMADA_FUNCION",NumberNode.getNumber()); $$.children.push(new NodeGraphAST($1,NumberNode.getNumber()),$3); }
         ;
