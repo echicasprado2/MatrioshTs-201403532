@@ -36,8 +36,17 @@ class Print extends Instruction {
      * @param {*} e 
      */
     execute(e) {
-        //TODO implemented this
-        throw new Error("Method not implemented.");
+        
+        var resultCadena = "";
+        var result;
+
+        for(var i = 0; i < this.values.length; i++){
+            result = this.values[i].getValue(e);
+            resultCadena += result.value;
+        }
+
+        PrintConsole.printLine(resultCadena);
+        return null; 
     }
     
 }

@@ -61,6 +61,16 @@ class AST {
       }
     }
 
+    for(var i = 0; i < this.instruccions.length; i++){
+      if(!(this.instruccions[i] instanceof TypeDefinition) && !(this.instruccions[i] instanceof Function) && !(this.instruccions[i] instanceof Declaration)){
+            if(this.instruccions[i] instanceof Instruction){
+              this.instruccions[i].execute(this.environmentExecute);
+            }else if(this.instruccions[i] instanceof Expresion){
+              //TODO implement called getValue
+            }
+          }
+    }
+
     ErrorList.showErrors();
     PrintConsole.printLine("fin ejecucion");
     return null;
