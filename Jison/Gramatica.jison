@@ -128,8 +128,6 @@ lex_comentariomultilinea [/][*][^*]*[*]+([^/*][^*]*[*]+)*[/]
 %left '}'
 %left 'EOF'
 
-//TODO add error lexico
-
 %start INIT
 
 %ebnf

@@ -90,16 +90,12 @@ translate.addEventListener("click", (e) => {
 
 var execute = document.getElementById("ejecutar");
 execute.addEventListener("click", (e) => {
-  //TODO implement
   var editor = getSalida();
   var myConsole = getConsole();
   
   myConsole.setValue("");
 
   var result = new AST(Gramatica.parse(editor.getValue()));
-
-  // result.executeSymbolsTable();// TODO tengo duda esta lo debe de generar la traduccion
-  // showTableExecute();// TODO implementar
 
   result.execute();
 
