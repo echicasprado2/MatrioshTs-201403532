@@ -33,10 +33,9 @@ class Block extends Instruction {
   }
 
   execute(e) {
-    //TODO need test  
     var resultBlock;
 
-    for(var i = 0; i < this.sentences; i++){
+    for(var i = 0; i < this.sentences.length; i++){
       
       if(this.sentences[i] instanceof Instruction){
         resultBlock = (this.sentences[i]).execute(e);
@@ -52,12 +51,13 @@ class Block extends Instruction {
           }else{
             console.log("Error con el block");
           }
-          
+
         }
 
       }else if(this.sentences[i] instanceof Expresion){
         (this.sentences[i]).getValue(e);
       }
+
     }
 
     return null;

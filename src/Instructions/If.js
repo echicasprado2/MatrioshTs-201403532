@@ -56,8 +56,8 @@ class If extends Instruction {
     }
 
     execute(e) {
-        //TODO implemented this
         var resultBlockIf;
+        
 
         for(var i = 0; i < this.ifList.length; i++){
             resultBlockIf = (this.ifList[i]).execute(e);
@@ -70,13 +70,10 @@ class If extends Instruction {
                         return resultBlockIf;
                     }else if(resultBlockIf instanceof Return){
                         return resultBlockIf;
-                    }else{
-                        console.log("error en blockif");
                     }
                 }
                 return null;
             }
-
         }
 
         if(this.haveElse){

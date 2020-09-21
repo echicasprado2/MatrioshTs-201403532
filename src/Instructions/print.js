@@ -36,12 +36,19 @@ class Print extends Instruction {
      * @param {*} e 
      */
     execute(e) {
-        
         var resultCadena = "";
         var result;
 
         for(var i = 0; i < this.values.length; i++){
             result = this.values[i].getValue(e);
+            if(result.type.enumType == EnumType.STRING){
+                result.value = result.value.replace("\"","");
+                result.value = result.value.replace("\"","");
+                result.value = result.value.replace("\'","");
+                result.value = result.value.replace("\'","");
+                result.value = result.value.replace("\`","");
+                result.value = result.value.replace("\`","");
+            }
             resultCadena += result.value;
         }
 

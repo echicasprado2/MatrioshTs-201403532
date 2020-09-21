@@ -41,17 +41,19 @@ class BlockIf extends Instruction {
     }
 
     execute(e) {
-        //TODO need test
         var resultCondicion;
         var envIf;
         var resultBlock;
-
 
         this.conditionTrue = false;
         resultCondicion = this.expresion.getValue(e);
 
         if(resultCondicion.type.enumType != EnumType.BOOLEAN){
             ErrorList.addError(new ErrorNode(this.line,this.column,new ErrorType(EnumErrorType.SEMANTIC),`La condicion no es de valor boolean`,e.enviromentType));
+            return null;
+        }
+
+        if(!(resultCondicion.value)){
             return null;
         }
 
