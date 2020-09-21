@@ -27,7 +27,7 @@ class Environment {
         for(var e = this; e != null; e = e.anterior){
             if(e.table.has(name)){// busca si el simbolo existe en el ambito
                 var returnSymbol = e.table.get(name);
-                return new Symbol(returnSymbol.id,returnSymbol.type,returnSymbol.value);
+                return new Symbol(returnSymbol.id,returnSymbol.type,returnSymbol.typeDeclaration,returnSymbol.value);
             }
         }
         return null;

@@ -195,7 +195,6 @@ function showTableExecuteSymbols() {
     html += "<tr>";
     html += `<td>${i + 1}</td>`;
     html += `<td>${item.name}</td>`;
-    console.log(item.tipo);
     html += `<td>${item.type}</td>`;
     html += `<td>${item.line}</td>`;
     html += `<td>${item.column}</td>`;

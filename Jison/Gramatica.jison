@@ -381,8 +381,9 @@ DECLARATION: TYPE_DECLARATION  L_ID TYPE_VARIABLE PUNTO_Y_COMA                  
         // TODO add arrays of types update en gramatica de grafo
         ;
 
-L_E_TYPE: L_E_TYPE coma E_TYPE { $$ = $1; $$.push($3); }
-        | E_TYPE               { $$ = []; $$.push($1); }
+L_E_TYPE: L_E_TYPE coma E_TYPE         { $$ = $1; $$.push($3); }
+        | L_E_TYPE punto_y_coma E_TYPE { $$ = $1; $$.push($3); }
+        | E_TYPE                       { $$ = []; $$.push($1); }
         ;
 
 E_TYPE: identificador dos_puntos E                              { $$ = new AttributeTypeAssignment(this._$.first_line,this._$.first_column,$1,$3); }

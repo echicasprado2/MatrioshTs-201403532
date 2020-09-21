@@ -3,15 +3,14 @@
  */
 var EnumType;
 (function (EnumType) {
+    EnumType["STRING"] = "STRING";
     EnumType["NUMBER"] = "NUMBER";
     EnumType["BOOLEAN"] = "BOOLEAN";
-    EnumType["STRING"] = "STRING";
     EnumType["VOID"] = "VOID";
     EnumType["TYPE"] = "TYPE";
     EnumType["ARRAY"] = "ARRAY";
     EnumType["NULL"] = "NULL";
     EnumType["ERROR"] = "ERROR";
-    // otros tipos que usare
     EnumType["FUNCTION"] = "FUNCTION";
     EnumType["VARIABLE"] = "VARIABLE";
 })(EnumType || (EnumType = {}));

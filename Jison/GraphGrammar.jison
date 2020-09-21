@@ -361,7 +361,7 @@ E   : E '+'   E                           { $$ = new NodeGraphAST($2,NumberNode.
     | E '<='  E                           { $$ = new NodeGraphAST($2,NumberNode.getNumber()); $$.children.push($1,$3); }
     | E '<'   E                           { $$ = new NodeGraphAST($2,NumberNode.getNumber()); $$.children.push($1,$3); }
     | val_number                          { $$ = new NodeGraphAST($1,NumberNode.getNumber()); }
-    | val_string                          { $$ = new NodeGraphAST(`${$1} `,NumberNode.getNumber()); }
+    | val_string                          { if($1 == ""){$$ = new NodeGraphAST(" ",NumberNode.getNumber());}else{$$ = new NodeGraphAST(`${$1}`,NumberNode.getNumber());} }
     | val_verdadero                       { $$ = new NodeGraphAST($1,NumberNode.getNumber()); }
     | val_falso                           { $$ = new NodeGraphAST($1,NumberNode.getNumber()); }
     | val_nulo                            { $$ = new NodeGraphAST($1,NumberNode.getNumber()); }

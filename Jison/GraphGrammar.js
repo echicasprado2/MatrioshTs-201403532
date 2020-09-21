@@ -306,7 +306,7 @@ case 127: case 128:
  this.$ = new NodeGraphAST($$[$0-1],NumberNode.getNumber()); this.$.children.push($$[$0]); 
 break;
 case 136:
- this.$ = new NodeGraphAST(`${$$[$0]} `,NumberNode.getNumber()); 
+ if($$[$0] == ""){this.$ = new NodeGraphAST(" ",NumberNode.getNumber());}else{this.$ = new NodeGraphAST(`${$$[$0]}`,NumberNode.getNumber());} 
 break;
 case 140: case 141:
  this.$ = $$[$0-1]; 

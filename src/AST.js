@@ -4,8 +4,8 @@ class AST {
     this.instruccions = instruccions;
     this.graphCode = "";
     this.translatedCode = "";
-    this.environmentTranslated = new Environment(null,new EnvironmentType(EnumEnvironmentType.GLOBAL, ""));
-    this.environmentExecute = new Environment(null,new EnvironmentType(EnumEnvironmentType.GLOBAL, ""));
+    this.environmentTranslated = new Environment(null,new EnvironmentType(EnumEnvironmentType.GLOBAL, null));
+    this.environmentExecute = new Environment(null,new EnvironmentType(EnumEnvironmentType.GLOBAL, null));
   }
 
   /**
@@ -56,15 +56,19 @@ class AST {
     }
 
     for(var i = 0; i < this.instruccions.length; i++){
-      if(this.instruccions[i] instanceof Declaration){
+      if(this.instruccions[i] instanceof Declaration || this.instruccions[i] instanceof DeclarationArray || this.instruccions[i] instanceof DeclarationTypes){
         (this.instruccions[i]).execute(this.environmentExecute);
       }
     }
 
     for(var i = 0; i < this.instruccions.length; i++){
-      if(!(this.instruccions[i] instanceof TypeDefinition) && !(this.instruccions[i] instanceof Function) && !(this.instruccions[i] instanceof Declaration)){
+      if(!(this.instruccions[i] instanceof TypeDefinition) &&
+       !(this.instruccions[i] instanceof Function) && 
+       !(this.instruccions[i] instanceof Declaration) && 
+       !(this.instruccions[i] instanceof DeclarationTypes) &&
+       !(this.instruccions[i] instanceof DeclarationArray)){
             if(this.instruccions[i] instanceof Instruction){
-              this.instruccions[i].execute(this.environmentExecute);
+              (this.instruccions[i]).execute(this.environmentExecute);
             }else if(this.instruccions[i] instanceof Expresion){
               //TODO implement called getValue
             }

@@ -15,10 +15,10 @@
     /**
      * obtener el codigo para la traduccion
      */
-    getTranslated(){    
+    getTranslated(){  
         if(this.operationType == EnumOperationType.PLUS_PLUS || this.operationType == EnumOperationType.MINUS_MINUS){
             this.translatedCode += this.expresion.getTranslated();
-          this.translatedCode += this.operationType.toString();
+            this.translatedCode += this.operationType.toString();
         }else{
             this.translatedCode = this.operationType.toString();
             this.translatedCode += this.expresion.getTranslated();

@@ -76,8 +76,20 @@ class DeclarationArray extends Instruction {
     }
 
     execute(e) {
-        //TODO implemented this
-        throw new Error("Method not implemented.");
+        var exists;
+
+        if (this.typeDeclaration.enumType == EnumDeclarationType.CONST) {
+          if (this.value == null) {
+            for (var i = 0; i < this.ids.length; i++) {
+                ErrorList.addError(new ErrorNode(this.line,this.column,new ErrorType(EnumErrorType.SEMANTIC),`La constante: "${this.ids[i]}" no tiene asignacion de un valor, debe tener valor`,e.enviromentType));
+              return null;
+            }
+          }
+        }
+
+        //TODO finisted implemented
+
+        return null;
     }
 
 }

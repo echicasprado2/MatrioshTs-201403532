@@ -20,7 +20,11 @@ class EnvironmentType {
     }
 
     toString() {
-        return this.enumEnvironmentType.toString();
+        if(this.enumEnvironmentType === EnvironmentType.TYPE){
+            return this.name;
+        }else{
+            return this.enumEnvironmentType.toString();
+        }
     }
 
 }
