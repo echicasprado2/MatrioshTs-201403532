@@ -108,7 +108,7 @@ case 23:
  this.$ = new Continue(this._$.first_line,this._$.first_column); 
 break;
 case 24:
- this.$ = new Return(this._$.first_line,this._$.first_column,"",false); 
+ this.$ = new Return(this._$.first_line,this._$.first_column,null,false); 
 break;
 case 25:
  this.$ = new Return(this._$.first_line,this._$.first_column,$$[$0-1],true); 

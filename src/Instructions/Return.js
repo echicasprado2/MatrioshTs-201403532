@@ -5,11 +5,11 @@ class Return extends Instruction {
      * @param {*} linea 
      * @param {*} column 
      * @param {*} */ 
-    constructor(linea,column,expression,returnExpresion){
+    constructor(linea,column,expression,isReturnExpresion){
         super(linea,column);
 
         this.expression = expression;
-        this.returnExpresion = returnExpresion;
+        this.returnExpresion = isReturnExpresion;
 
         this.translatedCode = "";
     }
@@ -17,7 +17,7 @@ class Return extends Instruction {
     getTranslated(){
         this.translatedCode += "return ";
 
-        if(this.returnExpresion){
+        if(this.expression != null){
             this.translatedCode += `(${this.expression.getTranslated()})`
         }
 
@@ -33,8 +33,18 @@ class Return extends Instruction {
     }
 
     execute(e) {
-        //TODO implemented this
-        throw new Error("Method not implemented.");
+        //TODO test
+        var result;
+        if(env.enviromentType.enumEnviromentType == EnvironmentType.GLOBAL){
+            ErrorList.addError(new ErrorNode(this.line,this.column,new ErrorType(EnumErrorType.SEMANTIC),`no se puede utilizar return en este entorno`,e.enviromentType));
+            return null;
+        }else{
+            if(this.isReturnExpresion){
+                result = this.expression.getValue(e);
+                return new Return(this.line,this.column,result,true);
+            }
+        }
+        return null;
     }
 
 }
