@@ -26,7 +26,6 @@ class Ternary extends Expresion {
     }
 
     getValue(e) {
-        //TODO implemented this
         var result = new Value(new TypeError(EnumType.ERRRO,""),"Error");
         var resultCondition;
         var resultTrue;
@@ -46,8 +45,5 @@ class Ternary extends Expresion {
             resultFalse = this.conditionFalse.getValue(e);
             return resultFalse;
         }
-
-        return result;
-    }
 
 }
