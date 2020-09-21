@@ -57,8 +57,45 @@ class If extends Instruction {
 
     execute(e) {
         //TODO implemented this
+        var resultBlockIf;
 
-        var environmenIf = new Environment(e,new EnvironmentType(EnumEnvironmentType.IF,""));
+        for(var i = 0; i < this.ifList.length; i++){
+            resultBlockIf = (this.ifList[i]).execute(e);
+
+            if((this.ifList[i]).conditionTrue){
+                if(resultBlockIf != null){
+                    if(resultBlockIf instanceof Break){
+                        return resultBlockIf;
+                    }else if(resultBlockIf instanceof Continue){
+                        return resultBlockIf;
+                    }else if(resultBlockIf instanceof Return){
+                        return resultBlockIf;
+                    }else{
+                        console.log("error en blockif");
+                    }
+                }
+                return null;
+            }
+
+        }
+
+        if(this.haveElse){
+            var envIf = new Environment(e,new EnvironmentType(EnumEnvironmentType.IF,null));
+            var resultBlockElse = this.blockElse.execute(envIf);
+
+            if(resultBlockElse != null){
+                if(resultBlockElse instanceof  Break){
+                    return resultBlockElse;
+                }else if(resultBlockElse instanceof Continue){
+                    return resultBlockElse;
+                }else if(resultBlockElse instanceof Return){
+                    return resultBlockElse;
+                }else{
+                    console.log("error con else");
+                }
+            }
+
+        }
 
         return null;
     }

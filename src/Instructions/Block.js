@@ -33,7 +33,34 @@ class Block extends Instruction {
   }
 
   execute(e) {
-    //TODO implemented this
-    throw new Error("Method not implemented.");
+    //TODO need test  
+    var resultBlock;
+
+    for(var i = 0; i < this.sentences; i++){
+      
+      if(this.sentences[i] instanceof Instruction){
+        resultBlock = (this.sentences[i]).execute(e);
+        
+        if(resultBlock != null){
+
+          if(resultBlock instanceof Break){
+            return resultBlock;
+          }else if(resultBlock instanceof Continue){
+            return resultBlock;  
+          }else if(resultBlock instanceof Return){
+            return resultBlock;    
+          }else{
+            console.log("Error con el block");
+          }
+          
+        }
+
+      }else if(this.sentences[i] instanceof Expresion){
+        (this.sentences[i]).getValue(e);
+      }
+    }
+
+    return null;
   }
+
 }
