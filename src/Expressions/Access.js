@@ -25,8 +25,22 @@ class Access extends Expresion {
     }
 
     getValue(e) {
-        //TODO implemented this
-        throw new Error("Method not implemented.");
+        //TODO implemented this para accesos de array o de type
+        var result = new Value(new Type(EnumType.ERROR,""),"Error");
+        var resultSymbolAccess;
+
+        for(var i = 0; i < this.value.length; i++){
+            resultSymbolAccess = this.value[i].getValue(e);
+
+            if(resultSymbolAccess  == null || resultSymbolAccess.type.enumType == EnumType.ERROR ){
+                ErrorList.addError(new ErrorNode(this.line,this.column,new ErrorType(EnumErrorType.SEMANTIC),`El acceso: "${this.value[i].identifier}", no se encontro`,e.enviromentType));
+                return result;
+            }
+
+        }
+
+        result = new Value(new Type(resultSymbolAccess.type.enumType,resultSymbolAccess.type.identifiers),resultSymbolAccess.value.value);
+        return result;
     }
 
 }

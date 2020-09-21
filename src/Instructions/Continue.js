@@ -19,8 +19,21 @@ class Continue extends Instruction {
     }
 
     execute(e) {
-        //TODO implemented this
-        throw new Error("Method not implemented.");
+        //TODO test
+
+        for(var env = e; env != null; env = env.previous){
+            if(env.enviromentType.enumEnviromentType == EnvironmentType.FOR
+                || env.enviromentType.enumEnviromentType == EnvironmentType.FOR_IN
+                || env.enviromentType.enumEnviromentType == EnvironmentType.FOR_OF
+                || env.enviromentType.enumEnviromentType == EnvironmentType.SWICH
+                || env.enviromentType.enumEnviromentType == EnvironmentType.WHILE
+                || env.enviromentType.enumEnviromentType == EnvironmentType.DO
+                || env.enviromentType.enumEnviromentType == EnvironmentType.IF){
+                    return this;
+                }
+        }
+        ErrorList.addError(new ErrorNode(this.line,this.column,new ErrorType(EnumErrorType.SEMANTIC),`Continue debe de estar dentro de una sentencia de control`,e.enviromentType));
+        return null;
     }
 
 }

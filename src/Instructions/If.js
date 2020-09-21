@@ -57,7 +57,10 @@ class If extends Instruction {
 
     execute(e) {
         //TODO implemented this
-        throw new Error("Method not implemented.");
+
+        var environmenIf = new Environment(e,new EnvironmentType(EnumEnvironmentType.IF,""));
+
+        return null;
     }
 
 }

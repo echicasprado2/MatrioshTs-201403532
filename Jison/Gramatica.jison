@@ -173,7 +173,7 @@ BREAK: break PUNTO_Y_COMA { $$ = new Break(this._$.first_line,this._$.first_colu
 CONITNUE: continue PUNTO_Y_COMA { $$ = new Continue(this._$.first_line,this._$.first_column); }
         ;
 
-RETURN:  return punto_y_coma    { $$ = new Return(this._$.first_line,this._$.first_column,"",false); }
+RETURN:  return punto_y_coma    { $$ = new Return(this._$.first_line,this._$.first_column,null,false); }
         | return E punto_y_coma { $$ = new Return(this._$.first_line,this._$.first_column,$2,true); }
         ;
 

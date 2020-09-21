@@ -45,5 +45,6 @@ class Ternary extends Expresion {
             resultFalse = this.conditionFalse.getValue(e);
             return resultFalse;
         }
+    }
 
 }
