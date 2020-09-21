@@ -53,6 +53,52 @@
 
     getValue(e) {
         //TODO implemented this
+        var result = new Value(new TypeError(EnumType.ERROR,""),"Error");
+        var resultExp = this.expresion.getValue(e);
+        var enumTypeResultOperation = TreatmentOfPrimitiveTypes.getTopType(resultExp,resultExp);
+
+        if(enumTypeResultOperation === EnumType.ERROR || enumTypeResultOperation === EnumType.ERROR){
+            ErrorList.addError(new ErrorNode(this.line,this.column,new ErrorType(EnumErrorType.SEMANTIC),`El tipo de variable no se puede operar ${this.expresion.typ.toString()}`,e.enviromentType));
+            return result;            
+        }
+
+        if(resultExp.type.enumType == EnumType.NUMBER){
+
+            if(this.operationType == EnumOperationType.PLUS_PLUS){
+                resultExp.value = Number(resultExp.value) + 1;
+                return resultExp;
+            }else if(this.operationType == EnumOperationType.MINUS_MINUS){
+                resultExp.value = Number(resultExp.value) - 1;
+                return resultExp;
+            }else if(this.operationType == EnumOperationType.NEGATIVE){
+                resultExp.value = Number(resultExp.value) * -1;
+                return resultExp;
+            }else if(this.operationType == EnumOperationType.NOT){
+                if(Number(resultExp.value) > 0){
+                    resultExp.type = new Type(EnumType.BOOLEAN);
+                    resultExp.value = true;
+                }else{
+                    resultExp.type = new Type(EnumType.BOOLEAN);
+                    resultExp.value = false;
+                }
+                return resultExp;
+            }
+        }else if(resultExp.type.enumType == EnumType.BOOLEAN){
+
+            if(this.operationType == EnumOperationType.PLUS_PLUS || this.operationType == EnumOperationType.MINUS_MINUS || this.operationType == EnumOperationType.NEGATIVE){
+                ErrorList.addError(new ErrorNode(this.line,this.column,new ErrorType(EnumErrorType.SEMANTIC),`No se se puede realizar la operacion: "${this.operationType.toString()}" a un valor del tipo "${this.resultExp.type.toString()}"`,e.enviromentType));
+                return result;
+            }else if(this.operationType == EnumOperationType.NOT){
+                if(resultExp.value === 'true' || resultExp.value === true){
+                    console.log(resultExp.value);
+                    resultExp.value = false;
+                }else{
+                    resultExp.value = true;
+                }
+                return resultExp;
+            }
+        }
+        return result;
     }
      
  }

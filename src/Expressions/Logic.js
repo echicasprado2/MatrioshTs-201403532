@@ -35,8 +35,24 @@ class Logic extends Expresion {
    *
    * @param {Enviroment} e
    */
-  executeSymbolsTable(e) {
-    //TODO implemented this
-    return "implementar este codigo";
+  getValue(e) {
+    var result = new Value(new Type(EnumType.ERROR,""),"Error");
+    var resulExp1 = this.expresion1.getValue(e);
+    var resulExp2 = this.expresion2.getValue(e);
+
+    if(resulExp1.type.enumType != EnumType.BOOLEAN || resulExp2.type.enumType != EnumType.BOOLEAN){
+      ErrorList.addError(new ErrorNode(this.line,this.column,new ErrorType(EnumErrorType.SEMANTIC),`No se puede operar tipos diferentes a boolean`,e.envrimentType));
+      return result;
+    }
+
+    result.type = resulExp1.type;
+
+    if(this.operationType == EnumOperationType.AND){
+      result.value = resulExp1.value && resulExp2.value;
+    }else if(this.operationType == EnumOperationType.OR){
+      result.value = resulExp1.value || resulExp2.value;
+    }
+    
+    return result;
   }
 }

@@ -17,13 +17,15 @@ class Value extends Expresion {
             this.esArray = false;
         }
         
-        this.translatedCode = value.toString();
+        this.translatedCode = "";
     }
 
     /**
      * obtener el codigo para la traduccion
      */
     getTranslated(){
+        this.translatedCode = this.value.toString()
+
         if(this.parentesis){
             return `(${this.translatedCode})`;
         }else{

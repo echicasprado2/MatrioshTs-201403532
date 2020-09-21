@@ -87,6 +87,11 @@ class Declaration extends Instruction {
 
     if(this.value != null){
       result = this.value.getValue(e);
+
+      if(result.type.enumType == EnumType.ERROR){
+        return null;
+      }
+
     }else{
       result = null;
     }
