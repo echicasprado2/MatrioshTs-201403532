@@ -40,8 +40,12 @@ class Access extends Expresion {
 
         }
 
-        result = new Value(new Type(resultSymbolAccess.type.enumType,resultSymbolAccess.type.identifiers),resultSymbolAccess.value.value);
-        return result;
+        if(resultSymbolAccess.type.enumType == EnumType.FUNCTION || resultSymbolAccess.type.enumType == EnumType.TYPE){
+            return resultSymbolAccess
+        }else{
+            result = new Value(new Type(resultSymbolAccess.type.enumType,resultSymbolAccess.type.identifiers),resultSymbolAccess.value.value);
+            return result;
+        }
     }
 
 }
