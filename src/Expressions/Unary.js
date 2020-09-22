@@ -64,10 +64,22 @@
         if(resultExp.type.enumType == EnumType.NUMBER){
 
             if(this.operationType == EnumOperationType.PLUS_PLUS){
-                resultExp.value = Number(resultExp.value) + 1;
+                var actualizarValor;
+                var valorActualizar = new Value(resultExp.type,resultExp.value);
+                
+                valorActualizar.value++;
+                actualizarValor = new Assignment(this.line,this.column,[this.expresion.value[this.expresion.value.length - 1]],valorActualizar);
+                actualizarValor.execute(e);
+                
                 return resultExp;
             }else if(this.operationType == EnumOperationType.MINUS_MINUS){
-                resultExp.value = Number(resultExp.value) - 1;
+                var actualizarValor;
+                var valorActualizar = new Value(resultExp.type,resultExp.value);
+                
+                valorActualizar.value--;
+                actualizarValor = new Assignment(this.line,this.column,[this.expresion.value[this.expresion.value.length - 1]],valorActualizar);
+                actualizarValor.execute(e);
+
                 return resultExp;
             }else if(this.operationType == EnumOperationType.NEGATIVE){
                 resultExp.value = Number(resultExp.value) * -1;

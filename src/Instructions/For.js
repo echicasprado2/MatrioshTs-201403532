@@ -49,10 +49,7 @@ class For extends Instruction {
     }
 
     execute(e) {
-        //TODO implemented this
-        var actualizarValor;//this is Declaration or Assignment or Id
         var resultCondition;
-        var nombreVariableActualizar;
         var resultExpresion;
         var resultBlock;
         var envFor = new Environment(e,new EnvironmentType(EnumEnvironmentType.FOR,null));
@@ -65,9 +62,7 @@ class For extends Instruction {
         }else if(this.declaration instanceof Assignment){
             this.declaration.execute(envFor);
         }
-        
 
-        nombreVariableActualizar = this.expression.expresion.value[this.expression.expresion.value.length - 1 ];
         resultCondition = this.condition.getValue(envFor);
         
         while(resultCondition.value){
@@ -77,18 +72,15 @@ class For extends Instruction {
                 if(resultBlock instanceof Break){
                     return null;
                 }else if(resultBlock instanceof Continue){
-                    continue;
+                    
                 }else if(resultBlock instanceof Return){
                     return resultBlock;
                 }else{
                     console.log("error con el bloque de for");
                 }
             }
-
-            resultExpresion = this.expression.getValue(envFor);
-            actualizarValor = new Assignment(this.line,this.expression.column,[nombreVariableActualizar],resultExpresion);
             
-            actualizarValor.execute(envFor);
+            resultExpresion = this.expression.getValue(envFor);
             resultCondition = this.condition.getValue(envFor);
         }
 

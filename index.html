@@ -72,7 +72,13 @@
                     <div class="tab-pane fade show active  height-editor" id="editor-content-entrada" role="tabpanel"
                         aria-labelledby="entrada-editor-tab">
                         <textarea id="textarea-editor-entrada">let i = 0;
+const y = 7;
 for(i = 0; i < 10;i++){
+if(i == 5){
+    continue;
+}else if(i == y){
+    break;
+}
 console.log(i);                        
 }</textarea>
                     </div>

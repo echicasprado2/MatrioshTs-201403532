@@ -19,16 +19,15 @@ class Continue extends Instruction {
     }
 
     execute(e) {
-        //TODO test
 
         for(var env = e; env != null; env = env.previous){
-            if(env.enviromentType.enumEnviromentType == EnvironmentType.FOR
-                || env.enviromentType.enumEnviromentType == EnvironmentType.FOR_IN
-                || env.enviromentType.enumEnviromentType == EnvironmentType.FOR_OF
-                || env.enviromentType.enumEnviromentType == EnvironmentType.SWICH
-                || env.enviromentType.enumEnviromentType == EnvironmentType.WHILE
-                || env.enviromentType.enumEnviromentType == EnvironmentType.DO
-                || env.enviromentType.enumEnviromentType == EnvironmentType.IF){
+            if(env.enviromentType.enumEnvironmentType == EnumEnvironmentType.FOR
+                || env.enviromentType.enumEnvironmentType == EnumEnvironmentType.FOR_IN
+                || env.enviromentType.enumEnvironmentType == EnumEnvironmentType.FOR_OF
+                || env.enviromentType.enumEnvironmentType == EnumEnvironmentType.SWICH
+                || env.enviromentType.enumEnvironmentType == EnumEnvironmentType.WHILE
+                || env.enviromentType.enumEnvironmentType == EnumEnvironmentType.DO
+                || env.enviromentType.enumEnvironmentType == EnumEnvironmentType.IF){
                     return this;
                 }
         }
