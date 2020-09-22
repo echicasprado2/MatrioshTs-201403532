@@ -26,6 +26,7 @@ class Access extends Expresion {
 
     getValue(e) {
         //TODO implemented this para accesos de array o de type
+
         var result = new Value(new Type(EnumType.ERROR,""),"Error");
         var resultSymbolAccess;
 

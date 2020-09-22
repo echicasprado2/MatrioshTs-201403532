@@ -65,6 +65,7 @@ lex_comentariomultilinea [/][*][^*]*[*]+([^/*][^*]*[*]+)*[/]
 "?"  return '?'
 
 //PALABRAS RESERVADAS
+"string"      return 'string'
 "number"      return 'number'
 "void"        return 'void'
 "boolean"     return 'boolean'
@@ -91,7 +92,7 @@ lex_comentariomultilinea [/][*][^*]*[*]+([^/*][^*]*[*]+)*[/]
 "do"          return 'do'
 
 "console.log" return 'print'
-"graficar_ts"  return 'graficar_ts'
+"graficar_ts" return 'graficar_ts'
 "function"    return 'function'
 
 //valores expresiones regulares

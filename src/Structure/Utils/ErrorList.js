@@ -7,7 +7,6 @@ class ErrorList{
     }
 
     static addError(node){
-        console.log(node);
         ErrorList.errorList.push(node);
     }
 

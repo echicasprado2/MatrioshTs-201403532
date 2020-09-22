@@ -7,10 +7,12 @@ class Symbol {
      * @param {*} type 
      * @param {*} value 
      */
-    constructor(id, type, typeDeclaration, value) {
-        this.typeDeclaration = typeDeclaration;
-        this.type = type;
+    constructor(line,column,id, type, typeDeclaration, value) {
+        this.line = line;
+        this.column = column;
         this.id = id;
+        this.type = type;
+        this.typeDeclaration = typeDeclaration;
         this.value = value;
     }
 }

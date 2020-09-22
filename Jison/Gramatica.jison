@@ -65,6 +65,7 @@ lex_comentariomultilinea [/][*][^*]*[*]+([^/*][^*]*[*]+)*[/]
 "?"  return '?';
 
 //PALABRAS RESERVADAS
+"string"      return 'string'
 "number"      return 'number';
 "void"        return 'void';
 "boolean"     return 'boolean';

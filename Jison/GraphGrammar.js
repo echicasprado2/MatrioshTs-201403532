@@ -908,70 +908,72 @@ case 33:return 41
 break;
 case 34:return 104
 break;
-case 35:return 59
+case 35:return 60
 break;
-case 36:return 58
+case 36:return 59
 break;
-case 37:return 61
+case 37:return 58
 break;
-case 38:return 52
+case 38:return 61
 break;
-case 39:return 83
+case 39:return 52
 break;
-case 40:return 82
+case 40:return 83
 break;
-case 41:return 108
+case 41:return 82
 break;
-case 42:return 106
+case 42:return 108
 break;
-case 43:return 107
+case 43:return 106
 break;
-case 44:return 68
+case 44:return 107
 break;
-case 45:return 66
+case 45:return 68
 break;
-case 46:return 71
+case 46:return 66
 break;
-case 47:return 75
+case 47:return 71
 break;
-case 48:return 76
+case 48:return 75
 break;
-case 49:return 27
+case 49:return 76
 break;
-case 50:return 28
+case 50:return 27
 break;
-case 51:return 29
+case 51:return 28
 break;
-case 52:return 77
+case 52:return 29
 break;
-case 53:return 79
+case 53:return 77
 break;
-case 54:return 78
+case 54:return 79
 break;
-case 55:return 69
+case 55:return 78
 break;
-case 56:return 70
+case 56:return 69
 break;
-case 57:return 44
+case 57:return 70
 break;
-case 58:return 45
+case 58:return 44
 break;
-case 59:return 36
+case 59:return 45
 break;
-case 60:return 99
+case 60:return 36
 break;
-case 61:return 100
+case 61:return 99
 break;
-case 62:return 22
+case 62:return 100
 break;
-case 63:return 5
+case 63:return 22
 break;
-case 64:;
+case 64:return 5
+break;
+case 65:;
 break;
 }
 },
-rules: [/^(?:(\/\/.*(\r|\n|\r\n|$)))/,/^(?:([/][*][^*]*[*]+([^/*][^*]*[*]+)*[/]))/,/^(?:[\s\t\r\n]+)/,/^(?:\+\+)/,/^(?:--)/,/^(?:\*\*)/,/^(?:\+)/,/^(?:-)/,/^(?:\*)/,/^(?:\/)/,/^(?:%)/,/^(?:null\b)/,/^(?:true\b)/,/^(?:false\b)/,/^(?:>=)/,/^(?:>)/,/^(?:<=)/,/^(?:<)/,/^(?:==)/,/^(?:!=)/,/^(?:=)/,/^(?:&&)/,/^(?:\|\|)/,/^(?:!)/,/^(?:;)/,/^(?::)/,/^(?:\.)/,/^(?:\()/,/^(?:\))/,/^(?:\{)/,/^(?:\})/,/^(?:\[)/,/^(?:\])/,/^(?:,)/,/^(?:\?)/,/^(?:number\b)/,/^(?:void\b)/,/^(?:boolean\b)/,/^(?:type\b)/,/^(?:const\b)/,/^(?:let\b)/,/^(?:push\b)/,/^(?:pop\b)/,/^(?:length\b)/,/^(?:if\b)/,/^(?:else\b)/,/^(?:switch\b)/,/^(?:case\b)/,/^(?:default\b)/,/^(?:break\b)/,/^(?:continue\b)/,/^(?:return\b)/,/^(?:for\b)/,/^(?:of\b)/,/^(?:in\b)/,/^(?:while\b)/,/^(?:do\b)/,/^(?:console\.log\b)/,/^(?:graficar_ts\b)/,/^(?:function\b)/,/^(?:([0-9]+(\.[0-9]+)?\b))/,/^(?:([\"\'\`](([^\"\'\`\\])*([\\].)*)*[\"\'\`]))/,/^(?:([A-Za-z_\ñ\Ñ][A-Za-z_0-9\ñ\Ñ]*))/,/^(?:$)/,/^(?:.)/],
-conditions: {"INITIAL":{"rules":[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51,52,53,54,55,56,57,58,59,60,61,62,63,64],"inclusive":true}}
+rules: [/^(?:(\/\/.*(\r|\n|\r\n|$)))/,/^(?:([/][*][^*]*[*]+([^/*][^*]*[*]+)*[/]))/,/^(?:[\s\t\r\n]+)/,/^(?:\+\+)/,/^(?:--)/,/^(?:\*\*)/,/^(?:\+)/,/^(?:-)/,/^(?:\*)/,/^(?:\/)/,/^(?:%)/,/^(?:null\b)/,/^(?:true\b)/,/^(?:false\b)/,/^(?:>=)/,/^(?:>)/,/^(?:<=)/,/^(?:<)/,/^(?:==)/,/^(?:!=)/,/^(?:=)/,/^(?:&&)/,/^(?:\|\|)/,/^(?:!)/,/^(?:;)/,/^(?::)/,/^(?:\.)/,/^(?:\()/,/^(?:\))/,/^(?:\{)/,/^(?:\})/,/^(?:\[)/,/^(?:\])/,/^(?:,)/,/^(?:\?)/,/^(?:string\b)/,/^(?:number\b)/,/^(?:void\b)/,/^(?:boolean\b)/,/^(?:type\b)/,/^(?:const\b)/,/^(?:let\b)/,/^(?:push\b)/,/^(?:pop\b)/,/^(?:length\b)/,/^(?:if\b)/,/^(?:else\b)/,/^(?:switch\b)/,/^(?:case\b)/,/^(?:default\b)/,/^(?:break\b)/,/^(?:continue\b)/,/^(?:return\b)/,/^(?:for\b)/,/^(?:of\b)/,/^(?:in\b)/,/^(?:while\b)/,/^(?:do\b)/,/^(?:console\.log\b)/,/^(?:graficar_ts\b)/,/^(?:function\b)/,/^(?:([0-9]+(\.[0-9]+)?\b))/,/^(?:([\"\'\`](([^\"\'\`\\])*([\\].)*)*[\"\'\`]))/,/^(?:([A-Za-z_\ñ\Ñ][A-Za-z_0-9\ñ\Ñ]*))/,/^(?:$)/,/^(?:.)/],
+conditions: {"INITIAL":{"rules":[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51,52,53,54,55,56,57,58,59,60,61,62,63,64,65],"inclusive":true}}
 });
 return lexer;
 })();

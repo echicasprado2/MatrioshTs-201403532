@@ -10,24 +10,69 @@ class Environment {
         this.table = new Map();
     }
 
+    /**
+     * 
+     * @param {*} name 
+     * @param {*} symbol 
+     */
     insert(name,symbol){
+
+        //busco un entorno de funcion o type o global, para guardar el valor
         for(var e = this; e != null; e = e.previous){
-            if(!e.table.has(name)){// busca si el simbolo existe en el ambito
-                if(symbol.type.enumType.ERROR != EnumType.ERROR){// valida si el tipo no es error
-                    e.table.set(name,symbol);
-                    return;
+            if(e.table.has(name)){
+                if(e.enviromentType.EnumEnvironmentType == EnumEnvironmentType.GLOBAL || e.enviromentType.EnumEnvironmentType == EnumEnvironmentType.FUNCTION || e.enviromentType.EnumEnvironmentType == EnumEnvironmentType.TYPE){
+                    if(symbol.type.enumType != EnumType.ERROR){
+                        e.table.set(name,symbol);
+                        if(symbol.value instanceof TypeDefinition || symbol.value instanceof Function){
+                            TableReport.addExecute(new NodeTableSymbols(symbol.line,symbol.column,symbol.id,symbol.type,e.enviromentType,null));
+                        }else{
+                            TableReport.addExecute(new NodeTableSymbols(symbol.line,symbol.column,symbol.id,symbol.type,e.enviromentType,symbol.value.value));
+                        }
+
+                        return;
+                    }
                 }
-            }else{
-                return;
             }
         }
+
+        //busco un entorno en donde este definida esta variable
+        for(var e = this; e != null; e = e.previous){
+            if(e.table.has(name)){
+                if(symbol.type.enumType != EnumType.ERROR){
+                    e.table.set(name,symbol);
+
+                    if(symbol.value instanceof TypeDefinition || symbol.value instanceof Function){
+                        TableReport.addExecute(new NodeTableSymbols(symbol.line,symbol.column,symbol.id,symbol.type,e.enviromentType,null));
+                    }else{
+                        TableReport.addExecute(new NodeTableSymbols(symbol.line,symbol.column,symbol.id,symbol.type,e.enviromentType,symbol.value.value));
+                    }
+
+                    return;
+                }
+            }
+        }
+
+        //si no encuentro la variable en ningun lugar, guardo en el entorno local
+        if(symbol.type.enumType != EnumType.ERROR){
+            this.table.set(name,symbol);
+
+            if(symbol.value instanceof TypeDefinition || symbol.value instanceof Function){
+                TableReport.addExecute(new NodeTableSymbols(symbol.line,symbol.column,symbol.id,symbol.type,this.enviromentType,null));
+            }else{
+                TableReport.addExecute(new NodeTableSymbols(symbol.line,symbol.column,symbol.id,symbol.type,this.enviromentType,symbol.value.value));
+            }
+
+            return null;
+        }
+
+        return null;
     }
 
     searchSymbol(name){
-        for(var e = this; e != null; e = e.anterior){
+        for(var e = this; e != null; e = e.previous){
             if(e.table.has(name)){// busca si el simbolo existe en el ambito
                 var returnSymbol = e.table.get(name);
-                return new Symbol(returnSymbol.id,returnSymbol.type,returnSymbol.typeDeclaration,returnSymbol.value);
+                return new Symbol(returnSymbol.line,returnSymbol.column,returnSymbol.id,returnSymbol.type,returnSymbol.typeDeclaration,returnSymbol.value);
             }
         }
         return null;

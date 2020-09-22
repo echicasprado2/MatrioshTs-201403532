@@ -50,7 +50,51 @@ class For extends Instruction {
 
     execute(e) {
         //TODO implemented this
-        throw new Error("Method not implemented.");
+        var actualizarValor;//this is Declaration or Assignment or Id
+        var resultCondition;
+        var nombreVariableActualizar;
+        var resultExpresion;
+        var resultBlock;
+        var envFor = new Environment(e,new EnvironmentType(EnumEnvironmentType.FOR,null));
+
+        if(this.declaration instanceof Declaration){
+            if(this.declaration.ids.length > 1){
+                ErrorList.addError(new ErrorNode(this.line,this.column,new ErrorType(EnumErrorType.SEMANTIC),`No se se puede declarar mas de una variable`,envFor.enviromentType));
+            }
+            this.declaration.execute(envFor);
+        }else if(this.declaration instanceof Assignment){
+            this.declaration.execute(envFor);
+        }
+        
+
+        nombreVariableActualizar = this.expression.expresion.value[this.expression.expresion.value.length - 1 ];
+        resultCondition = this.condition.getValue(envFor);
+        
+        while(resultCondition.value){
+            resultBlock = this.block.execute(envFor);
+            
+            if(resultBlock != null){
+                if(resultBlock instanceof Break){
+                    return null;
+                }else if(resultBlock instanceof Continue){
+                    continue;
+                }else if(resultBlock instanceof Return){
+                    return resultBlock;
+                }else{
+                    console.log("error con el bloque de for");
+                }
+            }
+
+            resultExpresion = this.expression.getValue(envFor);
+            actualizarValor = new Assignment(this.line,this.expression.column,[nombreVariableActualizar],resultExpresion);
+            
+            actualizarValor.execute(envFor);
+            resultCondition = this.condition.getValue(envFor);
+        }
+
+
+
+        return null;
     }
 
 }

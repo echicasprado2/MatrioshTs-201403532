@@ -50,9 +50,9 @@ class TypeDefinition extends Instruction {
         var exists = e.searchSymbol(this.identify);
         
         if(exists === null){
-            var s = new Symbol(this.identify,new Type(EnumType.TYPE,this.identify),new DeclarationType(EnumDeclarationType.NULL),this);
+            var s = new Symbol(this.line,this.column,this.identify,new Type(EnumType.TYPE,this.identify),new DeclarationType(EnumDeclarationType.NULL),this);
             e.insert(this.identify,s);
-            TableReport.addExecute(new NodeTableSymbols(this.line,this.column,this.identify,new Type(EnumType.TYPE,this.identify),e.enviromentType,null));
+            //TableReport.addExecute(new NodeTableSymbols(this.line,this.column,this.identify,new Type(EnumType.TYPE,this.identify),e.enviromentType,null));
         }else{
             ErrorList.addError(new ErrorNode(this.line,this.column,new ErrorType(EnumErrorType.SEMANTIC),`El type: "${this.identify}" ya se encuentra definido`,e.enviromentType));
         }

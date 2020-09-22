@@ -36,11 +36,13 @@ class Relational extends Expresion {
    * @param {Enviroment} e
    */
   getValue(e) {
+
     var result = new Value(new Type(EnumType.ERROR,""),"Error");
     var resultExp1 = this.expresion1.getValue(e);
     var resultExp2 = this.expresion2.getValue(e);
     var enumTypeResultExpresitions = TreatmentOfPrimitiveTypes.getTopType(resultExp1,resultExp2);
     
+
     if(enumTypeResultExpresitions === EnumType.ERROR){
       ErrorList.addError(new ErrorNode(this.line,this.column,new ErrorType(EnumErrorType.SEMANTIC),`Los tipos de variables no se pueden operar ${this.expresion1.type.toString()} ${this.expresion2.type.toString()}`,e.enviromentType));
       return result;
