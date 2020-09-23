@@ -369,6 +369,10 @@ E   : E '+'   E                           { $$ = new NodeGraphAST($2,NumberNode.
     | par_izq E par_der                   { $$ = $2; }
     | cor_izq L_E cor_der                 { $$ = $2; }
     | E '?' E dos_puntos E                { $$ = new NodeGraphAST("TERNARIO",NumberNode.getNumber()); $$.children.push($1,$3,$5); }
+
+    | identificador par_izq par_der                  { $$ = new NodeGraphAST("LLAMADA_FUNCION",NumberNode.getNumber()); $$.children.push(new NodeGraphAST($1,NumberNode.getNumber()));}
+    | identificador par_izq L_E par_der              { $$ = new NodeGraphAST("LLAMADA_FUNCION",NumberNode.getNumber()); $$.children.push(new NodeGraphAST($1,NumberNode.getNumber()),$3); }
+    
     | ACCESS POST_FIXED                   { $$ = new NodeGraphAST($2,NumberNode.getNumber()); $$.children.push($1); }
     | ACCESS punto pop par_izq par_der    { $$ = new NodeGraphAST("FUNCTION_ARRAY",NumberNode.getNumber()); $$.children.push($1,new NodeGraphAST($3,NumberNode.getNumber())); }
     | ACCESS punto length                 { $$ = new NodeGraphAST("FUNCTION_ARRAY",NumberNode.getNumber()); $$.children.push($1,new NodeGraphAST($3,NumberNode.getNumber())); }
@@ -378,12 +382,8 @@ E   : E '+'   E                           { $$ = new NodeGraphAST($2,NumberNode.
 
 ACCESS: ACCESS punto identificador                       { $$ = new NodeGraphAST("ACCESO",NumberNode.getNumber()); $$.children.push($1,new NodeGraphAST($3,NumberNode.getNumber()));}
         | ACCESS punto identificador ACCESS_DIMENSION    { $$ = new NodeGraphAST("ACCESO",NumberNode.getNumber()); $$.children.push($1,new NodeGraphAST($3,NumberNode.getNumber()),$4);}
-        | ACCESS punto identificador par_izq par_der     { $$ = new NodeGraphAST("ACCESO",NumberNode.getNumber()); $$.children.push($1,new NodeGraphAST($3,NumberNode.getNumber()));}
-        | ACCESS punto identificador par_izq L_E par_der { $$ = new NodeGraphAST("ACCESO",NumberNode.getNumber()); $$.children.push($1,new NodeGraphAST($3,NumberNode.getNumber()),$5);}
         | identificador                                  { $$ = new NodeGraphAST($1,NumberNode.getNumber()); }
         | identificador ACCESS_DIMENSION                 { $$ = new NodeGraphAST("ACCESO_ARRAY",NumberNode.getNumber()); $$.children.push(new NodeGraphAST($1,NumberNode.getNumber()),$2);}
-        | identificador par_izq par_der                  { $$ = new NodeGraphAST("LLAMADA_FUNCION",NumberNode.getNumber()); $$.children.push(new NodeGraphAST($1,NumberNode.getNumber()));}
-        | identificador par_izq L_E par_der              { $$ = new NodeGraphAST("LLAMADA_FUNCION",NumberNode.getNumber()); $$.children.push(new NodeGraphAST($1,NumberNode.getNumber()),$3); }
         ;
 
 ACCESS_DIMENSION: ACCESS_DIMENSION cor_izq E cor_der { $$ = new NodeGraphAST("ACCESO_DIMENSION",NumberNode.getNumber()); $3.tag = `[${$3.tag}]`; $$.children.push($1,$3); }

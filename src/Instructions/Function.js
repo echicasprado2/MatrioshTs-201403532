@@ -387,8 +387,8 @@ class Function extends Instruction {
     var exists = e.searchSymbol(this.identifier);
     
     if(exists == null){
+      this.instructions = new Block(this.instructions);
       e.insert(this.identifier,new Symbol(this.line,this.column,this.identifier,new Type(EnumType.FUNCTION), new DeclarationType(EnumDeclarationType.NULL),this));
-      // TableReport.addExecute(new NodeTableSymbols(this.line,this.column,this.identifier,this.type,e.enviromentType,null));
     }else{
       ErrorList.addError(new ErrorNode(this.line,this.column,new ErrorType(EnumErrorType.SEMANTIC),`La funcion: "${this.identifier}" ya se encuentra definida`,e.enviromentType));
     }

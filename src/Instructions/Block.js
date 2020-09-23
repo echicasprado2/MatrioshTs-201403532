@@ -49,7 +49,6 @@ class Block extends Instruction {
           }else if(resultBlock instanceof Return){
             return resultBlock;    
           }else{
-            console.log("Error con el block");
           }
 
         }
@@ -59,7 +58,6 @@ class Block extends Instruction {
       }
 
     }
-
     return null;
   }
 

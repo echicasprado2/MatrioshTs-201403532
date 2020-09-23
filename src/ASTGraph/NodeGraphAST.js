@@ -39,8 +39,6 @@ class NodeGraphAST{
                     root.children[i].tag = root.children[i].tag.replace("\`","");
                     root.children[i].tag = root.children[i].tag.replace("\`","");
                     
-                    console.log(root.children[i].tag);
-
                     var tagH = `node${root.children[i].numberNode}(("${root.children[i].tag} "))\n`;
                     var code = `node${root.numberNode} --> node${root.children[i].numberNode}\n`;
                     codeGraph += nodeN + tagH + code;

@@ -70,7 +70,7 @@ class AST {
             if(this.instruccions[i] instanceof Instruction){
               (this.instruccions[i]).execute(this.environmentExecute);
             }else if(this.instruccions[i] instanceof Expresion){
-              //TODO implement called getValue
+              (this.instruccions[i]).getValue(this.environmentExecute);
             }
           }
     }

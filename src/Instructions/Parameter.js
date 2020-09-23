@@ -4,6 +4,7 @@ class Parameter extends Instruction{
         super(line,column);
         this.identifier = identifier;
         this.type = type;
+        this.typeDeclaration = new DeclarationType(EnumDeclarationType.LET);
         this.expresion = expresion;
         this.isArray = isArray;
         this.dimensions = dimentions;
@@ -63,8 +64,7 @@ class Parameter extends Instruction{
      * @param {*} e 
      */
     execute(e) {
-        //TODO implemented this
-        throw new Error("Method not implemented.");
+        return null;
     }
 
 }

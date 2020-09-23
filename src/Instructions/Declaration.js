@@ -72,7 +72,6 @@ class Declaration extends Instruction {
   }
 
   execute(e) {
-
     var exists;
     var result;
     

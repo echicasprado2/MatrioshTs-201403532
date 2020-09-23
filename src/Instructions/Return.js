@@ -33,13 +33,13 @@ class Return extends Instruction {
     }
 
     execute(e) {
-        //TODO test
         var result;
-        if(env.enviromentType.enumEnviromentType == EnvironmentType.GLOBAL){
+        
+        if(e.enviromentType.enumEnvironmentType == EnvironmentType.GLOBAL){
             ErrorList.addError(new ErrorNode(this.line,this.column,new ErrorType(EnumErrorType.SEMANTIC),`no se puede utilizar return en este entorno`,e.enviromentType));
             return null;
         }else{
-            if(this.isReturnExpresion){
+            if(this.returnExpresion){
                 result = this.expression.getValue(e);
                 return new Return(this.line,this.column,result,true);
             }

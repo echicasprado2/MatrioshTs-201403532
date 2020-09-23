@@ -42,6 +42,8 @@ class Access extends Expresion {
 
         if(resultSymbolAccess.type.enumType == EnumType.FUNCTION || resultSymbolAccess.type.enumType == EnumType.TYPE){
             return resultSymbolAccess
+        }else if(resultSymbolAccess instanceof Value){
+            return resultSymbolAccess;
         }else{
             result = new Value(new Type(resultSymbolAccess.type.enumType,resultSymbolAccess.type.identifiers),resultSymbolAccess.value.value);
             return result;
