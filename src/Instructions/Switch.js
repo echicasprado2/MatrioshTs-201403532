@@ -72,6 +72,8 @@ class Switch extends Instruction {
                         
                         }
                     }
+                }else{
+                    ErrorList.addError(new ErrorNode(this.line,this.column,new ErrorType(EnumType.SEMANTIC),`el valor del case tiene errores`,e.enviromentType));
                 }
 
             }else if(!(this.casesList[i]).isCase){//es default

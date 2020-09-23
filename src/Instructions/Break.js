@@ -19,6 +19,7 @@ class Break extends Instruction {
     }
 
     execute(e) {
+        
         for(var env = e; env != null; env = env.previous){
             if(env.enviromentType.enumEnvironmentType == EnumEnvironmentType.FOR
                 || env.enviromentType.enumEnvironmentType == EnumEnvironmentType.FOR_IN

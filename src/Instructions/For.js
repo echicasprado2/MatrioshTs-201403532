@@ -64,6 +64,16 @@ class For extends Instruction {
         }
 
         resultCondition = this.condition.getValue(envFor);
+
+        if(resultCondition == null){
+            ErrorList.addError(new ErrorNode(this.line,this.column,new ErrorType(EnumErrorType.SEMANTIC),`for tiene errores con su condicion`,e.enviromentType));
+            return null;
+        }
+        
+        if(resultCondition.type.enumType != EnumType.BOOLEAN){
+            ErrorList.addError(new ErrorNode(this.line,this.column,new ErrorType(EnumErrorType.SEMANTIC),`la condicion de for no es de tipo boolean`,e.enviromentType));
+            return null;
+        }
         
         while(resultCondition.value){
             resultBlock = this.block.execute(envFor);
@@ -72,7 +82,7 @@ class For extends Instruction {
                 if(resultBlock instanceof Break){
                     return null;
                 }else if(resultBlock instanceof Continue){
-                    
+                    //muere el continue
                 }else if(resultBlock instanceof Return){
                     return resultBlock;
                 }else{
@@ -82,10 +92,19 @@ class For extends Instruction {
             
             resultExpresion = this.expression.getValue(envFor);
             resultCondition = this.condition.getValue(envFor);
+
+            if(resultCondition == null){
+                ErrorList.addError(new ErrorNode(this.line,this.column,new ErrorType(EnumErrorType.SEMANTIC),`for tiene errores con su condicion`,e.enviromentType));
+                return null;
+            }
+            
+            if(resultCondition.type.enumType != EnumType.BOOLEAN){
+                ErrorList.addError(new ErrorNode(this.line,this.column,new ErrorType(EnumErrorType.SEMANTIC),`la condicion de for no es de tipo boolean`,e.enviromentType));
+                return null;
+            }
+            
         }
-
-
-
+        
         return null;
     }
 

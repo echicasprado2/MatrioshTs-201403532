@@ -4,20 +4,20 @@ class While extends Instruction {
      * 
      * @param {*} linea 
      * @param {*} column 
-     * @param {*} expression 
+     * @param {*} condition 
      * @param {*} block 
      */
-    constructor(linea,column,expression,block){
+    constructor(linea,column,condition,block){
         super(linea,column);
 
-        this.expression = expression;
+        this.condition = condition;
         this.block = block;
 
         this.translatedCode = "";
     }
 
     getTranslated(){
-        this.translatedCode += `while(${this.expression.getTranslated()})`
+        this.translatedCode += `while(${this.condition.getTranslated()})`
         this.translatedCode += this.block.getTranslated();
         return `${this.translatedCode}\n\n`;
     }
@@ -35,7 +35,7 @@ class While extends Instruction {
         );
       
         var env = new Environment(e,new EnvironmentType(EnumEnvironmentType.WHILE,""));
-        this.expression.translatedSymbolsTable(env);
+        this.condition.translatedSymbolsTable(env);
         this.block.translatedSymbolsTable(env);
     }
 
@@ -44,8 +44,41 @@ class While extends Instruction {
     }
 
     execute(e) {
-        //TODO implemented this
-        throw new Error("Method not implemented.");
+        var resultCondition;
+        var resultBlock;
+        var env = new Environment(e,new EnvironmentType(EnumEnvironmentType.WHILE,null));
+
+        resultCondition = this.condition.getValue(e);
+        console.log(resultCondition);
+
+        if(resultCondition == null){
+            ErrorList.addError(new ErrorNode(this.line,this.column,new ErrorType(EnumErrorType.SEMANTIC),`la condicion de while tiene errores`,e.enviromentType));
+            return null;
+        }
+        
+        if(resultCondition.type.enumType != EnumType.BOOLEAN){
+            ErrorList.addError(new ErrorNode(this.line,this.column,new ErrorType(EnumErrorType.SEMANTIC),`la condicion de while no es de tipo boolean`,e.enviromentType));
+            return null;
+        }
+
+        while(resultCondition.value){
+
+            resultBlock = this.block.execute(env);
+
+            if(resultBlock != null){
+                if(resultBlock instanceof Break){
+                    return null;
+                }else if(resultBlock instanceof Continue){
+                    // muere el continue
+                }else if(resultBlock instanceof Return){
+                    return resultBlock;
+                }
+            }
+            
+            resultCondition = this.condition.getValue(e);
+        }
+        
+        return null;
     }
 
 }
