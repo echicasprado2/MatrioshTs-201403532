@@ -36,7 +36,6 @@ class Do extends Instruction {
     }
 
     execute(e) {
-        //TODO implemented this
         var resultCondition;
         var resultBlock;
         var env = new Environment(e,new EnvironmentType(EnumEnvironmentType.DO,null));
@@ -65,6 +64,23 @@ class Do extends Instruction {
             return null;
         }
 
+        while(resultCondition.value){
+            env = new Environment(e,new EnvironmentType(EnumEnvironmentType.DO,null));
+            resultBlock = this.block.execute(env);
+
+            if(resultBlock != null){
+                if(resultBlock instanceof Break){
+                    return null;
+                }else if(resultBlock instanceof Continue){
+                    // muere el continue
+                }else if(resultBlock instanceof Return){
+                    return resultBlock;
+                }
+            }
+
+            
+            resultCondition = this.condition.getValue(e);
+        }
 
         return null;
     }
