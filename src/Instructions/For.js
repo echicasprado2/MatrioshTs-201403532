@@ -52,6 +52,7 @@ class For extends Instruction {
         var resultCondition;
         var resultExpresion;
         var resultBlock;
+        var env;
         var envFor = new Environment(e,new EnvironmentType(EnumEnvironmentType.FOR,null));
 
         if(this.declaration instanceof Declaration){
@@ -66,17 +67,19 @@ class For extends Instruction {
         resultCondition = this.condition.getValue(envFor);
 
         if(resultCondition == null){
-            ErrorList.addError(new ErrorNode(this.line,this.column,new ErrorType(EnumErrorType.SEMANTIC),`for tiene errores con su condicion`,e.enviromentType));
+            ErrorList.addError(new ErrorNode(this.line,this.column,new ErrorType(EnumErrorType.SEMANTIC),`for tiene errores con su condicion`,envFor.enviromentType));
             return null;
         }
         
         if(resultCondition.type.enumType != EnumType.BOOLEAN){
-            ErrorList.addError(new ErrorNode(this.line,this.column,new ErrorType(EnumErrorType.SEMANTIC),`la condicion de for no es de tipo boolean`,e.enviromentType));
+            ErrorList.addError(new ErrorNode(this.line,this.column,new ErrorType(EnumErrorType.SEMANTIC),`la condicion de for no es de tipo boolean`,envFor.enviromentType));
             return null;
         }
         
         while(resultCondition.value){
-            resultBlock = this.block.execute(envFor);
+            env = new Environment(envFor,new EnvironmentType(EnumEnvironmentType.FOR,null));
+            // resultBlock = this.block.execute(envFor);
+            resultBlock = this.block.execute(env);
             
             if(resultBlock != null){
                 if(resultBlock instanceof Break){
@@ -94,17 +97,17 @@ class For extends Instruction {
             resultCondition = this.condition.getValue(envFor);
 
             if(resultCondition == null){
-                ErrorList.addError(new ErrorNode(this.line,this.column,new ErrorType(EnumErrorType.SEMANTIC),`for tiene errores con su condicion`,e.enviromentType));
+                ErrorList.addError(new ErrorNode(this.line,this.column,new ErrorType(EnumErrorType.SEMANTIC),`for tiene errores con su condicion`,envFor.enviromentType));
                 return null;
             }
             
             if(resultCondition.type.enumType != EnumType.BOOLEAN){
-                ErrorList.addError(new ErrorNode(this.line,this.column,new ErrorType(EnumErrorType.SEMANTIC),`la condicion de for no es de tipo boolean`,e.enviromentType));
+                ErrorList.addError(new ErrorNode(this.line,this.column,new ErrorType(EnumErrorType.SEMANTIC),`la condicion de for no es de tipo boolean`,envFor.enviromentType));
                 return null;
             }
             
         }
-        
+
         return null;
     }
 

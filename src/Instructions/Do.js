@@ -1,16 +1,16 @@
 class Do extends Instruction {
 
-    constructor(linea,column,block,expression){
+    constructor(linea,column,block,condition){
         super(linea,column);
 
-        this.expression = expression;
+        this.condition = condition;
         this.block = block;
 
         this.translatedCode = "";
     }
 
     getTranslated(){
-        this.translatedCode += `do ${this.block.getTranslated()}while(${this.expression.getTranslated()});\n\n`;
+        this.translatedCode += `do ${this.block.getTranslated()}while(${this.condition.getTranslated()});\n\n`;
         return this.translatedCode;
     }
 
@@ -27,7 +27,7 @@ class Do extends Instruction {
         );
       
         var env = new Environment(e,new EnvironmentType(EnumEnvironmentType.DO,""));
-        this.expression.translatedSymbolsTable(env);
+        this.condition.translatedSymbolsTable(env);
         this.block.translatedSymbolsTable(env);
     }
 
@@ -37,7 +37,36 @@ class Do extends Instruction {
 
     execute(e) {
         //TODO implemented this
-        throw new Error("Method not implemented.");
+        var resultCondition;
+        var resultBlock;
+        var env = new Environment(e,new EnvironmentType(EnumEnvironmentType.DO,null));
+
+        resultBlock = this.block.execute(env);
+
+        if(resultBlock != null){
+            if(resultBlock instanceof Break){
+                return null;
+            }else if(resultBlock instanceof Continue){
+                // muere el continue
+            }else if(resultBlock instanceof Return){
+                return resultBlock;
+            }
+        }
+
+        resultCondition = this.condition.getValue(e);
+        
+        if(resultCondition == null){
+            ErrorList.addError(new ErrorNode(this.line,this.column,new ErrorType(EnumErrorType.SEMANTIC),`la condicion de while tiene errores`,e.enviromentType));
+            return null;
+        }
+        
+        if(resultCondition.type.enumType != EnumType.BOOLEAN){
+            ErrorList.addError(new ErrorNode(this.line,this.column,new ErrorType(EnumErrorType.SEMANTIC),`la condicion de while no es de tipo boolean`,e.enviromentType));
+            return null;
+        }
+
+
+        return null;
     }
 
 }

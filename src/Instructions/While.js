@@ -46,11 +46,10 @@ class While extends Instruction {
     execute(e) {
         var resultCondition;
         var resultBlock;
-        var env = new Environment(e,new EnvironmentType(EnumEnvironmentType.WHILE,null));
+        var env;
 
         resultCondition = this.condition.getValue(e);
-        console.log(resultCondition);
-
+        
         if(resultCondition == null){
             ErrorList.addError(new ErrorNode(this.line,this.column,new ErrorType(EnumErrorType.SEMANTIC),`la condicion de while tiene errores`,e.enviromentType));
             return null;
@@ -63,6 +62,7 @@ class While extends Instruction {
 
         while(resultCondition.value){
 
+            env = new Environment(e,new EnvironmentType(EnumEnvironmentType.WHILE,null));
             resultBlock = this.block.execute(env);
 
             if(resultBlock != null){
