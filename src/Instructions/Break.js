@@ -23,7 +23,7 @@ class Break extends Instruction {
             if(env.enviromentType.enumEnvironmentType == EnumEnvironmentType.FOR
                 || env.enviromentType.enumEnvironmentType == EnumEnvironmentType.FOR_IN
                 || env.enviromentType.enumEnvironmentType == EnumEnvironmentType.FOR_OF
-                || env.enviromentType.enumEnvironmentType == EnumEnvironmentType.SWICH
+                || env.enviromentType.enumEnvironmentType == EnumEnvironmentType.SWITCH
                 || env.enviromentType.enumEnvironmentType == EnumEnvironmentType.WHILE
                 || env.enviromentType.enumEnvironmentType == EnumEnvironmentType.DO
                 || env.enviromentType.enumEnvironmentType == EnumEnvironmentType.IF){

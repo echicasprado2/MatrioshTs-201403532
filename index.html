@@ -71,15 +71,27 @@
                 <div class="tab-content  height-editor" id="myTabEditorContent">
                     <div class="tab-pane fade show active  height-editor" id="editor-content-entrada" role="tabpanel"
                         aria-labelledby="entrada-editor-tab">
-                        <textarea id="textarea-editor-entrada">let i = 0;
-const y = 7;
-for(i = 0; i < 10;i++){
-if(i == 5){
-    continue;
-}else if(i == y){
+                        <textarea id="textarea-editor-entrada">let valor = 9;
+
+switch(valor){
+    case 1:
+        console.log("soy yo el valor: ",valor);
     break;
-}
-console.log(i);                        
+    case 2:
+        console.log("soy yo el valor: ",valor);
+    break;
+    case 3:
+        console.log("soy yo el valor: ",valor);
+    break;
+    case 4:
+        console.log("soy yo el valor: ",valor);
+    break;
+    case 5:
+        console.log("soy yo el valor: ",valor);
+    break;
+    default:
+        console.log("no me encontraron: "+valor);
+        break;
 }</textarea>
                     </div>
                     <div class="tab-pane fade active  height-editor" id="editor-content-salida" role="tabpanel"
@@ -201,7 +213,6 @@ console.log(i);
     <script src="src/Instructions/TypeAttributeArrayDefinition.js"></script>
     <script src="src/Instructions/TypeAttributeDefiniton.js"></script>
     <script src="src/Instructions/TypeDefinition.js"></script>
-
     <script src="src/Instructions/DeclarationTypes.js"></script>
     <script src="src/Instructions/AttributeTypeAssignment.js"></script>
     <script src="src/Instructions/TypeAssignment.js"></script>

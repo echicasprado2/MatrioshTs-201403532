@@ -1,19 +1,19 @@
 class Switch extends Instruction {
 
-    constructor(linea,column,expression,block){
+    constructor(linea,column,condition,cases){
         super(linea,column);
 
-        this.expression = expression;
-        this.blockSwitch = block;
+        this.condition = condition;
+        this.casesList = cases;
 
         this.translatedCode = "";
     }
 
     getTranslated(){
-        this.translatedCode += `switch (${this.expression.getTranslated()}){\n`;
+        this.translatedCode += `switch (${this.condition.getTranslated()}){\n`;
 
-        for(var i = 0; i < this.blockSwitch.length; i++){
-            this.translatedCode += this.blockSwitch[i].getTranslated();
+        for(var i = 0; i < this.casesList.length; i++){
+            this.translatedCode += this.casesList[i].getTranslated();
         }
 
         this.translatedCode += "}\n\n";
@@ -37,13 +37,64 @@ class Switch extends Instruction {
         );
       
         var env = new Environment(e,new EnvironmentType(EnumEnvironmentType.SWITCH,""));
-        this.expression.translatedSymbolsTable(env);
-        this.blockSwitch.translatedSymbolsTable(env);
+        this.condition.translatedSymbolsTable(env);
+        this.casesList.translatedSymbolsTable(env);
     }
 
     execute(e) {
-        //TODO implemented this
-        throw new Error("Method not implemented.");
+        var resultValueCase;
+        var resultBlockCase;
+        var env;
+        var resultCondition = this.condition.getValue(e);
+        
+        for(var i = 0; i < this.casesList.length;i++){
+            
+            if((this.casesList[i]).isCase){
+                resultValueCase = (this.casesList[i]).expression.getValue(e);
+                
+                if(resultValueCase.type.enumType != EnumType.ERROR){
+                
+                    if(resultCondition.type.enumType == resultValueCase.type.enumType && resultCondition.value == resultValueCase.value){
+                        
+                        env = new Environment(e,new EnvironmentType(EnumEnvironmentType.SWITCH,null));
+                        if((this.casesList[i]).haveBlock){
+                            resultBlockCase = (this.casesList[i]).execute(env);
+
+                            if(resultBlockCase != null){
+                                if(resultBlockCase instanceof Break){
+                                    return null;
+                                }else if(resultBlockCase instanceof Continue){
+                                    return resultBlockCase;
+                                }else if(resultBlockCase instanceof Return){
+                                    return resultBlockCase;
+                                }
+                            }
+                        
+                        }
+                    }
+                }
+
+            }else if(!(this.casesList[i]).isCase){//es default
+                env = new Environment(e,new EnvironmentType(EnumEnvironmentType.SWITCH,null));
+                if((this.casesList[i]).haveBlock){
+                    resultBlockCase = (this.casesList[i]).execute(env);
+
+                    if(resultBlockCase != null){
+                        if(resultBlockCase instanceof Break){
+                            return null;
+                        }else if(resultBlockCase instanceof Continue){
+                            return resultBlockCase;
+                        }else if(resultBlockCase instanceof Return){
+                            return resultBlockCase;
+                        }
+                    }
+                
+                }
+            }
+            
+        }
+
+        return null;
     }
 
 }
