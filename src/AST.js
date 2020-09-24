@@ -42,6 +42,7 @@ class AST {
   execute(){
     TableReport.cleanExecute();
     PrintConsole.cleanConsole();
+    ShowGraphTs.clean();
 
     for(var i = 0; i < this.instruccions.length;i++){
       if(this.instruccions[i] instanceof TypeDefinition){

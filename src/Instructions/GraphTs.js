@@ -29,6 +29,7 @@ class GraphTs extends Instruction {
     execute(e) {
         //TODO implemented this
         let html = "";
+        let numberItem = 1;
         
         if(ShowGraphTs.existReport()){
             html += "</br>";
@@ -36,7 +37,7 @@ class GraphTs extends Instruction {
         }
 
         html += `<table class="table table-dark">`;
-        html += `<caption>GRAFICA TS No.${ShowGraphTs.getNumberReport()}</caption>`;
+        html += `<caption>GRAFICA TS No.${ShowGraphTs.getNumberReport()} Utilizado en Linea: ${this.line} </caption>`;
         html += `<thead class="thead-light">`;
         html += `<tr>`;
         html += `<th scope="col">#</th>`;
@@ -50,12 +51,33 @@ class GraphTs extends Instruction {
         html += `</thead>`;
         html += `<tbody>`;
 
+        for(var env = e; env != null; env = env.previous){
 
-        
+            env.table.forEach(element => {
+                
+                html += `<tr>`;
+                html += `<td>${numberItem}</td>`;
+                html += `<td>${element.id}</td>`;
+                html += `<td>${element.type.toString()}</td>`;
+                html += `<td>${element.line}</td>`;
+                html += `<td>${element.column}</td>`;
+                
+                if(element.value instanceof Function || element.value instanceof TypeDefinition){
+                    html += `<td>${null}</td>`;
+                }else if (element.value instanceof Value){
+                    html += `<td>${element.value.value.toString()}</td>`;
+                }
+    
+                html += `<td>${env.enviromentType.toString()}</td>`;
+                html += `</tr>`;
+                numberItem++;
+            });
+
+        }
 
         html += `</tbody>`;
         html += `</table>`;
-
+        ShowGraphTs.addReport(html);
         return null;
     }
 

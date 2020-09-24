@@ -103,6 +103,7 @@ execute.addEventListener("click", (e) => {
   
   showTableExecuteSymbols();
   showTableErrorsSymbols();
+  showGraficarTs();
   showExecuteTree(editor.getValue());
 });
 
@@ -120,7 +121,6 @@ function showTranslatedTree(file) {
     element.innerHTML = svgCode;
   };
 
-  // console.log(code);
   var graph = mermaid.render("showTranslatedTree", code, insertSvg);
 }
 
@@ -138,7 +138,6 @@ function showExecuteTree(file) {
     element.innerHTML = svgCode;
   };
 
-  // console.log(code);
   var graph = mermaid.render("myGraphExecute", code, insertSvg);
 }
 
@@ -241,4 +240,19 @@ function showTableErrorsSymbols() {
   html += "</tbody>";
   html += "</table>";
   document.getElementById("tableErrors").innerHTML = html;
+}
+
+function showGraficarTs(){
+  document.getElementById("reportGraficarTs").innerHTML = "";
+  
+  if(ShowGraphTs.existReport){
+    let listReports = ShowGraphTs.getReports();
+    let html = `<div class="row"><h2>Reportes Graficar Ts</h2></div>`;
+
+    for(var i = 0; i < listReports.length;i++){
+      html += `<div class="row">${listReports[i]}</div>`
+    }
+    
+    document.getElementById("reportGraficarTs").innerHTML = html;
+  }
 }

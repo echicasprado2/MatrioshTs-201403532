@@ -13,7 +13,7 @@ class ShowGraphTs{
         return ShowGraphTs.numberOfReport;
     }
 
-    static addReports(node){
+    static addReport(node){
         ShowGraphTs.listReports.push(node);
     }
 
