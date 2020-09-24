@@ -27,7 +27,6 @@ class GraphTs extends Instruction {
     }
 
     execute(e) {
-        //TODO implemented this
         let html = "";
         let numberItem = 1;
         
@@ -65,7 +64,13 @@ class GraphTs extends Instruction {
                 if(element.value instanceof Function || element.value instanceof TypeDefinition){
                     html += `<td>${null}</td>`;
                 }else if (element.value instanceof Value){
-                    html += `<td>${element.value.value.toString()}</td>`;
+                    
+                    if(element.value.value instanceof Array){
+                        html += `<td>${TableReport.getRealValue(element.value.value)}</td>`;
+                    }else{
+                        html += `<td>${element.value.value.toString()}</td>`;
+                    }
+
                 }
     
                 html += `<td>${env.enviromentType.toString()}</td>`;

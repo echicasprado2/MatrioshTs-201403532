@@ -79,16 +79,17 @@ class Declaration extends Instruction {
         for (var i = 0; i < this.ids.length; i++) {
             ErrorList.addError(new ErrorNode(this.line,this.column,new ErrorType(EnumErrorType.SEMANTIC),`La constante: "${this.ids[i]}" no tiene asignacion de un valor, debe tener valor`,e.enviromentType));
           }
-        return null;
+          return null;
+        }
       }
-    }
-
-    if(this.value != null){
-      result = this.value.getValue(e);
-
-      if(result.type.enumType == EnumType.ERROR){
-        return null;
-      }
+      
+      if(this.value != null){
+        result = this.value.getValue(e);
+        
+        if(result.type.enumType == EnumType.ERROR){
+          ErrorList.addError(new ErrorNode(this.line,this.column,new ErrorType(EnumErrorType.SEMANTIC),`el valor da error`,e.enviromentType));
+          return null;
+        }
 
     }else{
       result = null;
@@ -97,7 +98,7 @@ class Declaration extends Instruction {
     for(var i = 0; i < this.ids.length; i++){
 
       if(result == null){
-        e.insert(this.ids[i],new Symbol(this.line,this.column,this.ids[i],this.type,this.typeDeclaration,null));
+        e.insert(this.ids[i],new Symbol(this.line,this.column,this.ids[i],this.type,this.typeDeclaration,new Value(new Type(EnumType.NULL,null),"")));
       }else{
           if(this.type.enumType == EnumType.NULL){
             this.type = result.type;

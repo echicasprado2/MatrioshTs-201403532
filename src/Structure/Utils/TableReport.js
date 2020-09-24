@@ -59,10 +59,29 @@ class TableReport {
           }
         }
     }
+    
+    if(node.value  instanceof Array){
+      node.value = TableReport.getRealValue(node.value);
+    }
     TableReport.nodesExecute.push(node);
+  }
+
+  static getRealValue(arrayValues){
+    var cadena = "";
+    for(var i = 0; i < arrayValues.length;i++){
+      if(arrayValues[i] instanceof Array){
+        cadena += ` ${TableReport.getRealValue(arrayValues[i])}`;
+      }else{
+        cadena += ` ${arrayValues[i].value}`;
+      }
+    }
+    return cadena;
   }
 
   static getNodesExecute() {
     return TableReport.nodesExecute;
   }
+
+
+
 }

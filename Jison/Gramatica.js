@@ -246,7 +246,7 @@ case 82: case 101:
  this.$ = []; this.$.push($$[$0-1]); 
 break;
 case 83:
- this.$ = []; this.$.push(new Value(new Type(EnumType.NULL),"")); 
+ this.$ = []; this.$.push([new Value(new Type(EnumType.NULL),"")]); 
 break;
 case 84:
  this.$ = new DeclarationType(EnumDeclarationType.LET); 

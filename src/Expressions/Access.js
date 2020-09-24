@@ -45,6 +45,9 @@ class Access extends Expresion {
         }else if(resultSymbolAccess instanceof Value){
             return resultSymbolAccess;
         }else{
+            if(resultSymbolAccess.type.enumType == EnumType.NULL){
+                ErrorList.addError(new ErrorNode(this.line,this.column,new ErrorType(EnumErrorType.SEMANTIC),`La variable: "${resultSymbolAccess.id}", no tiene valor asignado`,e.enviromentType));
+            }
             result = new Value(new Type(resultSymbolAccess.type.enumType,resultSymbolAccess.type.identifiers),resultSymbolAccess.value.value);
             return result;
         }

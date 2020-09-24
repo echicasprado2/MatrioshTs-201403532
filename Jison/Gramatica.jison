@@ -409,7 +409,7 @@ END_ATTRIBUTE_TYPE: coma        { $$ = $1; }
 
 L_ARRAY: L_ARRAY coma cor_izq L_E cor_der { $$ = $1; $$.push($3); }
         | cor_izq L_E cor_der             { $$ = []; $$.push($2); }
-        | cor_izq cor_der                 { $$ = []; $$.push(new Value(new Type(EnumType.NULL),"")); }
+        | cor_izq cor_der                 { $$ = []; $$.push([new Value(new Type(EnumType.NULL),"")]); }
         ;
 
 TYPE_DECLARATION: let   { $$ = new DeclarationType(EnumDeclarationType.LET); }
@@ -581,6 +581,7 @@ E   : E '+'   E          { $$ = new Arithmetic(this._$.first_line,this._$.first_
     | val_verdadero      { $$ = new Value(new Type(EnumType.BOOLEAN,""),$1); }
     | val_falso          { $$ = new Value(new Type(EnumType.BOOLEAN,""),$1); }
     | val_nulo           { $$ = new Value(new Type(EnumType.NULL,""),$1); }
+
 
     | par_izq E par_der   { $$ = $2; $$.parentesis = true; }
     | cor_izq L_E cor_der { $$ = $2; }
