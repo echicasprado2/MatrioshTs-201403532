@@ -2,9 +2,11 @@ class Symbol {
    
     /**
      * 
+     * @param {*} line 
+     * @param {*} column 
      * @param {*} id 
-     * @param {*} typeDeclaration 
      * @param {*} type 
+     * @param {*} typeDeclaration 
      * @param {*} value 
      */
     constructor(line,column,id, type, typeDeclaration, value) {

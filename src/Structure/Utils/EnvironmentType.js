@@ -8,7 +8,7 @@ var EnumEnvironmentType;
     EnumEnvironmentType["WHILE"] = "WHILE";
     EnumEnvironmentType["SWITCH"] = "SWITCH";
     EnumEnvironmentType["DO"] = "DO";
-    EnumEnvironmentType["FUNCTION"] = "FUNCION";
+    EnumEnvironmentType["FUNCTION"] = "FUNCTION";
     EnumEnvironmentType["TYPE"] = "TYPE";
     EnumEnvironmentType["NULL"] = "NULL";
 })(EnumEnvironmentType || (EnumEnvironmentType = {}));

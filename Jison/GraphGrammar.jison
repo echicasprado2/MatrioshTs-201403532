@@ -313,8 +313,8 @@ L_CASE: L_CASE CASE { $$ = new NodeGraphAST("L_CASE", NumberNode.getNumber()); $
         | CASE      { $$ = $1; }
         ;
 
-CASE:     case E dos_puntos SENTENCES  { $$ = new NodeGraphAST($2,NumberNode.getNumber());  $$.children.push($4); }
-        | case E dos_puntos            { $$ = new NodeGraphAST($2,NumberNode.getNumber()); }
+CASE:     case E dos_puntos SENTENCES  { $$ = new NodeGraphAST("CASE",NumberNode.getNumber());  $$.children.push($2,$4); }
+        | case E dos_puntos            { $$ = new NodeGraphAST("CASE",NumberNode.getNumber());  $$.children.push($2); }
         | default dos_puntos SENTENCES { $$ = new NodeGraphAST("DEFAULT",NumberNode.getNumber()); $$.children.push($3); }
         | default dos_puntos           { $$ = new NodeGraphAST("DEFAULT",NumberNode.getNumber()); }
         ;

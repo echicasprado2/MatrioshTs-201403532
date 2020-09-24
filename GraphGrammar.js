@@ -234,7 +234,7 @@ case 94:
 var temp = new NodeGraphAST("WHILE",NumberNode.getNumber()); this.$ = new NodeGraphAST("DO",NumberNode.getNumber()); temp.children.push($$[$0-2]); this.$.children.push($$[$0-5],temp); 
 break;
 case 95:
- this.$ = new NodeGraphAST("SWITCH",NumberNode.getNumber()); this.$.children.push($$[$0-2],$$[$0]); 
+ this.$ = new NodeGraphAST("SWITCH_CAMBIO",NumberNode.getNumber()); this.$.children.push($$[$0-2],$$[$0]); 
 break;
 case 96:
  this.$ = new NodeGraphAST("BLOCK_SWITCH",NumberNode.getNumber()); this.$.children.push($$[$0-1]); 
@@ -246,10 +246,10 @@ case 98:
  this.$ = new NodeGraphAST("L_CASE", NumberNode.getNumber()); this.$.children.push($$[$0-1],$$[$0]); 
 break;
 case 100:
- this.$ = new NodeGraphAST($$[$0-2],NumberNode.getNumber());  this.$.children.push($$[$0]); 
+ console.log($$[$0-2]); this.$ = new NodeGraphAST("CASE",NumberNode.getNumber());  this.$.children.push($$[$0-2],$$[$0]); 
 break;
 case 101:
- this.$ = new NodeGraphAST($$[$0-1],NumberNode.getNumber()); 
+ console.log($$[$0-1]); this.$ = new NodeGraphAST("CASE",NumberNode.getNumber());  this.$.children.push($$[$0-1]); 
 break;
 case 102:
  this.$ = new NodeGraphAST("DEFAULT",NumberNode.getNumber()); this.$.children.push($$[$0]); 

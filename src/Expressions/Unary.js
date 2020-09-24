@@ -101,7 +101,6 @@
                 return result;
             }else if(this.operationType == EnumOperationType.NOT){
                 if(resultExp.value === 'true' || resultExp.value === true){
-                    console.log(resultExp.value);
                     resultExp.value = false;
                 }else{
                     resultExp.value = true;

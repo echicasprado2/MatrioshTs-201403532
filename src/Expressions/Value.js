@@ -9,8 +9,7 @@ class Value extends Expresion {
      *
      */
     constructor(type, value) {
-
-        if(type.enumType == EnumType.STRING){
+        if(type.enumType == EnumType.STRING && value != null){
             value = value.replace("\"","");
             value = value.replace("\"","");
             value = value.replace("\'","");
@@ -34,7 +33,15 @@ class Value extends Expresion {
      * obtener el codigo para la traduccion
      */
     getTranslated(){
-        this.translatedCode = (this.type.enumType == EnumType.STRING) ? `"${this.value.toString()}"` : this.value.toString();
+        if(this.type.enumType == EnumType.STRING){
+            if(this.value == null){
+                this.translatedCode = "\"\"";
+            }else{
+                this.translatedCode = `"${this.value.toString()}"`;
+            }
+        }else {
+            this.translatedCode = this.value.toString();
+        }
         
         if(this.parentesis){
             return `(${this.translatedCode})`;
@@ -60,6 +67,12 @@ class Value extends Expresion {
     }
 
     getValue(e) {
+        
+        if(this.value == null){
+            let nuevoValor = new Value(this.type, "@vacio");
+            return nuevoValor;
+        }
+
         return new Value(this.type, this.value);
     }
 

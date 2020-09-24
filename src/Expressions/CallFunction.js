@@ -68,8 +68,9 @@ class CallFunction extends Expresion {
                 return result;
             }
 
-            makeDeclaration = new Declaration(this.line,this.column,resultParametroDeclaration.typeDeclaration,[resultParametroDeclaration.identifier],resultParametroDeclaration.type,resultValueParametroDeclaration);
-            makeDeclaration.execute(env);
+            env.insertParameter(resultParametroDeclaration.identifier,new Symbol(this.line,this.column,resultParametroDeclaration.identifier,resultParametroDeclaration.type,new DeclarationType(EnumDeclarationType.LET),resultValueParametroDeclaration));
+            // makeDeclaration = new Declaration(this.line,this.column,resultParametroDeclaration.typeDeclaration,[resultParametroDeclaration.identifier],resultParametroDeclaration.type,resultValueParametroDeclaration);
+            // makeDeclaration.execute(env);
         }
         
         result = symbolFunction.value.instructions.execute(env);

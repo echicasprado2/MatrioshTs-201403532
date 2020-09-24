@@ -30,7 +30,10 @@ class NodeGraphAST{
         var nodeN = `node${root.numberNode}(("${root.tag}"))\n`;
         if(root.tag != 'null'){
             for(var i = 0; i != root.children.length;i++){
-                if(root.children[i].tag != 'null'){
+                if(root.children[i].tag != null || root.children[i].tag != 'null'){
+
+                    // console.log(root);
+                    // console.log(root.children[i].tag);
 
                     root.children[i].tag = root.children[i].tag.replace("\"","");
                     root.children[i].tag = root.children[i].tag.replace("\"","");

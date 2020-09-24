@@ -52,6 +52,7 @@ class Arithmetic extends Expresion {
     var result = new Value(new Type(EnumType.ERROR,""),"Error");
     var resultExp1 = this.expresion1.getValue(e);
     var resultExp2 = this.expresion2.getValue(e);
+
     var enumTypeResultOperation = TreatmentOfPrimitiveTypes.getTopType(resultExp1,resultExp2);
 
     if(enumTypeResultOperation === EnumType.ERROR || enumTypeResultOperation === EnumType.BOOLEAN){
@@ -60,9 +61,17 @@ class Arithmetic extends Expresion {
     }
     
     if(enumTypeResultOperation === EnumType.STRING){
-      if(this.operationType == EnumOperationType.PLUS){
+      if(this.operationType.enumOperationType == EnumOperationType.PLUS){
         result.type.enumType = enumTypeResultOperation;
-        result.value = resultExp1.value + resultExp2.value;
+
+        if(resultExp1.value === "@vacio"){
+          result.value = resultExp2.value;
+        }else if(resultExp2.value === "@vacio"){
+          result.value = resultExp1.value;
+        }else{
+          result.value = resultExp1.value + resultExp2.value;
+        }
+
         return result;
       }else{
         ErrorList.addError(new ErrorNode(this.line,this.column,new ErrorType(enumErrorType.SEMATIC),`Tipo de operacion invalidad no se puede realizar ${this.operationType.toString()} con ${enumTypeResultOperation.toString()}`,e.enviromentType));
@@ -73,17 +82,22 @@ class Arithmetic extends Expresion {
     if(enumTypeResultOperation == EnumType.NUMBER){
       result.type.enumType = enumTypeResultOperation;
       
-      if(this.operationType == EnumOperationType.PLUS){
+      if(this.operationType.enumOperationType == EnumOperationType.PLUS){
         result.value = Number(resultExp1.value) + Number(resultExp2.value);
-      }else if(this.operationType == EnumOperationType.MINUS){
+
+      }else if(this.operationType.enumOperationType == EnumOperationType.MINUS){
         result.value = Number(resultExp1.value) - Number(resultExp2.value);
-      }else if(this.operationType == EnumOperationType.MULTIPLICATION){
+      
+      }else if(this.operationType.enumOperationType == EnumOperationType.MULTIPLICATION){
         result.value = Number(resultExp1.value) * Number(resultExp2.value);
-      }else if(this.operationType == EnumOperationType.DIVISION){
+      
+      }else if(this.operationType.enumOperationType == EnumOperationType.DIVISION){
         result.value = Number(resultExp1.value) / Number(resultExp2.value);
-      }else if(this.operationType == EnumOperationType.POWER){
+      
+      }else if(this.operationType.enumOperationType == EnumOperationType.POWER){
         result.value = Math.pow(Number(resultExp1.value),Number(resultExp2.value));
-      }else if(this.operationType == EnumOperationType.MODULE){
+      
+      }else if(this.operationType.enumOperationType == EnumOperationType.MODULE){
         result.value = Number(resultExp1.value) % Number(resultExp2.value);
       }
     }

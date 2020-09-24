@@ -228,7 +228,6 @@ class Function extends Instruction {
       this.changeNameOfCallFunctionsIntoSentences(node.value);
 
     }else if(node instanceof If){
-      
       for(var i = 0; i < node.ifList.length;i++){
         this.changeNameOfCallFunctionsIntoSentences(node.ifList[i]);
       }
@@ -239,8 +238,10 @@ class Function extends Instruction {
 
     } else if (node instanceof Assignment){
       this.changeNameOfCallFunctionsIntoSentences(node.value);
+
     } else if (node instanceof AssignmentArray){
       this.changeNameOfCallFunctionsIntoSentences(node.value);
+
     } else if (node instanceof Block){
       for(var i = 0; i < node.sentences.length; i++){
         this.changeNameOfCallFunctionsIntoSentences(node.sentences[i]);
@@ -260,6 +261,7 @@ class Function extends Instruction {
       if(node.haveBlock){
         this.changeNameOfCallFunctionsIntoSentences(node.block);
       }
+      
     } else if (node instanceof DeclarationArray){
       var obj;
       for(var i = 0; i < node.values.length;i ++){
@@ -268,65 +270,85 @@ class Function extends Instruction {
           this.changeNameOfCallFunctionsIntoSentences(obj[j]);
         }
       }
+
     } else if (node instanceof Do){
       this.changeNameOfCallFunctionsIntoSentences(node.expression);
       this.changeNameOfCallFunctionsIntoSentences(node.block);
+
     } else if (node instanceof For){
       this.changeNameOfCallFunctionsIntoSentences(node.declaration);
       this.changeNameOfCallFunctionsIntoSentences(node.condition);
       this.changeNameOfCallFunctionsIntoSentences(node.expression);
       this.changeNameOfCallFunctionsIntoSentences(node.block);
+      
     } else if (node instanceof ForIn){
       this.changeNameOfCallFunctionsIntoSentences(node.declaration);
       this.changeNameOfCallFunctionsIntoSentences(node.expression);
       this.changeNameOfCallFunctionsIntoSentences(node.block);
+
     } else if (node instanceof ForOf){
       this.changeNameOfCallFunctionsIntoSentences(node.declaration);
       this.changeNameOfCallFunctionsIntoSentences(node.expression);
       this.changeNameOfCallFunctionsIntoSentences(node.block);
+    
     } else if (node instanceof Print){
-      this.changeNameOfCallFunctionsIntoSentences(node.expresion);
+      for(i = 0; i < node.values.length; i++){
+        this.changeNameOfCallFunctionsIntoSentences(node.values[i]);
+      }
+    
     } else if (node instanceof Return){
       if(node.returnExpresion){
         this.changeNameOfCallFunctionsIntoSentences(node.expression);
       }
+
     } else if (node instanceof Switch){
-      this.changeNameOfCallFunctionsIntoSentences(node.expression);
-      for(var i =0; i < node.blockSwitch.length; i++){
-        this.changeNameOfCallFunctionsIntoSentences(node.blockSwitch);
+      this.changeNameOfCallFunctionsIntoSentences(node.condition);
+      for(var i =0; i < node.casesList.length; i++){
+        this.changeNameOfCallFunctionsIntoSentences(node.casesList[i]);
       }
+
     } else if (node instanceof TypeAssignment){
       for(var i = 0; i < node.attributes.length; i++){
         this.changeNameOfCallFunctionsIntoSentences(node.attributes[i]);
       }
+
     } else if (node instanceof AttributeTypeAssignment){
       this.changeNameOfCallFunctionsIntoSentences(node.value);
+
     } else if (node instanceof While){
-      this.changeNameOfCallFunctionsIntoSentences(node.expression);
+      this.changeNameOfCallFunctionsIntoSentences(node.condition);
       this.changeNameOfCallFunctionsIntoSentences(node.block);
+
     } else if (node instanceof Access){
       for(var i = 0; i < node.value.length; i++){
         this.changeNameOfCallFunctionsIntoSentences(node.value[i]);
       }
+
     } else if (node instanceof AccessArray){
       for(var i = 0;i < node.value.length;i++){
         this.changeNameOfCallFunctionsIntoSentences(node.value[i]);
       }
+
     } else if (node instanceof Arithmetic){
       this.changeNameOfCallFunctionsIntoSentences(node.expresion1);
       this.changeNameOfCallFunctionsIntoSentences(node.expresion2);
+
     } else if (node instanceof Logic){
       this.changeNameOfCallFunctionsIntoSentences(node.expresion1);
       this.changeNameOfCallFunctionsIntoSentences(node.expresion2);
+
     } else if (node instanceof Relational){
       this.changeNameOfCallFunctionsIntoSentences(node.expresion1);
       this.changeNameOfCallFunctionsIntoSentences(node.expresion2);
+
     } else if (node instanceof Ternary){
       this.changeNameOfCallFunctionsIntoSentences(node.condition);
       this.changeNameOfCallFunctionsIntoSentences(node.conditionTrue);
       this.changeNameOfCallFunctionsIntoSentences(node.conditionFalse);
+
     } else if (node instanceof Unary){
       this.changeNameOfCallFunctionsIntoSentences(node.expresion);
+
     } else if (node instanceof CallFunction) {
       for (var j = 0; j < this.copyIdentifierOfNestedFuncions.length; j++) {
         if (node.identifier === this.copyIdentifierOfNestedFuncions[j]) {
