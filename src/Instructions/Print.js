@@ -63,6 +63,7 @@ class Print extends Instruction {
     }
 
     getValueArray(value){
+        console.log(value);
         var cadena = "[";
         for(var i = 0; i < value.length; i++){
             if(value[i].esArray && i == 0){

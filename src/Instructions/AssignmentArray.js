@@ -73,29 +73,35 @@ class AssignmentArray extends Instruction {
         }
 
         var newValueArray = this.changeValue(e,listAccessValue,resultValue,resultSymbol.value);
-        resultSymbol.value = newValueArray;
-        e.insert(resultSymbol.id,resultSymbol);
-        console.log("-------------");
-
+        if(newValueArray != null){
+            resultSymbol.value = newValueArray;
+            e.insert(resultSymbol.id,resultSymbol);
+        }
         return null;
     }
 
     changeValue(e,listAccess,newValue,values){
-        //TODO implementar para multidimencionales
 
+        if(values.value instanceof Array){
 
-        if(listAccess[0].value > (values.value.length - 1)){
-            ErrorList.addError(new ErrorNode(this.line,this.column,new ErrorType(EnumErrorType.SEMANTIC),`El acceso es mayor al tamaño del array`,e.enviromentType));
-            return null;
-        }
-            
-        if(values.value[listAccess[0].value].type.enumType != newValue.type.enumType){
-            ErrorList.addError(new ErrorNode(this.line,this.column,new ErrorType(EnumErrorType.SEMANTIC),`El tipo de valor es diferente al que guarda el array`,e.enviromentType));
-            return null;
+            if(listAccess[0].value > (values.value.length - 1)){
+                ErrorList.addError(new ErrorNode(this.line,this.column,new ErrorType(EnumErrorType.SEMANTIC),`El acceso es mayor al tamaño del array`,e.enviromentType));
+                return null;
+            }
+        
         }
 
-        if(listAccess.length == 1){
-            values.value[listAccess[0].value] = newValue;
+        if(values instanceof Array && values[0] instanceof Value){
+        
+            if(values[Number(listAccess[0].value)].type.enumType != newValue.type.enumType){
+                ErrorList.addError(new ErrorNode(this.line,this.column,new ErrorType(EnumErrorType.SEMANTIC),`El tipo de valor es diferente al que guarda el array`,e.enviromentType));
+                return null;
+            }
+
+            values[Number(listAccess[0].value)] = newValue;
+
+        }else if(values instanceof Value && values.value instanceof Array && listAccess.length == 1){
+            values.value[Number(listAccess[0].value)] = newValue;
         }else{
             var indice = listAccess.shift();
             values.value[Number(indice.value)] = this.changeValue(e,listAccess,newValue,values.value[Number(indice.value)]);

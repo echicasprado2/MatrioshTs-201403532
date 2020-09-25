@@ -100,7 +100,6 @@ class DeclarationArray extends Instruction {
             for(var i =0;i < this.ids.length;i++){
                 
                 saveValue = new Symbol(this.line,this.column,this.ids[i],new Type(EnumType.ARRAY,this.type.enumType),this.typeDeclaration,listValues,Number(this.dimensions));
-                console.log(saveValue);
                 e.insertNewSymbol(this.ids[i],saveValue);
 
             }
