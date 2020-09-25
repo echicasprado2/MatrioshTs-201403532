@@ -47,6 +47,9 @@ class Print extends Instruction {
                     if(result.value != "@vacio"){
                         resultCadena += result.value;
                     }
+                }else if(result.esArray){
+                    console.log(result);
+                    resultCadena += this.getValueArray(result.value);
                 }else{
                     resultCadena += result.value;
                 }
@@ -57,6 +60,23 @@ class Print extends Instruction {
 
         PrintConsole.printLine(resultCadena);
         return null; 
+    }
+
+    getValueArray(value){
+        var cadena = "[";
+        for(var i = 0; i < value.length; i++){
+            if(value[i].esArray && i == 0){
+                cadena += `${this.getValueArray(value[i])}`;
+            }else if(value[i].esArray){
+                cadena += `,${this.getValueArray(value[i])}`;
+            }else if(i == 0){
+                cadena += value[i].value;
+            }else{
+                cadena += `,${value[i].value}`;
+            }            
+        }
+        cadena += "]";
+        return cadena;
     }
     
 }

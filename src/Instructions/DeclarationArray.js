@@ -7,7 +7,6 @@ class DeclarationArray extends Instruction {
         this.dimensions = dimensions;
         this.values = value;
         this.translatedCode = "";
-        this.dimensionsValues = 0;
     }
 
     getTranslated(){
@@ -91,24 +90,21 @@ class DeclarationArray extends Instruction {
           }
         }
         
-        this.dimensionsValues++;
-        listValues = this.getValueArray(e,this.values.value[0],this.type,1);
-        
-        if(listValues == null){
-            return null;
-        }
+        if(this.validValueWithDimensions(e,this.values.value[0],1)){
+            listValues = this.getValueArray(e,this.values.value[0],this.type);
+            
+            if(listValues == null){
+                return null;
+            }
 
-        if(this.dimensionsValues < this.dimensions){
-            ErrorList.addError(new ErrorNode(this.line,this.column,new ErrorType(EnumErrorType.SEMANTIC),`el valor es menor que el numero de dimenciones del array`,e.enviromentType));
-            return null;
-        }
+            for(var i =0;i < this.ids.length;i++){
+                
+                saveValue = new Symbol(this.line,this.column,this.ids[i],new Type(EnumType.ARRAY,this.type.enumType),this.typeDeclaration,listValues,Number(this.dimensions));
+                console.log(saveValue);
+                e.insertNewSymbol(this.ids[i],saveValue);
 
-        for(var i =0;i < this.ids.length;i++){
-            saveValue = new Symbol(this.line,this.column,this.ids[i],new Type(EnumType.ARRAY,this.type.enumType),this.typeDeclaration,listValues,Number(this.dimensions));
-            e.insert(this.ids[i],saveValue);
-            console.log(saveValue);
+            }
         }
-
         return null;
     }
 
@@ -120,24 +116,18 @@ class DeclarationArray extends Instruction {
      * @param {*} typeObj 
      * @returns {Value} Value
      */
-    getValueArray(e,objArray,type,dimension){
+    getValueArray(e,objArray,type){
         var listValueReturn = [];
         var resultValue;
 
         if(objArray[0] instanceof Value && objArray[0].type.enumType == EnumType.NULL){
             return objArray[0];
         }
-        
-        if(dimension > this.dimensions){
-            ErrorList.addError(new ErrorNode(this.line,this.column,new ErrorType(EnumErrorType.SEMANTIC),`el valor supera el numero de dimenciones del array`,e.enviromentType));
-            return null;
-        }
 
         for(var i = 0; i < objArray.length; i++){
         
             if(objArray[i] instanceof Array){
-                this.dimensionsValues++;
-                resultValue = this.getValueArray(e,objArray[i],type,dimension + 1);
+                resultValue = this.getValueArray(e,objArray[i],type);
             }else{
                 resultValue = (objArray[i]).getValue(e);
             }
@@ -177,5 +167,45 @@ class DeclarationArray extends Instruction {
 
         return new Value(new Type(type.enumType,type.identifier),listValueReturn);
     }
+
+    /**
+     * 
+     * @param {*} e 
+     * @param {*} values 
+     * @param {*} currentDimencion 
+     */
+    validValueWithDimensions(e,values,currentDimencion){
+
+        if(values[0] instanceof Value && values[0].type.enumType == EnumType.NULL && currentDimencion == 1){
+            return true;
+        }
+
+        for(var i = 0;i < values.length; i++){
+
+            if(this.dimensions == currentDimencion){
+    
+                if(!(values[i] instanceof Value)){
+                    ErrorList.addError(new ErrorNode(this.line,this.column,new ErrorType(EnumErrorType.SEMANTIC),`el valor sobre pasa el tamaño del array`,e.enviromentType));
+                    return false;
+                }
+    
+            }else if(this.dimensions > currentDimencion){
+    
+                if(!(values[i] instanceof Array)){
+                    ErrorList.addError(new ErrorNode(this.line,this.column,new ErrorType(EnumErrorType.SEMANTIC),`el valor no es de las dimenciones del array`,e.enviromentType));
+                    return false;
+                }else if(!(this.validValueWithDimensions(e,values[0],currentDimencion+1))){
+                    return false;
+                }
+
+            }else if(this.dimensions < currentDimencion){
+                ErrorList.addError(new ErrorNode(this.line,this.column,new ErrorType(EnumErrorType.SEMANTIC),`el valor es menor que el numero de dimenciones del array`,e.enviromentType));
+                return false;
+            }
+
+        }
+        return true;
+    }
+
 
 }

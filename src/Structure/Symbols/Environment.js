@@ -10,6 +10,28 @@ class Environment {
         this.table = new Map();
     }
 
+    insertNewSymbol(name,symbol){
+        
+        if(this.table.has(name)){
+            ErrorList.addError(new ErrorNode(symbol.line,symbol.column,new ErrorType(EnumErrorType.SEMANTIC),`La variable ya existe: ${name}`,this.enviromentType));
+        }else{
+
+            if(symbol.type.enumType != EnumType.ERROR){
+                
+                this.table.set(name,symbol);
+                
+                if(symbol.value instanceof TypeDefinition || symbol.value instanceof Function){
+                    TableReport.addExecute(new NodeTableSymbols(symbol.line,symbol.column,symbol.id,symbol.type,this.enviromentType,null));
+                }else{
+                    TableReport.addExecute(new NodeTableSymbols(symbol.line,symbol.column,symbol.id,symbol.type,this.enviromentType,symbol.value.value));
+                }
+
+            }
+
+        }
+        return;
+    }
+
     /**
      * 
      * @param {*} name 
@@ -23,6 +45,7 @@ class Environment {
                 if(e.enviromentType.EnumEnvironmentType == EnumEnvironmentType.GLOBAL 
                     || e.enviromentType.EnumEnvironmentType == EnumEnvironmentType.FUNCTION 
                     || e.enviromentType.EnumEnvironmentType == EnumEnvironmentType.TYPE){
+
                     if(symbol.type.enumType != EnumType.ERROR){
                         e.table.set(name,symbol);
                         if(symbol.value instanceof TypeDefinition || symbol.value instanceof Function){
@@ -33,6 +56,7 @@ class Environment {
 
                         return;
                     }
+
                 }
             }
         }

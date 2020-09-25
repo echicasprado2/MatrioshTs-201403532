@@ -56,7 +56,7 @@ class Assignment extends Instruction {
     }
 
     execute(e) {
-        //TODO implementar para array y types
+        //TODO implementar para types
         if(this.value instanceof Array){
             this.executeArray(e);
         }else if(this.value instanceof Expresion){
@@ -94,11 +94,7 @@ class Assignment extends Instruction {
         return null;
     }
 
-    executeArray(e){//TODO hacer asignacion de array
-        /*
-        llego aca cuando solo tengo el id de la variable y quiero ponerle un valor nuevo
-
-         */
+    executeArray(e){
         var resultSymbol;
         var resultExp;
         var valueDimensions;
@@ -135,11 +131,7 @@ class Assignment extends Instruction {
 
         newSymbol = new Symbol(this.line,this.column,resultSymbol.id,resultSymbol.type,resultSymbol.typeDeclaration,resultExp,resultSymbol.dimensions);
         e.insert(resultSymbol.id,newSymbol);
-
-
-        console.log("llego aca en asignar array");
-        console.log(resultSymbol);
-        console.log(newSymbol);
+        return null;
     }
 
     executeType(e){//TODO hacer asignacion de type
