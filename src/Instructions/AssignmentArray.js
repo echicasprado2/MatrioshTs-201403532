@@ -67,7 +67,10 @@ class AssignmentArray extends Instruction {
             return null;
         }
 
-        if(resultSymbol.type.identifier != resultValue.type.enumType){
+        if(resultSymbol.type.identifier == EnumType.NULL){
+            resultSymbol.type.identifier = resultValue.type.enumType;
+
+        }else if(resultSymbol.type.identifier != resultValue.type.enumType){
             ErrorList.addError(new ErrorNode(this.line,this.column,new ErrorType(EnumErrorType.SEMANTIC),`El tipo de valor es diferente de tipo de valor de variable`,e.enviromentType));
             return null;
         }

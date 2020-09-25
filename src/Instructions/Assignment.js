@@ -89,8 +89,17 @@ class Assignment extends Instruction {
             ErrorList.addError(new ErrorNode(this.line,this.column,new ErrorType(EnumErrorType.SEMANTIC),`el tipo de valor no coincide con el tipo de variable ${resultSymbol.type.toString()} != ${resultExp.type.toString()}`,e.enviromentType));
             return null;
         }
+        
+        if(resultSymbol.type.enumType == EnumType.ARRAY){
+            if(resultSymbol.dimensions != this.getDimensionArray(resultExp.value,0)){
+                ErrorList.addError(new ErrorNode(this.line,this.column,new ErrorType(EnumErrorType.SEMANTIC),`dimensiones de los arreglos son diferentes`,e.enviromentType));
+                return null;
+            }
+            e.insert(resultSymbol.id,new Symbol(this.line,this.column,resultSymbol.id,resultSymbol.type,resultSymbol.typeDeclaration,resultExp,resultSymbol.dimensions));
+        }else{
+            e.insert(resultSymbol.id,new Symbol(this.line,this.column,resultSymbol.id,resultSymbol.type,resultSymbol.typeDeclaration,resultExp,0));
+        }
 
-        e.insert(resultSymbol.id,new Symbol(this.line,this.column,resultSymbol.id,resultSymbol.type,resultSymbol.typeDeclaration,resultExp,0));
         return null;
     }
 
@@ -101,7 +110,12 @@ class Assignment extends Instruction {
         var newSymbol;
 
         resultSymbol = this.access[0].getValue(e);
+        resultExp = this.getValueArray(e,this.value,resultSymbol.type.identifier,1,resultSymbol.dimensions,resultSymbol.type.identifier);
         valueDimensions = this.getNumberDimensionsArray(this.value,1);
+        
+        if(resultExp == null){
+            return null;
+        }
         
         if(resultSymbol == null || resultSymbol.type.enumType == EnumType.ERROR){
             ErrorList.addError(new ErrorNode(this.line,this.column,new ErrorType(EnumErrorType.SEMANTIC),`La variable no esta definida`,e.enviromentType));
@@ -110,12 +124,6 @@ class Assignment extends Instruction {
 
         if(resultSymbol.typeDeclaration.enumType == EnumDeclarationType.CONST){
             ErrorList.addError(new ErrorNode(this.line,this.column,new ErrorType(EnumErrorType.SEMANTIC),`La variable de tipo CONST, no se puede cambiar el valor`,e.enviromentType));
-            return null;
-        }
-        
-        resultExp = this.getValueArray(e,this.value,resultSymbol.type.identifier,1,resultSymbol.dimensions,resultSymbol.type.identifier);
-
-        if(resultExp == null){
             return null;
         }
 
@@ -204,6 +212,13 @@ class Assignment extends Instruction {
          }
 
         return new Value(new Type(type,null),listValueReturn);
+    }
+
+    getDimensionArray(array,dimension){
+        if(array instanceof Array){
+            return this.getDimensionArray(array[0], dimension + 1);
+        }
+        return dimension;
     }
 
 }

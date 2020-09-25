@@ -90,6 +90,13 @@ class Declaration extends Instruction {
           ErrorList.addError(new ErrorNode(this.line,this.column,new ErrorType(EnumErrorType.SEMANTIC),`el valor da error`,e.enviromentType));
           return null;
         }
+        
+        if(result.type.enumType == EnumType.ARRAY){
+          for(var i = 0; i < this.ids.length; i++){
+            ErrorList.addError(new ErrorNode(this.line,this.column,new ErrorType(EnumErrorType.SEMANTIC),`la variable ${this.ids[i]} no soporta un array`,e.enviromentType));
+          }
+          return null;  
+        }
 
     }else{
       result = null;
