@@ -7,6 +7,7 @@ class DeclarationArray extends Instruction {
         this.dimensions = dimensions;
         this.values = value;
         this.translatedCode = "";
+        this.dimensionsValues = 0;
     }
 
     getTranslated(){
@@ -41,9 +42,11 @@ class DeclarationArray extends Instruction {
     makeArray(valueArray){
         var cadena = "[";
 
-        if(this.values != null){
+        if(valueArray != null){
             for(var i = 0;i< valueArray.length;i++){
-                if(valueArray[i] instanceof Array){
+                if(valueArray[i] instanceof Array && i == 0){
+                    cadena += `${this.makeArray(valueArray[i])}`;
+                }else if(valueArray[i] instanceof Array){
                     cadena += `,${this.makeArray(valueArray[i])}`;
                 }else if(i == 0){
                     cadena += valueArray[i].getTranslated();
@@ -88,15 +91,22 @@ class DeclarationArray extends Instruction {
           }
         }
         
+        this.dimensionsValues++;
         listValues = this.getValueArray(e,this.values.value[0],this.type,1);
         
         if(listValues == null){
             return null;
         }
 
+        if(this.dimensionsValues < this.dimensions){
+            ErrorList.addError(new ErrorNode(this.line,this.column,new ErrorType(EnumErrorType.SEMANTIC),`el valor es menor que el numero de dimenciones del array`,e.enviromentType));
+            return null;
+        }
+
         for(var i =0;i < this.ids.length;i++){
-            saveValue = new Symbol(this.line,this.column,this.ids[i],new Type(EnumType.ARRAY,listValues.type.enumType),this.typeDeclaration,listValues);
+            saveValue = new Symbol(this.line,this.column,this.ids[i],new Type(EnumType.ARRAY,this.type.enumType),this.typeDeclaration,listValues,Number(this.dimensions));
             e.insert(this.ids[i],saveValue);
+            console.log(saveValue);
         }
 
         return null;
@@ -114,7 +124,7 @@ class DeclarationArray extends Instruction {
         var listValueReturn = [];
         var resultValue;
 
-        if(objArray[0].type.enumType == EnumType.NULL){
+        if(objArray[0] instanceof Value && objArray[0].type.enumType == EnumType.NULL){
             return objArray[0];
         }
         
@@ -126,6 +136,7 @@ class DeclarationArray extends Instruction {
         for(var i = 0; i < objArray.length; i++){
         
             if(objArray[i] instanceof Array){
+                this.dimensionsValues++;
                 resultValue = this.getValueArray(e,objArray[i],type,dimension + 1);
             }else{
                 resultValue = (objArray[i]).getValue(e);
@@ -141,6 +152,7 @@ class DeclarationArray extends Instruction {
             }
 
             if(type.enumType == EnumType.NULL){
+                this.type = resultValue.type;
                 type = resultValue.type;
 
                 if(resultValue.value instanceof Array){

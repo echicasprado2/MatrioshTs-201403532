@@ -42,7 +42,11 @@ class AssignmentArray extends Instruction {
 
     execute(e) {
         //TODO implemented this
-        throw new Error("Method not implemented.");
+        /*
+        llego aca cuando solo le quiero cambiar un valor dentro del un array
+         */
+        console.log("llego a asignacion de array");
+        return null;
     }
 
 }

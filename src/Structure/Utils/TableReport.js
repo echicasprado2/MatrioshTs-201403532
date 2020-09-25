@@ -53,6 +53,11 @@ class TableReport {
             }
           }else{
             if (TableReport.nodesExecute[i].name == node.name) {
+              
+              if(node.value  instanceof Array){
+                node.value = TableReport.getRealValue(node.value);
+              }
+
               TableReport.nodesExecute.splice(i, 1, node);
               return;
             }
