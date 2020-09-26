@@ -25,11 +25,32 @@ class AssignmentArray extends Instruction {
 
         if(this.value instanceof Value && this.value.type.enumType == EnumType.NULL){
             this.translatedCode += "[]";
+        }else if(this.value instanceof Array){
+            this.translatedCode += this.getValueArray(this.value);
         }else {
             this.translatedCode += this.value.getTranslated();
         }
 
         return this.translatedCode + ";\n";
+    }
+
+    getValueArray(value){
+        var cadena = "[";
+
+        for(var i = 0; i < value.length; i++){
+            if(value[i] instanceof Array && i == 0){
+                cadena += `${this.getValueArray(value[i])}`;
+            }else if(value[i] instanceof Array){
+                cadena += `,${this.getValueArray(value[i])}`;
+            }else if(i == 0){
+                cadena += value[i].value;
+            }else{
+                cadena += `,${value[i].value}`;
+            }            
+        }
+        
+        cadena += "]";
+        return cadena;
     }
 
     translatedSymbolsTable(e){
