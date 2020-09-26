@@ -72,19 +72,12 @@
                     <div class="tab-pane fade show active  height-editor" id="editor-content-entrada" role="tabpanel"
                         aria-labelledby="entrada-editor-tab">
                         <textarea id="textarea-editor-entrada">
-Inicio();
 
-function Inicio():void{
-    let a:number[] = [1,2,3,4];
-    let b:number[] = [5,6,7,8];
 
-    console.log(sumaPrimitivos(2,5));
-    console.log(sumaArray(a,b));
-}
-                            
-function sumaPrimitivos(a:number, b:number):number{
-    return a + b;
-}
+let a:number[] = [1,2,3,4];
+let b:number[] = [5,6,7,8];
+
+console.log(sumaArray(a,b));
                             
 function sumaArray(a:number[], b:number[]):number[]{
     let r:number[] = [];
@@ -94,6 +87,7 @@ function sumaArray(a:number[], b:number[]):number[]{
     }
     return r;
 }
+
 </textarea>
                     </div>
                     <div class="tab-pane fade active  height-editor" id="editor-content-salida" role="tabpanel"

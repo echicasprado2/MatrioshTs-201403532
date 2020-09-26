@@ -52,10 +52,10 @@ class Access extends Expresion {
             }
 
             if(resultSymbolAccess.type.enumType == EnumType.ARRAY){
-                result = new Value(new Type(resultSymbolAccess.type.enumType,resultSymbolAccess.type.identifiers),this.getCopyArray(e,resultSymbolAccess.value.value));
+                result = new Value(new Type(resultSymbolAccess.type.enumType,resultSymbolAccess.type.identifier),this.getCopyArray(e,resultSymbolAccess.value.value));
 
             }else{
-                result = new Value(new Type(resultSymbolAccess.type.enumType,resultSymbolAccess.type.identifiers),resultSymbolAccess.value.value);
+                result = new Value(new Type(resultSymbolAccess.type.enumType,resultSymbolAccess.type.identifier),resultSymbolAccess.value.value);
             }
 
             return result;

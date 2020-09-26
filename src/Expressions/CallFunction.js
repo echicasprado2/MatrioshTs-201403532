@@ -40,7 +40,6 @@ class CallFunction extends Expresion {
         var symbolFunction;
         var resultParametroDeclaration;
         var resultValueParametroDeclaration;
-        var makeDeclaration;
 
         symbolFunction = e.searchSymbol(this.identifier);
 
