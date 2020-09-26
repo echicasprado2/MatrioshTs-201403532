@@ -189,11 +189,15 @@ FUNCTION: FUNCTION_HEAD llave_izq FUNCTION_SENTENCES llave_der { $$ = $1; $$.chi
         | FUNCTION_HEAD llave_izq llave_der                    { $$ = $1; }
         ;
 
-FUNCTION_HEAD: function identificador par_izq par_der dos_puntos TYPE          { $$ = new NodeGraphAST("FUNCION",NumberNode.getNumber()); $$.children.push(new NodeGraphAST($2,NumberNode.getNumber()),$6); }
-        | function identificador par_izq L_PARAMETROS par_der dos_puntos TYPE  { $$ = new NodeGraphAST("FUNCION",NumberNode.getNumber()); $$.children.push(new NodeGraphAST($2,NumberNode.getNumber()),$4,$7); }
-        | function identificador par_izq par_der                               { $$ = new NodeGraphAST("FUNCION",NumberNode.getNumber()); $$.children.push(new NodeGraphAST($2,NumberNode.getNumber())); }
-        | function identificador par_izq L_PARAMETROS par_der                  { $$ = new NodeGraphAST("FUNCION",NumberNode.getNumber()); $$.children.push(new NodeGraphAST($2,NumberNode.getNumber()),$4); }
+FUNCTION_HEAD: function identificador par_izq par_der dos_puntos TYPE_FUNCTION         { $$ = new NodeGraphAST("FUNCION",NumberNode.getNumber()); $$.children.push(new NodeGraphAST($2,NumberNode.getNumber()),$6); }
+        | function identificador par_izq L_PARAMETROS par_der dos_puntos TYPE_FUNCTION { $$ = new NodeGraphAST("FUNCION",NumberNode.getNumber()); $$.children.push(new NodeGraphAST($2,NumberNode.getNumber()),$4,$7); }
+        | function identificador par_izq par_der                                       { $$ = new NodeGraphAST("FUNCION",NumberNode.getNumber()); $$.children.push(new NodeGraphAST($2,NumberNode.getNumber())); }
+        | function identificador par_izq L_PARAMETROS par_der                          { $$ = new NodeGraphAST("FUNCION",NumberNode.getNumber()); $$.children.push(new NodeGraphAST($2,NumberNode.getNumber()),$4); }
         ;
+
+TYPE_FUNCTION: TYPE { $$ = $1; }
+             | TYPE L_DIMENSION { $$ = $1; $$.children.push($2); } 
+             ;
 
 FUNCTION_SENTENCES: FUNCTION_SENTENCE FUNCTION_SENTENCES   { $$ = new NodeGraphAST("SENTENCIAS_FUNCION",NumberNode.getNumber()); $$.children.push($1,$2); }
                 | FUNCTION_SENTENCE                        { $$ = $1; }
