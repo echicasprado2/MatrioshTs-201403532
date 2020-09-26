@@ -17,9 +17,9 @@ class AccessArray extends Expresion {
     this.translatedCode = `${this.identifier}`;
 
     for (var i = 0; i < this.value.length; i++) {
-        this.translatedCode += "[";
-        this.translatedCode += this.value[i].getTranslated();
-        this.translatedCode += "]";
+      this.translatedCode += "[";
+      this.translatedCode += this.value[i].getTranslated();
+      this.translatedCode += "]";
     }
 
     if (this.parentesis) {
@@ -38,7 +38,54 @@ class AccessArray extends Expresion {
   }
 
   getValue(e) {
-    //TODO implemented this
-    throw new Error("Method not implemented.");
+    var returnValue = new Value(new TypeError(EnumType.ERROR,null),"Error");
+    var resultSymbol;
+    var tempValue;
+
+    resultSymbol = e.searchSymbol(this.identifier);
+
+    if(resultSymbol == null){
+      ErrorList.addError(new ErrorNode(this.line,this.column,new ErrorType(EnumErrorType.SEMANTIC),`No se encontro el arreglo "${this.identifier}"`,e.enviromentType));
+      return returnValue;
+    }
+    
+    if(resultSymbol.type.enumType != EnumType.ARRAY){
+      ErrorList.addError(new ErrorNode(this.line,this.column,new ErrorType(EnumErrorType.SEMANTIC),`la variable: "${this.identifier}" no es un arreglo`,e.enviromentType));
+      return returnValue;
+    }
+    
+    if(resultSymbol.dimensions != this.value.length){
+      ErrorList.addError(new ErrorNode(this.line,this.column,new ErrorType(EnumErrorType.SEMANTIC),`la dimensiones de acceso son diferentes a las del arreglo`,e.enviromentType));
+      return returnValue;
+    }
+
+    tempValue = this.getIndexValue(e,resultSymbol.value.value); 
+
+    if(tempValue == null){
+      return returnValue;
+    }
+
+    returnValue = tempValue.getValue(e);
+
+    return returnValue;
   }
+
+  getIndexValue(e,arrayValue){
+    var resultIndex; 
+    var arrayDimension = arrayValue;
+
+    for(var i = 0; i < this.value.length; i++){
+      resultIndex = this.value[i].getValue(e);
+
+      if(resultIndex.value > arrayDimension.length){
+        ErrorList.addError(new ErrorNode(this.line,this.column,new ErrorType(EnumErrorType.SEMANTIC),`el indice supera el tamaño del arreglo`,e.enviromentType));
+        return null;
+      }
+
+      arrayDimension = arrayDimension[resultIndex.value];
+    }
+
+    return arrayDimension;
+  }
+
 }
