@@ -73,9 +73,15 @@
                         aria-labelledby="entrada-editor-tab">
                         <textarea id="textarea-editor-entrada">
 let arr:number[] = [1,2,3,4,5];
-let arr3:number[][] = [[1,2,3],[4,5],[6,7,8,9]];
-console.log(arr[2]);
-console.log(arr3[2][1]);
+
+let lastValue = arr.pop();
+let arrLength = arr.length;// 4
+let pushvalue = arr.push(50);
+
+console.log(lastValue);
+console.log(arrLength);
+console.log(pushvalue);
+console.log(arr);
 </textarea>
                     </div>
                     <div class="tab-pane fade active  height-editor" id="editor-content-salida" role="tabpanel"

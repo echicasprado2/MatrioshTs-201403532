@@ -340,6 +340,16 @@ FUNCTION_SENTENCE: PRINT
                                 }
                         }       
                 }
+                // | PUSH_VALUE  
+                // { 
+                //         stack = eval('$$');
+                //         for(var i = stack.length-2;i > 0; i--){
+                //                 if(stack[i] === '{' && stack[i-1] instanceof Function){
+                //                         stack[i-1].addFunction(stack[stack.length - 1]);
+                //                         break;
+                //                 }
+                //         }       
+                // }
                 // | error punto_y_coma 
                 // { 
                 //         stack = eval('$$');
@@ -592,8 +602,8 @@ E   : E '+'   E          { $$ = new Arithmetic(this._$.first_line,this._$.first_
     | identificador par_izq L_E par_der              { $$ = new CallFunction(this._$.first_line,this._$.first_column,$1,$3,false); }
 
     | ACCESS POST_FIXED                   { $$ = new Unary(this._$.first_line,this._$.first_column,$2,new Access(this._$.first_line,this._$.first_column,$1),false); }
-    | ACCESS punto pop par_izq par_der    { $$ = new ArrayFunction(this._$.first_line,this._$.first_column,new TypeArrayMethod(EnumTypeArrayMethod.POP),new Access(this._$.first_line,this._$.first_column,$1),""); }
-    | ACCESS punto length                 { $$ = new ArrayFunction(this._$.first_line,this._$.first_column,new TypeArrayMethod(EnumTypeArrayMethod.LENGTH),new Access(this._$.first_line,this._$.first_column,$1),""); }
+    | ACCESS punto pop par_izq par_der    { $$ = new ArrayFunction(this._$.first_line,this._$.first_column,new TypeArrayMethod(EnumTypeArrayMethod.POP),new Access(this._$.first_line,this._$.first_column,$1),null); }
+    | ACCESS punto length                 { $$ = new ArrayFunction(this._$.first_line,this._$.first_column,new TypeArrayMethod(EnumTypeArrayMethod.LENGTH),new Access(this._$.first_line,this._$.first_column,$1),null); }
     | ACCESS punto push par_izq E par_der { $$ = new ArrayFunction(this._$.first_line,this._$.first_column,new TypeArrayMethod(EnumTypeArrayMethod.PUSH),new Access(this._$.first_line,this._$.first_column,$1),$5); }
     | ACCESS                              { $$ = new Access(this._$.first_line,this._$.first_column,$1); }
     ;

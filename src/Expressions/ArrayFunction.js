@@ -39,7 +39,53 @@ class ArrayFunction extends Expresion {
   }
 
   getValue(e) {
-    //TODO implemented this
-    throw new Error("Method not implemented.");
+    var returnValue = new Value(new Type(EnumType.ERROR,null),"Error");
+    var resultSymbol = this.identify.value[0].getValue(e);
+
+    if(resultSymbol.type.enumType == EnumType.ERROR){
+      return resultValue;
+    }
+
+    if(resultSymbol.type.enumType != EnumType.ARRAY){
+      ErrorList.addError(new ErrorNode(this.line,this.column,new ErrorType(EnumErrorType.SEMANTIC),`La variable no es un array`,e.enviromentType));
+      return returnValue;
+    }
+
+    if(this.type.enumType == EnumTypeArrayMethod.POP){
+      return this.getPop(e,resultSymbol);
+
+    }else if(this.type.enumType == EnumTypeArrayMethod.LENGTH){
+      return this.getLength(e,resultSymbol);
+    
+    }else if(this.type.enumType == EnumTypeArrayMethod.PUSH){
+      return this.pushValue(e,resultSymbol);
+    }
+
+    return returnValue;
   }
+  
+  getPop(e,symbol){
+    var returnValue = symbol.value.value.pop();
+    return returnValue;
+  }
+  
+  getLength(e,symbol){
+    var returnValue = new Value(new Type(EnumType.NUMBER,null),symbol.value.value.length);
+    return returnValue;
+  }
+  
+  pushValue(e,symbol){
+    var returnValue = new Value(new Type(EnumType.ERROR,null),"Error");
+    var resultValue = this.value.getValue(e);
+    
+    if(resultValue.type.enumType != symbol.value.type.enumType){
+      ErrorList.addError(new ErrorNode(this.line,this.column,new ErrorType(EnumErrorType.SEMANTIC),`El valor no es del mismo tipo que el arreglo`,e.enviromentType));
+      return returnValue;
+    }
+
+    symbol.value.value.push(resultValue);
+    
+    return new Value(new Type(EnumType.NUMBER,null),symbol.value.value.length);
+  }
+
 }
