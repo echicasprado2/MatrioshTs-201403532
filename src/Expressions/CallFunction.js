@@ -58,6 +58,9 @@ class CallFunction extends Expresion {
             resultParametroDeclaration = symbolFunction.value.parameters[i];
             resultValueParametroDeclaration = this.parametros[i].getValue(e);
 
+            console.log(resultParametroDeclaration);
+            console.log(resultValueParametroDeclaration);
+
             if(resultValueParametroDeclaration == null || resultValueParametroDeclaration.type.enumType == EnumType.ERROR){
                 ErrorList.addError(new ErrorNode(this.line,this.column,new ErrorType(EnumErrorType.SEMANTIC),`error con el valor del parametro: "${resultParametroDeclaration.identifier}"`,e.enviromentType));
                 return result;
@@ -69,8 +72,6 @@ class CallFunction extends Expresion {
             }
 
             env.insertParameter(resultParametroDeclaration.identifier,new Symbol(this.line,this.column,resultParametroDeclaration.identifier,resultParametroDeclaration.type,new DeclarationType(EnumDeclarationType.LET),resultValueParametroDeclaration));
-            // makeDeclaration = new Declaration(this.line,this.column,resultParametroDeclaration.typeDeclaration,[resultParametroDeclaration.identifier],resultParametroDeclaration.type,resultValueParametroDeclaration);
-            // makeDeclaration.execute(env);
         }
         
         result = symbolFunction.value.instructions.execute(env);
