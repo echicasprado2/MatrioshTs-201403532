@@ -71,19 +71,25 @@
                 <div class="tab-content  height-editor" id="myTabEditorContent">
                     <div class="tab-pane fade show active  height-editor" id="editor-content-entrada" role="tabpanel"
                         aria-labelledby="entrada-editor-tab">
-                        <textarea id="textarea-editor-entrada">let arr:number[] = [1,2,3,4,5];
+                        <textarea id="textarea-editor-entrada">
+let arr:number[] = [1,2,3,4,5];
 let arr2:number[] = [];
 let arr3:number[][] = [[1,2,3],[4,5],[6,7,8,9]];
 arr2 = [1,2];
 arr[0] = 9;
 arr3[2][0] = 90;
+graficar_ts();
 console.log(arr);
 console.log(arr2);
 console.log(arr3);
-
-let arr4[][] = [];
+                            
+let arr4[][] = [[1,2],[3,4]];
+console.log(arr4);
 arr4 = arr3;
 console.log(arr4);
+arr4[1][0] = 99;
+console.log(arr4);
+graficar_ts();
 </textarea>
                     </div>
                     <div class="tab-pane fade active  height-editor" id="editor-content-salida" role="tabpanel"

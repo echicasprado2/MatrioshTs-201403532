@@ -42,15 +42,43 @@ class Access extends Expresion {
 
         if(resultSymbolAccess.type.enumType == EnumType.FUNCTION || resultSymbolAccess.type.enumType == EnumType.TYPE){
             return resultSymbolAccess
+
         }else if(resultSymbolAccess instanceof Value){
             return resultSymbolAccess;
         }else{
+            
             if(resultSymbolAccess.type.enumType == EnumType.NULL){
                 ErrorList.addError(new ErrorNode(this.line,this.column,new ErrorType(EnumErrorType.SEMANTIC),`La variable: "${resultSymbolAccess.id}", no tiene valor asignado`,e.enviromentType));
             }
-            result = new Value(new Type(resultSymbolAccess.type.enumType,resultSymbolAccess.type.identifiers),resultSymbolAccess.value.value);
+
+            if(resultSymbolAccess.type.enumType == EnumType.ARRAY){
+                result = new Value(new Type(resultSymbolAccess.type.enumType,resultSymbolAccess.type.identifiers),this.getCopyArray(e,resultSymbolAccess.value.value));
+
+            }else{
+                result = new Value(new Type(resultSymbolAccess.type.enumType,resultSymbolAccess.type.identifiers),resultSymbolAccess.value.value);
+            }
+
             return result;
         }
+    }
+
+    getCopyArray(e,array){
+
+        let newList = []
+        let newValue;
+
+        for(var i = 0; i < array.length; i++){
+            if(array[i] instanceof Array){
+                newValue = this.getCopyArray(e,array[i]);
+
+            }else if (array[i] instanceof Value){
+                newValue = array[i].getValue(e);
+            }
+
+            newList.push(newValue);
+        }
+
+        return newList;
     }
 
 }

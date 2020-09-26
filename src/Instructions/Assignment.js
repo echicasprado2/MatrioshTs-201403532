@@ -84,8 +84,12 @@ class Assignment extends Instruction {
             return null;
         }
 
+        
 
-        if(resultSymbol.type.enumType != resultExp.type.enumType){
+        if(resultSymbol.type.enumType == EnumType.NULL){
+            resultSymbol.type = resultExp.type;
+
+        }else if(resultSymbol.type.enumType != resultExp.type.enumType){
             ErrorList.addError(new ErrorNode(this.line,this.column,new ErrorType(EnumErrorType.SEMANTIC),`el tipo de valor no coincide con el tipo de variable ${resultSymbol.type.toString()} != ${resultExp.type.toString()}`,e.enviromentType));
             return null;
         }
