@@ -425,10 +425,17 @@ class Function extends Instruction {
 
     // TODO save array parameters
     var exists = e.searchSymbol(this.identifier);
+    var dimencions = 0;
     
+    if(this.type.enumType == EnumType.ARRAY){
+      var realtype = this.type.identifier.split("_");
+      this.type.identifier = realtype[0];
+      dimencions = realtype[1];
+    }
+
     if(exists == null){
       this.instructions = new Block(this.instructions);
-      e.insert(this.identifier,new Symbol(this.line,this.column,this.identifier,new Type(EnumType.FUNCTION), new DeclarationType(EnumDeclarationType.NULL),this));
+      e.insert(this.identifier,new Symbol(this.line,this.column,this.identifier,new Type(EnumType.FUNCTION), new DeclarationType(EnumDeclarationType.NULL),this,dimencions));
     }else{
       ErrorList.addError(new ErrorNode(this.line,this.column,new ErrorType(EnumErrorType.SEMANTIC),`La funcion: "${this.identifier}" ya se encuentra definida`,e.enviromentType));
     }

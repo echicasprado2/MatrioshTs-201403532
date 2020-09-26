@@ -57,6 +57,7 @@ class CallFunction extends Expresion {
             resultParametroDeclaration = symbolFunction.value.parameters[i];
             resultValueParametroDeclaration = this.parametros[i].getValue(e);
 
+            console.log(symbolFunction);
             console.log(resultParametroDeclaration);
             console.log(resultValueParametroDeclaration);
 
