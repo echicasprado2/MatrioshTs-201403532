@@ -69,7 +69,23 @@ class Function extends Instruction {
 
     this.translatedCode += `function ${this.identifier}(`;
     this.translatedCode += codeParams;
-    this.translatedCode += `):${this.type.toString()}{\n`;
+    this.translatedCode += `):`;
+
+    if(this.type.enumType == EnumType.ARRAY){
+      var getTypeArray = this.type.identifier.split("_");
+      var numberDimensions = Number(getTypeArray[1]);
+
+      this.translatedCode += getTypeArray[0].toLowerCase();
+
+      for(var i = 0; i < numberDimensions; i++){
+        this.translatedCode += "[]";
+      }
+
+      this.translatedCode += "{\n";
+
+    }else{
+      this.translatedCode += `${this.type.toString()}{\n`;
+    }
 
     for (var i = 0; i < this.chieldren.length; i++) {
       var item = this.chieldren[i].instruction;
