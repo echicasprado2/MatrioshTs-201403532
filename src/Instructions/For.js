@@ -78,7 +78,6 @@ class For extends Instruction {
         
         while(resultCondition.value){
             env = new Environment(envFor,new EnvironmentType(EnumEnvironmentType.FOR,null));
-            // resultBlock = this.block.execute(envFor);
             resultBlock = this.block.execute(env);
             
             if(resultBlock != null){

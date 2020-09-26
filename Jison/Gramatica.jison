@@ -127,6 +127,7 @@ lex_comentariomultilinea [/][*][^*]*[*]+([^/*][^*]*[*]+)*[/]
 %left ']'
 %left '{'
 %left '}'
+%left '.'
 %left 'EOF'
 
 %start INIT

@@ -30,7 +30,7 @@ class DeclarationArray extends Instruction {
             this.translatedCode += "[]";
         }
 
-        if(this.values != ""){
+        if(this.values != null){
             this.translatedCode += " = ";
             this.translatedCode += this.makeArray(this.values.value[0]);
         }
@@ -89,7 +89,17 @@ class DeclarationArray extends Instruction {
             return null;
           }
         }
-        
+
+        if(this.values == null){
+            for(var i =0;i < this.ids.length;i++){
+                
+                saveValue = new Symbol(this.line,this.column,this.ids[i],new Type(EnumType.ARRAY,this.type.enumType),this.typeDeclaration,new Value(new Type(EnumType.NULL),null),Number(this.dimensions));
+                e.insertNewSymbol(this.ids[i],saveValue);
+
+            }
+            return null;
+        }
+
         if(this.validValueWithDimensions(e,this.values.value[0],1)){
             listValues = this.getValueArray(e,this.values.value[0],this.type);
             
@@ -104,6 +114,7 @@ class DeclarationArray extends Instruction {
 
             }
         }
+
         return null;
     }
 
@@ -127,6 +138,7 @@ class DeclarationArray extends Instruction {
         
             if(objArray[i] instanceof Array){
                 resultValue = this.getValueArray(e,objArray[i],type);
+                
             }else{
                 resultValue = (objArray[i]).getValue(e);
             }
@@ -145,7 +157,7 @@ class DeclarationArray extends Instruction {
                 type = resultValue.type;
 
                 if(resultValue.value instanceof Array){
-                    listValueReturn.push(resultValue.value);
+                    listValueReturn.push(resultValue);
                 }else{
                     listValueReturn.push(resultValue);
                 }

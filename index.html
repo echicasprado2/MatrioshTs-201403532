@@ -74,19 +74,21 @@
                         <textarea id="textarea-editor-entrada">
 
 
-let a:number[] = [1,2,3,4];
-let b:number[] = [5,6,7,8];
-
-console.log(sumaArray(a,b));
+let matrixA : number [][] = [];
+const min = 0;
+const max = 1;
                             
-function sumaArray(a:number[], b:number[]):number[]{
-    let r:number[] = [];
-    let v:number = 0;
-    for(let i = 0; i < a.length; i++){
-        v = r.push(a[i]+ b[i]);
+function llenado(matrix1 : number[][]) : void{
+    for(let i = min; i < max; i++){
+        matrix1[i] = [];
+        for(let j = min; j < max; j++){
+            matrix1[i][j] = j * 3 + i;
+        }
     }
-    return r;
 }
+                            
+llenado(matrixA);
+graficar_ts()
 
 </textarea>
                     </div>

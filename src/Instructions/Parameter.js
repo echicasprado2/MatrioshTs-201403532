@@ -64,7 +64,10 @@ class Parameter extends Instruction{
      * @param {*} e 
      */
     execute(e) {
-        return null;
+        if(this.dimensions != 0){
+            this.type.identifier = this.type.enumType;
+            this.type.enumType = EnumType.ARRAY;
+        }
     }
 
 }

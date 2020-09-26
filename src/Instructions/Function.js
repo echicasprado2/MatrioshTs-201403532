@@ -427,6 +427,10 @@ class Function extends Instruction {
     var exists = e.searchSymbol(this.identifier);
     var dimencions = 0;
     
+    for(var i = 0; i < this.parameters.length; i++){
+      this.parameters[i].execute(e);
+    }
+
     if(this.type.enumType == EnumType.ARRAY){
       var realtype = this.type.identifier.split("_");
       this.type.identifier = realtype[0];
@@ -442,4 +446,5 @@ class Function extends Instruction {
 
     return null;
   }
+  
 }
