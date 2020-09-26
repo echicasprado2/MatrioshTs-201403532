@@ -190,11 +190,15 @@ FUNCTION: FUNCTION_HEAD llave_izq FUNCTION_SENTENCES llave_der { $$ = $1; }
         | FUNCTION_HEAD llave_izq llave_der                    { $$ = $1; }
         ;
 
-FUNCTION_HEAD: function identificador par_izq par_der dos_puntos TYPE          { $$ = new Function(this._$.first_line,this._$.first_column,$2,[],$6); }
-        | function identificador par_izq L_PARAMETROS par_der dos_puntos TYPE  { $$ = new Function(this._$.first_line,this._$.first_column,$2,$4,$7); }
-        | function identificador par_izq par_der                               { $$ = new Function(this._$.first_line,this._$.first_column,$2,[],new Type(EnumType.VOID,"")); }
-        | function identificador par_izq L_PARAMETROS par_der                  { $$ = new Function(this._$.first_line,this._$.first_column,$2,$4,new Type(EnumType.VOID,"")); }
+FUNCTION_HEAD: function identificador par_izq par_der dos_puntos TYPE_FUNCTION          { $$ = new Function(this._$.first_line,this._$.first_column,$2,[],$6); }
+        | function identificador par_izq L_PARAMETROS par_der dos_puntos TYPE_FUNCTION  { $$ = new Function(this._$.first_line,this._$.first_column,$2,$4,$7); }
+        | function identificador par_izq par_der                                        { $$ = new Function(this._$.first_line,this._$.first_column,$2,[],new Type(EnumType.VOID,"")); }
+        | function identificador par_izq L_PARAMETROS par_der                           { $$ = new Function(this._$.first_line,this._$.first_column,$2,$4,new Type(EnumType.VOID,"")); }
         ;
+
+TYPE_FUNCTION: TYPE             { $$ = $1; }
+             | TYPE L_DIMENSION { $$ = $1; $$.identifier = `${$$.enumType}_${$2}`; $$.enumType = EnumType.ARRAY; }
+             ;
 
 FUNCTION_SENTENCES: FUNCTION_SENTENCE FUNCTION_SENTENCES   { }
                 | FUNCTION_SENTENCE                        { }
