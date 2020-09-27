@@ -76,6 +76,10 @@ class While extends Instruction {
             }
             
             resultCondition = this.condition.getValue(e);
+
+            if(resultCondition.type.enumType == EnumType.ERROR){
+                return null;
+            }
         }
         
         return null;

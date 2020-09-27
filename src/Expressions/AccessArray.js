@@ -38,7 +38,7 @@ class AccessArray extends Expresion {
   }
 
   getValue(e) {
-    var returnValue = new Value(new TypeError(EnumType.ERROR,null),"Error");
+    var returnValue = new Value(new Type(EnumType.ERROR,null),"Error");
     var resultSymbol;
     var tempValue;
 
@@ -76,6 +76,11 @@ class AccessArray extends Expresion {
 
     for(var i = 0; i < this.value.length; i++){
       resultIndex = this.value[i].getValue(e);
+
+      if(resultIndex.value < 0){
+        ErrorList.addError(new ErrorNode(this.line,this.column,new ErrorType(EnumErrorType.SEMANTIC),`el indice es -1`,e.enviromentType));
+        return null;
+      }
 
       if(resultIndex.value > arrayDimension.length){
         ErrorList.addError(new ErrorNode(this.line,this.column,new ErrorType(EnumErrorType.SEMANTIC),`el indice supera el tamaño del arreglo`,e.enviromentType));

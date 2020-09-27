@@ -51,34 +51,10 @@ class Access extends Expresion {
                 ErrorList.addError(new ErrorNode(this.line,this.column,new ErrorType(EnumErrorType.SEMANTIC),`La variable: "${resultSymbolAccess.id}", no tiene valor asignado`,e.enviromentType));
             }
 
-            if(resultSymbolAccess.type.enumType == EnumType.ARRAY){
-                result = new Value(new Type(resultSymbolAccess.type.enumType,resultSymbolAccess.type.identifier),this.getCopyArray(e,resultSymbolAccess.value.value));
-
-            }else{
-                result = new Value(new Type(resultSymbolAccess.type.enumType,resultSymbolAccess.type.identifier),resultSymbolAccess.value.value);
-            }
-
+            result = new Value(new Type(resultSymbolAccess.type.enumType,resultSymbolAccess.type.identifier),resultSymbolAccess.value.value);
+            
             return result;
         }
-    }
-
-    getCopyArray(e,array){
-
-        let newList = []
-        let newValue;
-
-        for(var i = 0; i < array.length; i++){
-            if(array[i] instanceof Array){
-                newValue = this.getCopyArray(e,array[i]);
-
-            }else if (array[i] instanceof Value){
-                newValue = array[i].getValue(e);
-            }
-
-            newList.push(newValue);
-        }
-
-        return newList;
     }
 
     getSymbol(e){

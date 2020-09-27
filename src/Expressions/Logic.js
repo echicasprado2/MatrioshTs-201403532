@@ -40,6 +40,13 @@ class Logic extends Expresion {
     var resulExp1 = this.expresion1.getValue(e);
     var resulExp2 = this.expresion2.getValue(e);
 
+    if(resulExp1 == null || 
+      resulExp2 == null || 
+      resulExp1 instanceof Value && resulExp1.type.enumType == EnumType.ERROR || 
+      resulExp2 instanceof Value && resulExp2.type.enumType == EnumType.ERROR){
+      return result;
+    }
+
     if(resulExp1.type.enumType != EnumType.BOOLEAN || resulExp2.type.enumType != EnumType.BOOLEAN){
       ErrorList.addError(new ErrorNode(this.line,this.column,new ErrorType(EnumErrorType.SEMANTIC),`No se puede operar tipos diferentes a boolean`,e.envrimentType));
       return result;

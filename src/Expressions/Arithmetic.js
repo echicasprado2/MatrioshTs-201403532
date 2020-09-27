@@ -53,10 +53,18 @@ class Arithmetic extends Expresion {
     var resultExp1 = this.expresion1.getValue(e);
     var resultExp2 = this.expresion2.getValue(e);
 
+
+    if(resultExp1 == undefined || 
+      resultExp2 == undefined || 
+      resultExp1 instanceof Value && resultExp1.type.enumType == EnumType.ERROR || 
+      resultExp2 instanceof Value && resultExp2.type.enumType == EnumType.ERROR){
+      return result;
+    }
+
     var enumTypeResultOperation = TreatmentOfPrimitiveTypes.getTopType(resultExp1,resultExp2);
 
     if(enumTypeResultOperation === EnumType.ERROR || enumTypeResultOperation === EnumType.BOOLEAN){
-      ErrorList.addError(new ErrorNode(this.line,this.column,new ErrorType(EnumErrorType.SEMANTIC),`Los tipos de variables no se pueden operar ${this.expresion1.type.toString()} ${this.expresion2.type.toString()}`,e.enviromentType));
+      ErrorList.addError(new ErrorNode(this.line,this.column,new ErrorType(EnumErrorType.SEMANTIC),`Los tipos de variables no se pueden operar`,e.enviromentType));
       return result;
     }
     

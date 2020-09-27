@@ -37,10 +37,17 @@ class Relational extends Expresion {
    */
   getValue(e) {
 
-    var result = new Value(new Type(EnumType.ERROR,""),"Error");
+    var result = new Value(new Type(EnumType.BOOLEAN,null),false);
     var resultExp1 = this.expresion1.getValue(e);
     var resultExp2 = this.expresion2.getValue(e);
     var enumTypeResultExpresitions = TreatmentOfPrimitiveTypes.getTopType(resultExp1,resultExp2);
+
+    if(resultExp1 == undefined || 
+      resultExp2 == undefined || 
+      resultExp1 instanceof Value && resultExp1.type.enumType == EnumType.ERROR || 
+      resultExp2 instanceof Value && resultExp2.type.enumType == EnumType.ERROR){
+      return result;
+    }
     
 
     if(enumTypeResultExpresitions === EnumType.ERROR){

@@ -102,7 +102,7 @@ class DeclarationArray extends Instruction {
 
         if(this.validValueWithDimensions(e,this.values.value[0],1)){
             listValues = this.getValueArray(e,this.values.value[0],this.type);
-            
+
             if(listValues == null){
                 return null;
             }
@@ -195,7 +195,7 @@ class DeclarationArray extends Instruction {
 
             if(this.dimensions == currentDimencion){
     
-                if(!(values[i] instanceof Value)){
+                if(!(values[i] instanceof Expresion)){
                     ErrorList.addError(new ErrorNode(this.line,this.column,new ErrorType(EnumErrorType.SEMANTIC),`el valor sobre pasa el tamaño del array`,e.enviromentType));
                     return false;
                 }

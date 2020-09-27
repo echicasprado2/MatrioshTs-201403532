@@ -101,29 +101,10 @@ class AssignmentArray extends Instruction {
             resultSymbol.value = newValueArray;
             e.insert(resultSymbol.id,resultSymbol);
         }
-        console.log(e);
         return null;
     }
 
     changeValue(e,listAccess,newValue,values){
-
-        // console.log(e);
-        // console.log(listAccess);
-        // console.log(newValue);
-        //console.log(values);
-        // console.log(values.value);
-
-
-
-        // if(values instanceof Array){
-
-        //     if(listAccess[0].value > (values.value.length - 1)){
-        //         ErrorList.addError(new ErrorNode(this.line,this.column,new ErrorType(EnumErrorType.SEMANTIC),`El acceso es mayor al tamaño del array`,e.enviromentType));
-        //         return null;
-        //     }
-        
-        // }
-
         var indice;
 
         if(values instanceof Array && values[0] instanceof Value){
