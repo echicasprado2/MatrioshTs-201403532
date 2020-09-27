@@ -161,8 +161,8 @@ SENTENCE: FUNCTION           { $$ = $1; }
         | BREAK              { $$ = $1; }
         | CONITNUE           { $$ = $1; }
         | CALL_FUNCTION      { $$ = $1; }
-        // | error punto_y_coma { $$ = new InstructionError(); }
-        // | error llave_der       { $$ = $1; cosole.log("error recuperacion con }"); }
+        // | error punto_y_coma { ErrorList.addError(new ErrorNode(yylloc.first_line,yylloc.first_column,new ErrorType(EnumErrorType.SYNTACTIC),` Error sintactico `,new EnvironmentType(EnumEnvironmentType.NULL, ""))); $$ = new InstructionError(); }
+        // | error llave_der    { ErrorList.addError(new ErrorNode(yylloc.first_line,yylloc.first_column,new ErrorType(EnumErrorType.SYNTACTIC),` Error sintactico `,new EnvironmentType(EnumEnvironmentType.NULL, ""))); $$ = new InstructionError(); }
         ;
 
 CALL_FUNCTION:    identificador par_izq L_E par_der PUNTO_Y_COMA { $$ = new CallFunction(this._$.first_line,this._$.first_column,$1,$3,true); }
@@ -345,26 +345,8 @@ FUNCTION_SENTENCE: PRINT
                                 }
                         }       
                 }
-                // | PUSH_VALUE  
-                // { 
-                //         stack = eval('$$');
-                //         for(var i = stack.length-2;i > 0; i--){
-                //                 if(stack[i] === '{' && stack[i-1] instanceof Function){
-                //                         stack[i-1].addFunction(stack[stack.length - 1]);
-                //                         break;
-                //                 }
-                //         }       
-                // }
                 // | error punto_y_coma 
-                // { 
-                //         stack = eval('$$');
-                //         for(var i = stack.length-2;i > 0; i--){
-                //                 if(stack[i] === '{' && stack[i-1] instanceof Function){
-                //                         stack[i-1].addFunction(new InstructionError());
-                //                         break;
-                //                 }
-                //         }
-                // }
+                // | error llave_der 
                 ;
 
 L_PARAMETROS: L_PARAMETROS coma PARAMETRO  { $$ = $1; $$.push($3); }
