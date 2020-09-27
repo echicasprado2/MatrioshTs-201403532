@@ -72,23 +72,15 @@
                     <div class="tab-pane fade show active  height-editor" id="editor-content-entrada" role="tabpanel"
                         aria-labelledby="entrada-editor-tab">
                         <textarea id="textarea-editor-entrada">
+let v:number[] = [5,10];
 
-
-let matrixA : number [][] = [];
-const min = 0;
-const max = 1;
-                            
-function llenado(matrix1 : number[][]) : void{
-    for(let i = min; i < max; i++){
-        matrix1[i] = [];
-        for(let j = min; j < max; j++){
-            matrix1[i][j] = j * 3 + i;
-        }
-    }
+function cambio(valor:number[]):void{
+    valor[0] = valor[1];
+    valor[1] = 55;
 }
                             
-llenado(matrixA);
-graficar_ts()
+cambio(v)
+console.log(v)
 
 </textarea>
                     </div>
