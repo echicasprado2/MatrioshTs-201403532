@@ -105,7 +105,7 @@ class AssignmentArray extends Instruction {
     }
 
     changeValue(e,listAccess,newValue,values){
-        var indice;
+         var indice;
 
         if(values instanceof Array && values[0] instanceof Value){
 

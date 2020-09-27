@@ -422,8 +422,6 @@ class Function extends Instruction {
    * @param {Environment} e
    */
   execute(e) {
-
-    // TODO save array parameters
     var exists = e.searchSymbol(this.identifier);
     var dimencions = 0;
     
