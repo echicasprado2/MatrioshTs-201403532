@@ -392,7 +392,7 @@ DECLARATION: TYPE_DECLARATION  L_ID TYPE_VARIABLE PUNTO_Y_COMA                  
         |    TYPE_DECLARATION  L_ID TYPE_VARIABLE '=' E PUNTO_Y_COMA                   { $$ = new Declaration(this._$.first_line,this._$.first_column,$1,$2,$3,$5); }
         |    TYPE_DECLARATION  L_ID TYPE_VARIABLE L_DIMENSION PUNTO_Y_COMA             { $$ = new DeclarationArray(this._$.first_line,this._$.first_column,$1,$2,$3,$4,null); }
         |    TYPE_DECLARATION  L_ID TYPE_VARIABLE L_DIMENSION '=' L_ARRAY PUNTO_Y_COMA { $$ = new DeclarationArray(this._$.first_line,this._$.first_column,$1,$2,$3,$4,new Value(new Type(EnumType.ARRAY,""),$6)); }
-        |    TYPE_DECLARATION  L_ID TYPE_VARIABLE '=' llave_izq L_E_TYPE llave_der PUNTO_Y_COMA { $$ = new DeclarationTypes(this._$.first_line,this._$.first_column,$1,$2,$3,$6); 
+        |    TYPE_DECLARATION  L_ID TYPE_VARIABLE '=' llave_izq L_E_TYPE llave_der PUNTO_Y_COMA { $$ = new DeclarationTypes(this._$.first_line,this._$.first_column,$1,$2,$3,$6); }
         ;
 
 L_E_TYPE: L_E_TYPE coma E_TYPE         { $$ = $1; $$.push($3); }
@@ -407,17 +407,15 @@ E_TYPE: identificador dos_puntos E                              { $$ = new Attri
 TYPES: type identificador '=' llave_izq ATTRIBUTES_TYPE llave_der PUNTO_Y_COMA { $$ = new TypeDefinition(this._$.first_line,this._$.first_column,$2,$5); }
         ;
 
-ATTRIBUTES_TYPE: ATTRIBUTES_TYPE ATTRIBUTE_TYPE { $$ = $1; $$.push($2); }
-                | ATTRIBUTE_TYPE                { $$ = []; $$.push($1); }
+ATTRIBUTES_TYPE: ATTRIBUTES_TYPE END_ATTRIBUTE_TYPE ATTRIBUTE_TYPE { $$ = $1; $$.push($3); }
+                | ATTRIBUTE_TYPE                                   { $$ = []; $$.push($1); }
                 ; 
 
-ATTRIBUTE_TYPE: identificador dos_puntos TYPE END_ATTRIBUTE_TYPE               { $$ = new TypeAttributeDefinition(this._$.first_line,this._$.first_column,$1,$3); }
-                | identificador dos_puntos TYPE L_DIMENSION END_ATTRIBUTE_TYPE { $$ = new TypeAttributeArrayDefinition(this._$.first_line,this._$.first_column,$1,$3,$4); }
+ATTRIBUTE_TYPE: identificador dos_puntos TYPE { $$ = new TypeAttributeDefinition(this._$.first_line,this._$.first_column,$1,$3); }
                 ;
 
 END_ATTRIBUTE_TYPE: coma        { $$ = $1; }
                 | punto_y_coma  { $$ = $1; }
-                | /* epsilon */ {$$ = ';'; }
                 ;
 
 L_ARRAY: L_ARRAY coma cor_izq L_E cor_der { $$ = $1; $$.push($3); }
