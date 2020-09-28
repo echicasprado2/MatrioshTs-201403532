@@ -67,6 +67,8 @@ class GraphTs extends Instruction {
                     
                     if(element.value.value instanceof Array){
                         html += `<td>${TableReport.getRealValue(element.value.value)}</td>`;
+                    }else if(element.value.value instanceof Map){
+                        html += `<td>${TableReport.getMapData(element.value.value)}</td>`;
                     }else{
                         html += `<td>${element.value.value.toString()}</td>`;
                     }

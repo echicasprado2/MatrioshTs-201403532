@@ -3,6 +3,7 @@
  *
  */
 class DeclarationTypes extends Instruction {
+
   constructor(linea, column, typeDeclaration, ids, type, value) {
     super(linea, column);
 
@@ -65,10 +66,12 @@ class DeclarationTypes extends Instruction {
 
   execute(e) {
     var exists;
-    var result;
-    var itemResult;
     var symbolTypeDefinition;
-    var newEnvironment;
+    var definicion;
+    var valor;
+    var tmp;
+    var valueMap;
+    var lengthProp
     
     if(this.type.enumType == EnumType.NULL){
       ErrorList.addError(new ErrorNode(this.line,this.column,new ErrorType(EnumErrorType.SEMANTIC),`El type no tiene tipo de type definido.`,e.enviromentType));
@@ -94,31 +97,54 @@ class DeclarationTypes extends Instruction {
       return null;
     }
     
-    for(var i = 0; i < this.ids.length; i++){
-      exists = e.searchSymbol(this.ids[i]);
+    exists = e.searchSymbol(this.ids[0]);
       
-      if(exists != null){
-        ErrorList.addError(new ErrorNode(this.line,this.column,new ErrorType(EnumErrorType.SEMANTIC),`El nombre del type: "${this.ids[i]}" ya se encuentra en uso`,e.enviromentType));
-      
-      }else{
-        console.log(symbolTypeDefinition);
-        console.log(this.value);
-        if(symbolTypeDefinition.value.declarations.length == this.value.length){
+    if(exists != null){
+      ErrorList.addError(new ErrorNode(this.line,this.column,new ErrorType(EnumErrorType.SEMANTIC),`El nombre del type: "${this.ids[i]}" ya se encuentra en uso`,e.enviromentType));
+      return null;
+    }else{
 
-          // var idType = this.value.identifier;
-          // var keyValue = 
+      if(symbolTypeDefinition.value.declarations.length != this.value.length){
+        ErrorList.addError(new ErrorNode(this.line,this.column,new ErrorType(EnumErrorType.SEMANTIC),`Numero de valores no es igual al numero de propiedades`,e.enviromentType));
+        return null;
+      }
+          
+      lengthProp = symbolTypeDefinition.value.declarations.length;
+      valueMap = new Map();
+          
+      for(var j = 0; j < lengthProp; j++){
+        definicion = symbolTypeDefinition.value.declarations[j];
+        valor = this.value[j];
+          
+        if(definicion.identifier != valor.identifier){
+          ErrorList.addError(new ErrorNode(this.line,this.column,new ErrorType(EnumErrorType.SEMANTIC),`El nombre de la la propiedad no coincide con la del type`,e.enviromentType));
+          return null;
+        }
+        
+        tmp = valor.value;
+        
+        if(tmp.type.enumType != EnumType.NULL){
+          
+          if(definicion.type.enumType == EnumType.TYPE){
+            if(definicion.type.identifier != tmp.type.identifier){
+              ErrorList.addError(new ErrorNode(this.line,this.column,new ErrorType(EnumErrorType.SEMANTIC),`El valor no es del mismo tipo que la propiedad`,e.enviromentType));
+              return null;
+            }
+          }
 
-          /* TODO
-           * + aqui tengo que validar el numero de parametros
-           * + luego obtener el objecto typeAttributeDefinition
-           *    que me va a decir como se llama el atriburo y el tipo de valor
-           * + luego tengo que obtener el valor AttributeTypeAssignment que va a dar el id y el valor
-           * + luego tengo que validar que el id de typeAttributoDefinition y el de AttributeTypeAssignment son iguales
-           *    si son iguales entonces tengo que guardar el valor en la tabla de simbolos
-           * + si encuentro un typeAsignment 
-           */
+          if(definicion.type.enumType != tmp.type.enumType){
+            ErrorList.addError(new ErrorNode(this.line,this.column,new ErrorType(EnumErrorType.SEMANTIC),`El valor no es del mismo tipo que la propiedad`,e.enviromentType));
+            return null;
+          }
+
+          valueMap.set(definicion.identify,new Value(definicion.type,tmp.value));
+        }else{
+          valueMap.set(definicion.identify,new Value(definicion.type,tmp.value));
         }
       }
+
+      let insertSymbol = new Symbol(this.line,this.column,this.ids[0],this.type,this.typeDeclaration,new Value(this.type,valueMap),0);
+      e.insertNewSymbol(this.ids[0],insertSymbol);
     }
     return null;
   }
