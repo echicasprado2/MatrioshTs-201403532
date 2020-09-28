@@ -495,7 +495,7 @@ SENTENCE_FOR: for par_izq TYPE_DECLARATION L_ID '=' E punto_y_coma E punto_y_com
                         this._$.first_column,
                         $3,
                         $4,
-                        new Type(EnumType.NULL,""),
+                        new Type(EnumType.NULL,null),
                         $6),
                 $8,
                 $10,
@@ -531,8 +531,8 @@ SENTENCE_FOR: for par_izq TYPE_DECLARATION L_ID '=' E punto_y_coma E punto_y_com
                         this._$.first_column,
                         $3,
                         $4,
-                        new Type(EnumType.NULL,""),
-                        ""),
+                        new Type(EnumType.NULL,null),
+                        null),
                 $6,
                 $8);
         }
@@ -545,8 +545,8 @@ SENTENCE_FOR: for par_izq TYPE_DECLARATION L_ID '=' E punto_y_coma E punto_y_com
                         this._$.first_column,
                         $3,
                         $4,
-                        new Type(EnumType.NULL,""),
-                        ""),
+                        new Type(EnumType.NULL,null),
+                        null),
                 $6,
                 $8);
         }

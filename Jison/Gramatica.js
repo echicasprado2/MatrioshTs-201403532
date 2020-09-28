@@ -351,7 +351,7 @@ case 117:
                         this._$.first_column,
                         $$[$0-9],
                         $$[$0-8],
-                        new Type(EnumType.NULL,""),
+                        new Type(EnumType.NULL,null),
                         $$[$0-6]),
                 $$[$0-4],
                 $$[$0-2],
@@ -390,8 +390,8 @@ case 120:
                         this._$.first_column,
                         $$[$0-5],
                         $$[$0-4],
-                        new Type(EnumType.NULL,""),
-                        ""),
+                        new Type(EnumType.NULL,null),
+                        null),
                 $$[$0-2],
                 $$[$0]);
         
@@ -405,8 +405,8 @@ case 121:
                         this._$.first_column,
                         $$[$0-5],
                         $$[$0-4],
-                        new Type(EnumType.NULL,""),
-                        ""),
+                        new Type(EnumType.NULL,null),
+                        null),
                 $$[$0-2],
                 $$[$0]);
         
