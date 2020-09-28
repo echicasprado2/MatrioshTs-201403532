@@ -73,12 +73,13 @@ class DeclarationTypes extends Instruction {
     if(this.type.enumType == EnumType.NULL){
       ErrorList.addError(new ErrorNode(this.line,this.column,new ErrorType(EnumErrorType.SEMANTIC),`El type no tiene tipo de type definido.`,e.enviromentType));
       return null;
+
     }else if (this.type.enumType != EnumType.TYPE){
       ErrorList.addError(new ErrorNode(this.line,this.column,new ErrorType(EnumErrorType.SEMANTIC),`La tipo de dato no es un type`));
     }
 
     if(this.value == null){
-      ErrorList.addError(new ErrorNode(this.line, this.column, new ErrorType(EnumErrorType.SEMANTIC),`Numero de atributos no es igual.`,e.enviromentType));
+      ErrorList.addError(new ErrorNode(this.line, this.column, new ErrorType(EnumErrorType.SEMANTIC),`No tiene atributos`,e.enviromentType));
       return null;
     }
     
@@ -87,22 +88,26 @@ class DeclarationTypes extends Instruction {
     if(symbolTypeDefinition == null){
       ErrorList.addError(new ErrorNode(this.line,this.column,new ErrorType(EnumErrorType.SEMANTIC),`El el tipo: "type ${this.type.identifier}" no esta definido.`,e.enviromentType));
       return null;
+
     }else if(this.type.identifier != symbolTypeDefinition.type.identifier){
       ErrorList.addError(new ErrorNode(this.line,this.column,new ErrorType(EnumErrorType.SEMANTIC),`El el tipo de type no es el mismo ${this.type.identifier} != ${symbolTypeDefinition.type.identifier}`,e.enviromentType));
       return null;
     }
     
-    newEnvironment = new Environment(e,new EnvironmentType(EnumEnvironmentType.TYPE),this.type);
-      
     for(var i = 0; i < this.ids.length; i++){
       exists = e.searchSymbol(this.ids[i]);
       
       if(exists != null){
         ErrorList.addError(new ErrorNode(this.line,this.column,new ErrorType(EnumErrorType.SEMANTIC),`El nombre del type: "${this.ids[i]}" ya se encuentra en uso`,e.enviromentType));
+      
       }else{
         console.log(symbolTypeDefinition);
         console.log(this.value);
         if(symbolTypeDefinition.value.declarations.length == this.value.length){
+
+          // var idType = this.value.identifier;
+          // var keyValue = 
+
           /* TODO
            * + aqui tengo que validar el numero de parametros
            * + luego obtener el objecto typeAttributeDefinition
