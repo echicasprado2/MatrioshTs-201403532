@@ -50,6 +50,7 @@ class For extends Instruction {
 
     execute(e) {
         var resultCondition;
+        var resultExpresion;
         var resultBlock;
         var env;
         var envFor = new Environment(e,new EnvironmentType(EnumEnvironmentType.FOR,null));
