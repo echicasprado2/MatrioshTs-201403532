@@ -88,12 +88,7 @@ class CallFunction extends Expresion {
 
         for(var i = 0; i < this.parametros.length; i++){
             resultParametroDeclaration = symbolFunction.value.parameters[i];
-            
-            // if(this.parametros[i] instanceof Expresion && resultParametroDeclaration.type.enumType == EnumType.ARRAY){
-            //     resultValueParametroDeclaration = this.parametros[i].getSymbol(e);
 
-            // }else 
-            
             if(this.parametros[i] instanceof Expresion){
                 resultValueParametroDeclaration = this.parametros[i].getValue(e);
             }
@@ -123,7 +118,6 @@ class CallFunction extends Expresion {
             env.insertParameter(resultParametroDeclaration.identifier,new Symbol(this.line,this.column,resultParametroDeclaration.identifier,resultParametroDeclaration.type,new DeclarationType(EnumDeclarationType.LET),resultValueParametroDeclaration,resultParametroDeclaration.dimensions));
         }
         
-        //console.log(env);
         result = symbolFunction.value.instructions.execute(env);
 
         if(result == null && symbolFunction.value.type.enumType != EnumType.VOID){
@@ -138,6 +132,10 @@ class CallFunction extends Expresion {
         if(result != null){
             
             if(result instanceof Return){
+
+                if(!(result.isReturnExpresin)){
+                    return  new Value(new Type(EnumType.VOID,null),"");;
+                }
 
                 if(result.expression.type.enumType != symbolFunction.value.type.enumType){
                     ErrorList.addError(new ErrorNode(this.line,this.column,new ErrorType(EnumErrorType.SEMANTIC),`el tipo de valor de retorno no es el mismo del tipo de la funcion : "${symbolFunction.value.type.toString()} != ${result.expression.type.toString()}"`,env.enviromentType));

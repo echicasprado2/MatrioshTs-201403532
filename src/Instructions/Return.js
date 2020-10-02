@@ -44,7 +44,7 @@ class Return extends Instruction {
                 return new Return(this.line,this.column,result,true);
             }
         }
-        return null;
+        return this;
     }
 
 }
