@@ -127,7 +127,8 @@ lex_comentariomultilinea [/][*][^*]*[*]+([^/*][^*]*[*]+)*[/]
 %left ']'
 %left '{'
 %left '}'
-%left '.'
+// %left punto
+// %right punto
 %left 'EOF'
 
 %start INIT
@@ -161,9 +162,15 @@ SENTENCE: FUNCTION           { $$ = $1; }
         | BREAK              { $$ = $1; }
         | CONITNUE           { $$ = $1; }
         | CALL_FUNCTION      { $$ = $1; }
+        | ARRAY_FUNCION      { $$ = $1; }
         // | error punto_y_coma { ErrorList.addError(new ErrorNode(yylloc.first_line,yylloc.first_column,new ErrorType(EnumErrorType.SYNTACTIC),` Error sintactico `,new EnvironmentType(EnumEnvironmentType.NULL, ""))); $$ = new InstructionError(); }
         // | error llave_der    { ErrorList.addError(new ErrorNode(yylloc.first_line,yylloc.first_column,new ErrorType(EnumErrorType.SYNTACTIC),` Error sintactico `,new EnvironmentType(EnumEnvironmentType.NULL, ""))); $$ = new InstructionError(); }
         ;
+
+ARRAY_FUNCION: ID_ASSIGNMENT punto pop par_izq par_der PUNTO_Y_COMA    { $$ = new ArrayFunction(this._$.first_line,this._$.first_column,new TypeArrayMethod(EnumTypeArrayMethod.POP),new Access(this._$.first_line,this._$.first_column,$1),null,true); }
+             | ID_ASSIGNMENT punto length PUNTO_Y_COMA                 { $$ = new ArrayFunction(this._$.first_line,this._$.first_column,new TypeArrayMethod(EnumTypeArrayMethod.LENGTH),new Access(this._$.first_line,this._$.first_column,$1),null,true); }
+             | ID_ASSIGNMENT punto push par_izq E par_der PUNTO_Y_COMA { $$ = new ArrayFunction(this._$.first_line,this._$.first_column,new TypeArrayMethod(EnumTypeArrayMethod.PUSH),new Access(this._$.first_line,this._$.first_column,$1),$5,true); }
+             ;
 
 CALL_FUNCTION:    identificador par_izq L_E par_der PUNTO_Y_COMA { $$ = new CallFunction(this._$.first_line,this._$.first_column,$1,$3,true); }
                 | identificador par_izq par_der     PUNTO_Y_COMA { $$ = new CallFunction(this._$.first_line,this._$.first_column,$1,[],true); }
@@ -345,6 +352,16 @@ FUNCTION_SENTENCE: PRINT
                                 }
                         }       
                 }
+                | ARRAY_FUNCION 
+                {
+                        stack = eval('$$');
+                        for(var i = stack.length-2;i > 0; i--){
+                                if(stack[i] === '{' && stack[i-1] instanceof Function){
+                                        stack[i-1].addFunction(stack[stack.length - 1]);
+                                        break;
+                                }
+                        }
+                }
                 // | error punto_y_coma 
                 // | error llave_der 
                 ;
@@ -447,8 +464,8 @@ ASSIGNMENT: ID_ASSIGNMENT '=' E PUNTO_Y_COMA
 
 ID_ASSIGNMENT: ID_ASSIGNMENT punto identificador             { $$ = $1; $$.push(new Id(this._$.first_line,this._$.first_column,$3)); }
         | ID_ASSIGNMENT punto identificador ACCESS_DIMENSION { $$ = $1; $$.push(new AccessArray(this._$.first_line,this._$.first_column,$3,$4)); }
-        | identificador                                      { $$ = []; $$.push(new Id(this._$.first_line,this._$.first_column,$1)); }
         | identificador ACCESS_DIMENSION                     { $$ = []; $$.push(new AccessArray(this._$.first_line,this._$.first_column,$1,$2)); }
+        | identificador                                      { $$ = []; $$.push(new Id(this._$.first_line,this._$.first_column,$1)); }
         ;
 
 ACCESS_DIMENSION: ACCESS_DIMENSION cor_izq E cor_der { $$ = $1; $$.push($3); }
@@ -581,20 +598,20 @@ E   : E '+'   E          { $$ = new Arithmetic(this._$.first_line,this._$.first_
 
     | E '?' E dos_puntos E                { $$ = new Ternary(this._$.first_line,this._$.first_column,$1,$3,$5); }
 
-    | identificador par_izq par_der                  { $$ = new CallFunction(this._$.first_line,this._$.first_column,$1,[],false); }
-    | identificador par_izq L_E par_der              { $$ = new CallFunction(this._$.first_line,this._$.first_column,$1,$3,false); }
+    | identificador par_izq par_der       { $$ = new CallFunction(this._$.first_line,this._$.first_column,$1,[],false); }
+    | identificador par_izq L_E par_der   { $$ = new CallFunction(this._$.first_line,this._$.first_column,$1,$3,false); }
 
     | ACCESS POST_FIXED                   { $$ = new Unary(this._$.first_line,this._$.first_column,$2,new Access(this._$.first_line,this._$.first_column,$1),false); }
-    | ACCESS punto pop par_izq par_der    { $$ = new ArrayFunction(this._$.first_line,this._$.first_column,new TypeArrayMethod(EnumTypeArrayMethod.POP),new Access(this._$.first_line,this._$.first_column,$1),null); }
-    | ACCESS punto length                 { $$ = new ArrayFunction(this._$.first_line,this._$.first_column,new TypeArrayMethod(EnumTypeArrayMethod.LENGTH),new Access(this._$.first_line,this._$.first_column,$1),null); }
-    | ACCESS punto push par_izq E par_der { $$ = new ArrayFunction(this._$.first_line,this._$.first_column,new TypeArrayMethod(EnumTypeArrayMethod.PUSH),new Access(this._$.first_line,this._$.first_column,$1),$5); }
+    | ACCESS punto pop par_izq par_der    { $$ = new ArrayFunction(this._$.first_line,this._$.first_column,new TypeArrayMethod(EnumTypeArrayMethod.POP),new Access(this._$.first_line,this._$.first_column,$1),null,false); }
+    | ACCESS punto length                 { $$ = new ArrayFunction(this._$.first_line,this._$.first_column,new TypeArrayMethod(EnumTypeArrayMethod.LENGTH),new Access(this._$.first_line,this._$.first_column,$1),null,false); }
+    | ACCESS punto push par_izq E par_der { $$ = new ArrayFunction(this._$.first_line,this._$.first_column,new TypeArrayMethod(EnumTypeArrayMethod.PUSH),new Access(this._$.first_line,this._$.first_column,$1),$5,false); }
     | ACCESS                              { $$ = new Access(this._$.first_line,this._$.first_column,$1); }
     ;
 
-ACCESS: ACCESS punto identificador                       { $$ = $1; $$.push(new Id(this._$.first_line,this._$.first_column,$3)); }
-        | ACCESS punto identificador ACCESS_DIMENSION    { $$ = $1; $$.push(new AccessArray(this._$.first_line,this._$.first_column,$3,$4)); }
-        | identificador                                  { $$ = []; $$.push(new Id(this._$.first_line,this._$.first_column,$1)); }
-        | identificador ACCESS_DIMENSION                 { $$ = []; $$.push(new AccessArray(this._$.first_line,this._$.first_column,$1,$2)); }
+ACCESS: ACCESS punto identificador                    { $$ = $1; $$.push(new Id(this._$.first_line,this._$.first_column,$3)); }
+        | ACCESS punto identificador ACCESS_DIMENSION { $$ = $1; $$.push(new AccessArray(this._$.first_line,this._$.first_column,$3,$4)); }
+        | identificador                               { $$ = []; $$.push(new Id(this._$.first_line,this._$.first_column,$1)); }
+        | identificador ACCESS_DIMENSION              { $$ = []; $$.push(new AccessArray(this._$.first_line,this._$.first_column,$1,$2)); }
         ;
 
 POST_FIXED: '--' { $$ = new OperationType(EnumOperationType.MINUS_MINUS); }

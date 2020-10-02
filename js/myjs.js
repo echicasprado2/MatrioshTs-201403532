@@ -73,6 +73,7 @@ translate.addEventListener("click", (e) => {
   var myConsole = getConsole();
   var myTranslated = getSalida();
   
+  cleanReportsTranslated();
   myConsole.setValue("");
   ErrorList.cleanErrorList();
   
@@ -93,6 +94,7 @@ execute.addEventListener("click", (e) => {
   var editor = getSalida();
   var myConsole = getConsole();
   
+  cleanReportsExecute();
   myConsole.setValue("");
 
   var result = new AST(Gramatica.parse(editor.getValue()));
@@ -116,11 +118,13 @@ function showTranslatedTree(file) {
   }
 
   //genera el arbol y da error
-  var element = document.querySelector("showTranslatedTree");
+  var element = document.querySelector("#showTranslatedTree");
   var insertSvg = function (svgCode) {
     element.innerHTML = svgCode;
   };
 
+  console.log(code);
+  
   var graph = mermaid.render("showTranslatedTree", code, insertSvg);
 }
 
@@ -133,12 +137,14 @@ function showExecuteTree(file) {
   }
 
   // genera el arbol y da error
-  var element = document.querySelector("myGraphExecute");
+  var element = document.querySelector("#showExecuteTree");
   var insertSvg = function (svgCode) {
     element.innerHTML = svgCode;
   };
 
-  var graph = mermaid.render("myGraphExecute", code, insertSvg);
+  console.log(code);
+
+  var graph = mermaid.render("showExecuteTree", code, insertSvg);
 }
 
 function showTableTranslatedSymbols() {
@@ -255,4 +261,16 @@ function showGraficarTs(){
     
     document.getElementById("reportGraficarTs").innerHTML = html;
   }
+}
+
+function cleanReportsTranslated(){
+  document.getElementById("tableTranslated").innerHTML = "";
+  document.getElementById("tableExecute").innerHTML = "";
+  document.getElementById("tableErrors").innerHTML = "";
+  document.getElementById("reportGraficarTs").innerHTML = "";
+}
+
+function cleanReportsExecute(){
+  document.getElementById("tableExecute").innerHTML = "";
+  document.getElementById("reportGraficarTs").innerHTML = "";
 }

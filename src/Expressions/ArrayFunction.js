@@ -7,11 +7,12 @@ class ArrayFunction extends Expresion {
    * @param {*} identify
    * @param {*} value
    */
-  constructor(linea, column, type, identify, value) {
+  constructor(linea, column, type, identify, value,isFinal) {
     super(linea, column, null, null);
     this.identify = identify;
     this.type = type;
     this.value = value;
+    this.isFinal = isFinal;
   }
 
   getTranslated() {
@@ -23,11 +24,22 @@ class ArrayFunction extends Expresion {
       this.translatedCode += `${this.identify.getTranslated()}.${this.type.toString()}`;
     }
 
-    if (this.parentesis) {
-      return `(${this.translatedCode})`;
-    } else {
-      return this.translatedCode;
+    // if (this.parentesis) {
+    //   return `(${this.translatedCode})`;
+    // } else {
+    //   return this.translatedCode;
+    // }
+    
+    if(this.parentesis){
+      this.translatedCode = `(${this.translatedCode})`;
     }
+
+    if(this.isFinal){
+      this.translatedCode += ";\n";
+    }
+
+    return this.translatedCode;
+
   }
 
   translatedSymbolsTable(e) {
@@ -78,7 +90,7 @@ class ArrayFunction extends Expresion {
     var returnValue = new Value(new Type(EnumType.ERROR,null),"Error");
     var resultValue = this.value.getValue(e);
     
-    if(resultValue.type.enumType != symbol.value.type.enumType){
+    if(resultValue.type.enumType != symbol.type.identifier){
       ErrorList.addError(new ErrorNode(this.line,this.column,new ErrorType(EnumErrorType.SEMANTIC),`El valor no es del mismo tipo que el arreglo`,e.enviromentType));
       return returnValue;
     }

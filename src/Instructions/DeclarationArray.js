@@ -93,7 +93,7 @@ class DeclarationArray extends Instruction {
         if(this.values == null){
             for(var i =0;i < this.ids.length;i++){
                 
-                saveValue = new Symbol(this.line,this.column,this.ids[i],new Type(EnumType.ARRAY,this.type.enumType),this.typeDeclaration,new Value(new Type(EnumType.NULL),null),Number(this.dimensions));
+                saveValue = new Symbol(this.line,this.column,this.ids[i],new Type(EnumType.ARRAY,this.type.enumType),this.typeDeclaration,new Value(new Type(EnumType.NULL),[]),Number(this.dimensions));
                 e.insertNewSymbol(this.ids[i],saveValue);
 
             }
@@ -131,6 +131,7 @@ class DeclarationArray extends Instruction {
         var resultValue;
 
         if(objArray[0] instanceof Value && objArray[0].type.enumType == EnumType.NULL){
+            objArray[0].value = [];
             return objArray[0];
         }
 

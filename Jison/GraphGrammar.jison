@@ -160,9 +160,15 @@ SENTENCE: FUNCTION           { $$ = $1; }
         | BREAK              { $$ = $1; }
         | CONITNUE           { $$ = $1; }
         | CALL_FUNCTION      { $$ = $1; }
+        | ARRAY_FUNCION      
         // | error punto_y_coma { $$ = new InstructionError(); }
         // | error llave_der       { $$ = $1; cosole.log("error recuperacion con }"); }
         ;
+
+ARRAY_FUNCION: ID_ASSIGNMENT punto pop par_izq par_der PUNTO_Y_COMA    { $$ = new NodeGraphAST("FUNCTION_ARRAY",NumberNode.getNumber()); $$.children.push($1,new NodeGraphAST($3,NumberNode.getNumber())); }
+             | ID_ASSIGNMENT punto length PUNTO_Y_COMA                 { $$ = new NodeGraphAST("FUNCTION_ARRAY",NumberNode.getNumber()); $$.children.push($1,new NodeGraphAST($3,NumberNode.getNumber())); }
+             | ID_ASSIGNMENT punto push par_izq E par_der PUNTO_Y_COMA { $$ = new NodeGraphAST("FUNCTION_ARRAY",NumberNode.getNumber()); $$.children.push($1,new NodeGraphAST($3,NumberNode.getNumber()),$5); }
+             ;
 
 // faltan de graficar
 CALL_FUNCTION:    identificador par_izq L_E par_der PUNTO_Y_COMA { $$ = new NodeGraphAST("LLAMADA_FUNCION",NumberNode.getNumber()); $$.children.push(new NodeGraphAST($1,NumberNode.getNumber()),$3); }
@@ -217,6 +223,7 @@ FUNCTION_SENTENCE: PRINT            { $$ = $1; }
                 | CONITNUE          { $$ = $1; }
                 | CALL_FUNCTION     { $$ = $1; }
                 | FUNCTION          { $$ = $1; }
+                | ARRAY_FUNCION     { $$ = $1; }
                 ;
 
 L_PARAMETROS: L_PARAMETROS coma PARAMETRO  { $$ = new NodeGraphAST("L_PARAMETROS",NumberNode.getNumber()); $$.children.push($1,$3); }
@@ -236,10 +243,10 @@ GRAPH_TS: graficar_ts par_izq par_der PUNTO_Y_COMA { $$ = new NodeGraphAST("GRAF
         ;
         
 DECLARATION: TYPE_DECLARATION  L_ID TYPE_VARIABLE PUNTO_Y_COMA                                  { $$ = new NodeGraphAST("DECLARACION",NumberNode.getNumber()); $$.children.push($1,$2,$3); }
-        |    TYPE_DECLARATION  L_ID TYPE_VARIABLE '=' E PUNTO_Y_COMA                            { $$ = new NodeGraphAST("DECLARACION",NumberNode.getNumber()); $$.children.push($1,$2,$3,$5); }
+        |    TYPE_DECLARATION  L_ID TYPE_VARIABLE '=' E PUNTO_Y_COMA                            { $$ = new NodeGraphAST("DECLARACION",NumberNode.getNumber()); $$.children.push($1,$2,$3,new NodeGraphAST("=",NumberNode.getNumber()),$5); }
         |    TYPE_DECLARATION  L_ID TYPE_VARIABLE L_DIMENSION PUNTO_Y_COMA                      { $$ = new NodeGraphAST("DECLARACION_ARRAY",NumberNode.getNumber()); $$.children.push($1,$2,$3,$4); }
-        |    TYPE_DECLARATION  L_ID TYPE_VARIABLE L_DIMENSION '=' L_ARRAY PUNTO_Y_COMA          { $$ = new NodeGraphAST("DECLARACION_ARRAY",NumberNode.getNumber()); $$.children.push($1,$2,$3,$4,$6); }
-        |    TYPE_DECLARATION  L_ID TYPE_VARIABLE '=' llave_izq L_E_TYPE llave_der PUNTO_Y_COMA { $$ = new NodeGraphAST("DECLARACION_TYPE",NumberNode.getNumber()); $$.children.push($1,$2,$3,$6); }
+        |    TYPE_DECLARATION  L_ID TYPE_VARIABLE L_DIMENSION '=' L_ARRAY PUNTO_Y_COMA          { $$ = new NodeGraphAST("DECLARACION_ARRAY",NumberNode.getNumber()); $$.children.push($1,$2,$3,$4,new NodeGraphAST("=",NumberNode.getNumber()),$6); }
+        |    TYPE_DECLARATION  L_ID TYPE_VARIABLE '=' llave_izq L_E_TYPE llave_der PUNTO_Y_COMA { $$ = new NodeGraphAST("DECLARACION_TYPE",NumberNode.getNumber()); $$.children.push($1,$2,$3,new NodeGraphAST("=",NumberNode.getNumber()),$6); }
         ;
 
 TYPES: type identificador '=' llave_izq ATTRIBUTES_TYPE llave_der PUNTO_Y_COMA { $$ = new NodeGraphAST("TYPE",NumberNode.getNumber()); $$.children.push(new NodeGraphAST($2,NumberNode.getNumber()),$5); }
@@ -278,10 +285,10 @@ L_DIMENSION: L_DIMENSION cor_izq cor_der { var t = new NodeGraphAST("[]",NumberN
         | cor_izq cor_der                { $$ = new NodeGraphAST("[]",NumberNode.getNumber()); }
         ;
 
-ASSIGNMENT: ID_ASSIGNMENT '=' E PUNTO_Y_COMA                          { $$ = new NodeGraphAST("ASIGNACION",NumberNode.getNumber()); $$.children.push($1,$3); }
-        | ID_ASSIGNMENT '=' cor_izq cor_der PUNTO_Y_COMA              { $$ = new NodeGraphAST("ASIGNACION",NumberNode.getNumber()); $$.children.push($1,new NodeGraphAST("[]",NumberNode.getNumber())); }
+ASSIGNMENT: ID_ASSIGNMENT '=' E PUNTO_Y_COMA                          { $$ = new NodeGraphAST("ASIGNACION",NumberNode.getNumber()); $$.children.push($1,new NodeGraphAST("=",NumberNode.getNumber()),$3); }
+        | ID_ASSIGNMENT '=' cor_izq cor_der PUNTO_Y_COMA              { $$ = new NodeGraphAST("ASIGNACION",NumberNode.getNumber()); $$.children.push($1,new NodeGraphAST("=",NumberNode.getNumber()), new NodeGraphAST("[]",NumberNode.getNumber())); }
         | ID_ASSIGNMENT POST_FIXED PUNTO_Y_COMA                       { $$ = new NodeGraphAST("ASIGNACION",NumberNode.getNumber()); $$.children.push($1,new NodeGraphAST($2,NumberNode.getNumber())); }
-        | ID_ASSIGNMENT '=' llave_izq L_E_TYPE llave_der PUNTO_Y_COMA { $$ = new NodeGraphAST("ASIGNACION_TYPE",NumberNode.getNumber()); $$.children.push($1,$4); }
+        | ID_ASSIGNMENT '=' llave_izq L_E_TYPE llave_der PUNTO_Y_COMA { $$ = new NodeGraphAST("ASIGNACION_TYPE",NumberNode.getNumber()); $$.children.push($1,new NodeGraphAST("=",NumberNode.getNumber()),$4); }
         ;
 
 L_E_TYPE: L_E_TYPE coma E_TYPE { $$ = new NodeGraphAST("L_E_TYPE",NumberNode.getNumber()); $$.children.push($1,$3); }
@@ -380,7 +387,7 @@ E   : E '+'   E                           { $$ = new NodeGraphAST($2,NumberNode.
     | ACCESS POST_FIXED                   { $$ = new NodeGraphAST($2,NumberNode.getNumber()); $$.children.push($1); }
     | ACCESS punto pop par_izq par_der    { $$ = new NodeGraphAST("FUNCTION_ARRAY",NumberNode.getNumber()); $$.children.push($1,new NodeGraphAST($3,NumberNode.getNumber())); }
     | ACCESS punto length                 { $$ = new NodeGraphAST("FUNCTION_ARRAY",NumberNode.getNumber()); $$.children.push($1,new NodeGraphAST($3,NumberNode.getNumber())); }
-    | ACCESS punto push par_izq E par_der { $$ = new NodeGraphAST("FUNCTION_ARRAY",NumberNode.getNumber()); $$.children.push($1,new NodeGraphAST($3,NumberNode.getNumber())); }
+    | ACCESS punto push par_izq E par_der { $$ = new NodeGraphAST("FUNCTION_ARRAY",NumberNode.getNumber()); $$.children.push($1,new NodeGraphAST($3,NumberNode.getNumber()),$5); }
     | ACCESS                              { $$ = $1; }
     ;
 
