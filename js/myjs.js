@@ -27,7 +27,7 @@ var consoleShow = CodeMirror.fromTextArea(
 );
 
 // MERMAID
-mermaid.initialize({ startOnLoad: false });
+mermaid.mermaidAPI.initialize({ startOnLoad: false });
 
 // FUNCIONES PARA OBTENER CODEMIRROR
 function getEditor() {
@@ -118,14 +118,12 @@ function showTranslatedTree(file) {
   }
 
   //genera el arbol y da error
-  var element = document.querySelector("#showTranslatedTree");
+  var element = document.querySelector("showTranslatedTree");
   var insertSvg = function (svgCode) {
     element.innerHTML = svgCode;
   };
-
-  console.log(code);
   
-  var graph = mermaid.render("showTranslatedTree", code, insertSvg);
+  var graph = mermaid.mermaidAPI.render("showTranslatedTree", code, insertSvg);
 }
 
 function showExecuteTree(file) {
@@ -133,16 +131,14 @@ function showExecuteTree(file) {
 
   var ast = GraphGrammar.parse(file);
   if (ast instanceof NodeGraphAST) {
-    var code = ast.stringFinalTreeTranslated(ast.totalString(ast));
+    var code = ast.stringFinalTreeExecute(ast.totalString(ast));
   }
 
   // genera el arbol y da error
-  var element = document.querySelector("#showExecuteTree");
+  var element = document.querySelector("showExecuteTree");
   var insertSvg = function (svgCode) {
     element.innerHTML = svgCode;
   };
-
-  console.log(code);
 
   var graph = mermaid.render("showExecuteTree", code, insertSvg);
 }
