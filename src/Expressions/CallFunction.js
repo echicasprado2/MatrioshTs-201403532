@@ -133,7 +133,7 @@ class CallFunction extends Expresion {
             
             if(result instanceof Return){
 
-                if(!(result.isReturnExpresin)){
+                if(!(result.returnExpresion)){
                     return  new Value(new Type(EnumType.VOID,null),"");;
                 }
 

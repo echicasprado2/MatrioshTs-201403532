@@ -16,6 +16,13 @@ class Value extends Expresion {
             value = value.replace("\'","");
             value = value.replace("\`","");
             value = value.replace("\`","");
+
+            value = value.replace("\\\"","\"");
+            value = value.replace("\\","\\");
+            value = value.replace("\\n","\n");
+            value = value.replace("\\r","\r");
+            value = value.replace("\\t","\t");
+
         }
 
         super(0, 0, type, value);

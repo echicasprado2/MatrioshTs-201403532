@@ -72,22 +72,31 @@ class AccessArray extends Expresion {
 
   getIndexValue(e,arrayValue){
     var resultIndex; 
-    var arrayDimension = arrayValue;
+    // var arrayDimension = arrayValue;
+    var arrayDimension;
 
     for(var i = 0; i < this.value.length; i++){
       resultIndex = this.value[i].getValue(e);
 
       if(resultIndex.value < 0){
-        ErrorList.addError(new ErrorNode(this.line,this.column,new ErrorType(EnumErrorType.SEMANTIC),`el indice es -1`,e.enviromentType));
+        ErrorList.addError(new ErrorNode(this.line,this.column,new ErrorType(EnumErrorType.SEMANTIC),`el indice es ${resultIndex.value}`,e.enviromentType));
         return null;
       }
 
-      if(resultIndex.value > arrayDimension.length){
+      // if(resultIndex.value > arrayDimension.length){
+      //   ErrorList.addError(new ErrorNode(this.line,this.column,new ErrorType(EnumErrorType.SEMANTIC),`el indice supera el tamaño del arreglo`,e.enviromentType));
+      //   return null;
+      // }
+
+      // arrayDimension = arrayDimension[resultIndex.value];
+      
+      if(resultIndex.value > arrayValue.length){
         ErrorList.addError(new ErrorNode(this.line,this.column,new ErrorType(EnumErrorType.SEMANTIC),`el indice supera el tamaño del arreglo`,e.enviromentType));
         return null;
       }
 
-      arrayDimension = arrayDimension[resultIndex.value];
+      arrayDimension = arrayValue[resultIndex.value];
+
     }
 
     return arrayDimension;

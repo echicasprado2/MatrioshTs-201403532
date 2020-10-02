@@ -55,7 +55,7 @@ class ArrayFunction extends Expresion {
     var resultSymbol = this.identify.value[0].getValue(e);
 
     if(resultSymbol.type.enumType == EnumType.ERROR){
-      return resultValue;
+      return returnValue;
     }
 
     if(resultSymbol.type.enumType != EnumType.ARRAY){
