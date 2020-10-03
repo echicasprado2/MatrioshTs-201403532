@@ -131,7 +131,7 @@ class DeclarationArray extends Instruction {
         var resultValue;
 
         if(objArray[0] instanceof Value && objArray[0].type.enumType == EnumType.NULL){
-            objArray[0].value = [];
+            // objArray[0].value = [];
             return objArray[0];
         }
 

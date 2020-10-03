@@ -263,7 +263,7 @@ case 87: case 106:
  this.$ = []; this.$.push($$[$0-1]); 
 break;
 case 88:
- this.$ = []; this.$.push([new Value(new Type(EnumType.NULL),"")]); 
+ this.$ = []; this.$.push([new Value(new Type(EnumType.NULL),[])]); 
 break;
 case 89:
  this.$ = new DeclarationType(EnumDeclarationType.LET); 
@@ -295,7 +295,7 @@ case 98:
 
                 for(var i = 0; i < $$[$0-4].length;i++){
                         if($$[$0-4][i] instanceof AccessArray){
-                                this.$ = new AssignmentArray(this._$.first_line,this.$.first_column,$$[$0-4],new Value(new Type(EnumType.NULL),""));
+                                this.$ = new AssignmentArray(this._$.first_line,this.$.first_column,$$[$0-4],new Value(new Type(EnumType.NULL),[]));
                                 return;
                         }
                 }

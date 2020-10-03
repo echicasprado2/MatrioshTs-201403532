@@ -42,7 +42,7 @@ class Print extends Instruction {
         for(var i = 0; i < this.values.length; i++){
             result = this.values[i].getValue(e);
             if(result != null){
-                
+                console.log(result);
                 if(result.type.enumType == EnumType.STRING){
                     if(result.value != "@vacio"){
                         resultCadena += result.value;

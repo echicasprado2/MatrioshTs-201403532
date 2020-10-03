@@ -9,6 +9,7 @@ class Value extends Expresion {
      *
      */
     constructor(type, value) {
+
         if(type.enumType == EnumType.STRING && value != null){
             value = value.replace("\"","");
             value = value.replace("\"","");
@@ -16,13 +17,6 @@ class Value extends Expresion {
             value = value.replace("\'","");
             value = value.replace("\`","");
             value = value.replace("\`","");
-
-            value = value.replace("\\\"","\"");
-            value = value.replace("\\","\\");
-            value = value.replace("\\n","\n");
-            value = value.replace("\\r","\r");
-            value = value.replace("\\t","\t");
-
         }
 
         super(0, 0, type, value);
@@ -74,6 +68,14 @@ class Value extends Expresion {
     }
 
     getValue(e) {
+
+        if(this.type.enumType == EnumType.STRING){
+            this.value = this.value.replace(/\\\"/g,"\"");
+            this.value = this.value.replace(/\\/g,"\\");
+            this.value = this.value.replace(/\\n/g,"\n");
+            this.value = this.value.replace(/\\r/g,"\r");
+            this.value = this.value.replace(/\\t/g,"\t");
+        }
         
         if(this.value == null){
             let nuevoValor = new Value(this.type, "@vacio");

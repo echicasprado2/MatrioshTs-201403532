@@ -419,7 +419,7 @@ END_ATTRIBUTE_TYPE: coma        { $$ = $1; }
 
 L_ARRAY: L_ARRAY coma cor_izq L_E cor_der { $$ = $1; $$.push($3); }
         | cor_izq L_E cor_der             { $$ = []; $$.push($2); }
-        | cor_izq cor_der                 { $$ = []; $$.push([new Value(new Type(EnumType.NULL),"")]); }
+        | cor_izq cor_der                 { $$ = []; $$.push([new Value(new Type(EnumType.NULL),[])]); }
         ;
 
 TYPE_DECLARATION: let   { $$ = new DeclarationType(EnumDeclarationType.LET); }
@@ -452,7 +452,7 @@ ASSIGNMENT: ID_ASSIGNMENT '=' E PUNTO_Y_COMA
         {
                 for(var i = 0; i < $1.length;i++){
                         if($1[i] instanceof AccessArray){
-                                $$ = new AssignmentArray(this._$.first_line,this.$.first_column,$1,new Value(new Type(EnumType.NULL),""));
+                                $$ = new AssignmentArray(this._$.first_line,this.$.first_column,$1,new Value(new Type(EnumType.NULL),[]));
                                 return;
                         }
                 }
