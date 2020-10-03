@@ -96,7 +96,7 @@ class AssignmentArray extends Instruction {
             return null;
         }
 
-        var newValueArray = this.changeValue(e,listAccessValue,resultValue,resultSymbol.value);
+        var newValueArray = this.changeValue(e,listAccessValue,resultValue,resultSymbol.value,0);
         if(newValueArray != null){
             resultSymbol.value = newValueArray;
             e.insert(resultSymbol.id,resultSymbol);
@@ -104,75 +104,41 @@ class AssignmentArray extends Instruction {
         return null;
     }
 
-    changeValue(e,listAccess,newValue,values){
+    changeValue(e,list,newValue,values,index){
          var indice;
+         var listAccess = list.slice(0,list.length);
 
-        if(values instanceof Array && values[0] instanceof Value){
-
-            if(listAccess[0] instanceof Value){
-                indice = listAccess[0];
-
-            }else{
-                indice = listAccess[0].getValue(e);
-            }
-        
-            if(values[indice.value].type.enumType != newValue.type.enumType){
-                ErrorList.addError(new ErrorNode(this.line,this.column,new ErrorType(EnumErrorType.SEMANTIC),`El tipo de valor es diferente al que guarda el array`,e.enviromentType));
-                return null;
-            }
-
+        if(values instanceof Array && values[0] instanceof Value && (listAccess.length - 1) == index){
+            indice = listAccess[index].getValue(e);
             values[indice.value] = newValue;
 
-        }else if(values instanceof Array && values.length == 0 && listAccess.length == 1){
-
-            if(listAccess[0] instanceof Value){
-                indice = listAccess[0];
-
-            }else{
-                indice = listAccess[0].getValue(e);
-            }
-
+        }else if(values instanceof Array && values.length == 0 && (listAccess.length - 1) == index){
+            indice = listAccess[index].getValue(e);
             values[indice.value] = newValue;
-
-        }else if(values instanceof Value && values.value instanceof Array && (listAccess.length - 1) == 1){
             
-            if(listAccess[0] instanceof Value){
-                indice = listAccess[0];
-
+        }else if(values instanceof Value && values.value instanceof Array && (listAccess.length - 1) == index){
+            indice = listAccess[index].getValue(e);
+            
+            if(newValue instanceof Value && newValue.value instanceof Array && newValue.value.length == 0){
+                values.value[indice.value] = [];
             }else{
-                indice = listAccess[0].getValue(e);
-            }
-
-            values.value[indice.value] = newValue;
-        
-        }else if(values instanceof Value && listAccess.length == 1){
-
-            if(listAccess[0] instanceof Value){
-                indice = listAccess[0];
-
-            }else{
-                indice = listAccess[0].getValue(e);
-            }
-
-            if(values.value instanceof Array){
                 values.value[indice.value] = newValue;
+            }
             
+        }else if(values instanceof Value && values.value instanceof Array && listAccess.length > index){
+            
+            indice = listAccess[index];
+            index++;
+
+            indice = indice.getValue(e);
+            let aux = this.changeValue(e,listAccess,newValue,values.value[Number(indice.value)],index);
+                
+            if(aux instanceof Value && aux.value instanceof Array){
+                values.value[Number(indice.value)] = aux.value;
             }else{
-                values.value = [newValue];
+                values.value[Number(indice.value)] = aux;
             }
 
-
-        }else if(values instanceof Value && values.value instanceof Array && listAccess.length > 1){
-            
-            indice = listAccess.shift();
-
-            if(indice instanceof Value){
-                values.value[Number(indice.value)] = this.changeValue(e,listAccess,newValue,values.value[Number(indice.value)]);
-            
-            }else{
-                indice = indice.getValue(e);
-                values.value[Number(indice.value)] = this.changeValue(e,listAccess,newValue,values.value[Number(indice.value)]);
-            }
         }
 
         return values;

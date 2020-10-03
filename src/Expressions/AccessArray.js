@@ -54,7 +54,7 @@ class AccessArray extends Expresion {
       return returnValue;
     }
     
-    if(resultSymbol.dimensions != this.value.length){
+    if(resultSymbol.dimensions < this.value.length){
       ErrorList.addError(new ErrorNode(this.line,this.column,new ErrorType(EnumErrorType.SEMANTIC),`la dimensiones de acceso son diferentes a las del arreglo`,e.enviromentType));
       return returnValue;
     }
@@ -65,7 +65,11 @@ class AccessArray extends Expresion {
       return returnValue;
     }
 
-    returnValue = tempValue.getValue(e);
+    if(tempValue instanceof Expresion){
+      returnValue = tempValue.getValue(e);
+    }
+
+    returnValue = tempValue;
 
     return returnValue;
   }
@@ -73,7 +77,7 @@ class AccessArray extends Expresion {
   getIndexValue(e,arrayValue){
     var resultIndex; 
     // var arrayDimension = arrayValue;
-    var arrayDimension;
+    var arrayDimension = arrayValue;
 
     for(var i = 0; i < this.value.length; i++){
       resultIndex = this.value[i].getValue(e);
@@ -83,19 +87,12 @@ class AccessArray extends Expresion {
         return null;
       }
 
-      // if(resultIndex.value > arrayDimension.length){
-      //   ErrorList.addError(new ErrorNode(this.line,this.column,new ErrorType(EnumErrorType.SEMANTIC),`el indice supera el tamaño del arreglo`,e.enviromentType));
-      //   return null;
-      // }
-
-      // arrayDimension = arrayDimension[resultIndex.value];
-      
       if(resultIndex.value > arrayValue.length){
         ErrorList.addError(new ErrorNode(this.line,this.column,new ErrorType(EnumErrorType.SEMANTIC),`el indice supera el tamaño del arreglo`,e.enviromentType));
         return null;
       }
 
-      arrayDimension = arrayValue[resultIndex.value];
+      arrayDimension = arrayDimension[resultIndex.value];
 
     }
 

@@ -54,23 +54,36 @@ class ArrayFunction extends Expresion {
     var returnValue = new Value(new Type(EnumType.ERROR,null),"Error");
     var resultSymbol = this.identify.value[0].getValue(e);
 
-    if(resultSymbol.type.enumType == EnumType.ERROR){
+    if(resultSymbol instanceof Symbol && resultSymbol.type.enumType == EnumType.ERROR){
       return returnValue;
     }
 
-    if(resultSymbol.type.enumType != EnumType.ARRAY){
+    if(resultSymbol instanceof Symbol && resultSymbol.type.enumType != EnumType.ARRAY){
       ErrorList.addError(new ErrorNode(this.line,this.column,new ErrorType(EnumErrorType.SEMANTIC),`La variable no es un array`,e.enviromentType));
       return returnValue;
     }
 
-    if(this.type.enumType == EnumTypeArrayMethod.POP){
-      return this.getPop(e,resultSymbol);
+    if(resultSymbol instanceof Array && resultSymbol[0] instanceof Expresion){
+      
+      if(this.type.enumType == EnumTypeArrayMethod.POP){
+        return resultSymbol.pop().getValue(e);
+      
+      }else if(this.type.enumType == EnumTypeArrayMethod.LENGTH){
+        return new Value(new Type(EnumType.NUMBER,null),resultSymbol.length);
+      }
 
-    }else if(this.type.enumType == EnumTypeArrayMethod.LENGTH){
-      return this.getLength(e,resultSymbol);
-    
-    }else if(this.type.enumType == EnumTypeArrayMethod.PUSH){
-      return this.pushValue(e,resultSymbol);
+    }else{
+      
+      if(this.type.enumType == EnumTypeArrayMethod.POP){
+        return this.getPop(e,resultSymbol);
+  
+      }else if(this.type.enumType == EnumTypeArrayMethod.LENGTH){
+        return this.getLength(e,resultSymbol);
+      
+      }else if(this.type.enumType == EnumTypeArrayMethod.PUSH){
+        return this.pushValue(e,resultSymbol);
+      }
+
     }
 
     return returnValue;
