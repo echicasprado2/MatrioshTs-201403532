@@ -37,6 +37,7 @@ class AssignmentType extends Instruction {
     }
 
     execute(e) {
+        console.log("llego a assignmenType");
         //TODO implemented this
         throw new Error("Method not implemented.");
     }

@@ -42,6 +42,7 @@ class TypeAssignment extends Instruction {
     }
 
     execute(e) {
+        console.log("llego a typeassignment");
         //TODO implemented this
         throw new Error("Method not implemented.");
     }

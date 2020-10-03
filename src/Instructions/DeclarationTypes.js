@@ -114,7 +114,7 @@ class DeclarationTypes extends Instruction {
           
       for(var j = 0; j < lengthProp; j++){
         definicion = symbolTypeDefinition.value.declarations[j];
-        valor = this.value[j];
+        valor = this.value[j].execute(e);
           
         if(definicion.identifier != valor.identifier){
           ErrorList.addError(new ErrorNode(this.line,this.column,new ErrorType(EnumErrorType.SEMANTIC),`El nombre de la la propiedad no coincide con la del type`,e.enviromentType));

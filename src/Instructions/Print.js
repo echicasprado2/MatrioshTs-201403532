@@ -41,16 +41,24 @@ class Print extends Instruction {
 
         for(var i = 0; i < this.values.length; i++){
             result = this.values[i].getValue(e);
+            
             if(result != null){
+                console.log(result);
                 if(result.type.enumType == EnumType.STRING){
                     if(result.value != "@vacio"){
                         resultCadena += result.value;
                     }
+
                 }else if(result.esArray){
                     resultCadena += this.getValueArray(result.value);
+
+                }else if(result.type.enumType == EnumType.TYPE){
+                    resultCadena += this.getDataMap(result.value.value);
+
                 }else{
                     resultCadena += result.value;
                 }
+
             }else{
                 console.log("llega null al print");
             }
@@ -79,4 +87,14 @@ class Print extends Instruction {
         return cadena;
     }
     
+    getDataMap(map){
+        var cadena = "";
+
+        map.forEach((element, key) => {
+            cadena += `${key}: ${element.value}\n`
+        });
+
+        return cadena
+    }
+
 }

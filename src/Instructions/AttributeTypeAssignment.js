@@ -41,7 +41,7 @@ class AttributeTypeAssignment extends Instruction {
         }
 
         this.value = this.value.getValue(e);
-        TableReport.addExecute(new NodeTableSymbols(this.line,this.column,this.identify,this.value.type,e.toString(),this.value.value));
+        // TableReport.addExecute(new NodeTableSymbols(this.line,this.column,this.identify,this.value.type,e.toString(),this.value.value));
         return this;
     }
 
