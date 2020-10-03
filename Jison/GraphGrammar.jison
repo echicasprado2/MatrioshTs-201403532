@@ -252,7 +252,7 @@ DECLARATION: TYPE_DECLARATION  L_ID TYPE_VARIABLE PUNTO_Y_COMA                  
 TYPES: type identificador '=' llave_izq ATTRIBUTES_TYPE llave_der PUNTO_Y_COMA { $$ = new NodeGraphAST("TYPE",NumberNode.getNumber()); $$.children.push(new NodeGraphAST($2,NumberNode.getNumber()),$5); }
         ;
 
-ATTRIBUTES_TYPE: ATTRIBUTES_TYPE ATTRIBUTE_TYPE { $$ = new NodeGraphAST("ATRIBUTOS_TYPE",NumberNode.getNumber()); $$.children.push($2); }
+ATTRIBUTES_TYPE: ATTRIBUTES_TYPE ATTRIBUTE_TYPE { $$ = new NodeGraphAST("ATRIBUTOS_TYPE",NumberNode.getNumber()); $$.children.push($1,$2); }
                 | ATTRIBUTE_TYPE                { $$ = $1; }
                 ; 
 

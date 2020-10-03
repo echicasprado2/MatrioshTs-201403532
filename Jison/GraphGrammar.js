@@ -180,7 +180,7 @@ case 68:
  this.$ = new NodeGraphAST("TYPE",NumberNode.getNumber()); this.$.children.push(new NodeGraphAST($$[$0-5],NumberNode.getNumber()),$$[$0-2]); 
 break;
 case 69:
- this.$ = new NodeGraphAST("ATRIBUTOS_TYPE",NumberNode.getNumber()); this.$.children.push($$[$0]); 
+ this.$ = new NodeGraphAST("ATRIBUTOS_TYPE",NumberNode.getNumber()); this.$.children.push($$[$0-1],$$[$0]); 
 break;
 case 71:
  this.$ = new NodeGraphAST($$[$0-3],NumberNode.getNumber()); this.$.children.push($$[$0-1]); 
