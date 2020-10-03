@@ -209,13 +209,11 @@ class Function extends Instruction {
             item.identifier = `${this.identifier}_${item.identifier}`;
 
             for (var k = 0; k < this.parameters.length; k++) {
-              item.value.push(
-                new Id(this.line, this.column, this.parameters[k].identifier)
-              );
+              item.parametros.push(new Id(this.line, this.column, this.parameters[k].identifier));
             }
 
             for (var k = 0; k < this.copyIdentifierOfDeclarations.length; k++) {
-              item.value.push(
+              item.parametros.push(
                 new Id(
                   this.line,
                   this.column,
@@ -369,13 +367,19 @@ class Function extends Instruction {
       for (var j = 0; j < this.copyIdentifierOfNestedFuncions.length; j++) {
         if (node.identifier === this.copyIdentifierOfNestedFuncions[j]) {
           node.identifier = `${this.identifier}_${node.identifier}`;
-
+          
+          // if(node.value == null){
+          //   node.value = [];
+          // }
+          
           for (var k = 0; k < this.parameters.length; k++) {
-            node.value.push(new Id(this.line, this.column, this.parameters[k].identifier));
+            // node.value.push(new Id(this.line, this.column, this.parameters[k].identifier));
+            node.parametros.push(new Id(this.line, this.column, this.parameters[k].identifier));
           }
 
           for (var k = 0; k < this.copyIdentifierOfDeclarations.length; k++) {
-            node.value.push(new Id(this.line,this.column,this.copyIdentifierOfDeclarations[k]));
+            // node.value.push(new Id(this.line,this.column,this.copyIdentifierOfDeclarations[k]));
+            node.parametros.push(new Id(this.line,this.column,this.copyIdentifierOfDeclarations[k]));
           }
         }
       }
