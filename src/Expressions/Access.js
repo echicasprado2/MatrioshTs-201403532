@@ -30,15 +30,43 @@ class Access extends Expresion {
         var result = new Value(new Type(EnumType.ERROR,""),"Error");
         var resultSymbolAccess;
 
-        for(var i = 0; i < this.value.length; i++){
-            resultSymbolAccess = this.value[i].getValue(e);
+        // for(var i = 0; i < this.value.length; i++){
+        //     resultSymbolAccess = this.value[i].getValue(e);
 
-            if(resultSymbolAccess  == null || resultSymbolAccess.type.enumType == EnumType.ERROR ){
-                ErrorList.addError(new ErrorNode(this.line,this.column,new ErrorType(EnumErrorType.SEMANTIC),`El acceso: "${this.value[i].identifier}", no se encontro`,e.enviromentType));
-                return result;
+        //     if(resultSymbolAccess  == null || resultSymbolAccess.type.enumType == EnumType.ERROR ){
+        //         ErrorList.addError(new ErrorNode(this.line,this.column,new ErrorType(EnumErrorType.SEMANTIC),`El acceso: "${this.value[i].identifier}", no se encontro`,e.enviromentType));
+        //         return result;
+        //     }
+
+        // }
+
+
+        resultSymbolAccess = this.value[0].getValue(e);
+
+        if(resultSymbolAccess  == null || resultSymbolAccess.type.enumType == EnumType.ERROR ){
+            ErrorList.addError(new ErrorNode(this.line,this.column,new ErrorType(EnumErrorType.SEMANTIC),`El acceso: "${this.value[i].identifier}", no se encontro`,e.enviromentType));
+            return result;
+        }
+
+        if(resultSymbolAccess.type.enumType == EnumType.TYPE){
+            let tempMap
+
+            if(this.value.length > 1){
+                if(resultSymbolAccess.value.value.has(this.value[1].identifier)){
+                    tempMap = resultSymbolAccess.value.value.get(this.value[1].identifier);
+                }
+                    
+                for(var i = 2; i < this.value.length;i++){
+                    if(tempMap instanceof Map && tempMap.has(this.value[i].identifier)){
+                        tempMap = tempMap.get(this.value[1].identifier);
+                    }
+                }
+                return tempMap;
             }
 
+                
         }
+
 
         if(resultSymbolAccess.type.enumType == EnumType.FUNCTION || resultSymbolAccess.type.enumType == EnumType.TYPE){
             return resultSymbolAccess
@@ -61,15 +89,35 @@ class Access extends Expresion {
         var result = new Value(new Type(EnumType.ERROR,""),"Error");
         var resultSymbolAccess;
 
-        for(var i = 0; i < this.value.length; i++){
-            resultSymbolAccess = this.value[i].getValue(e);
+        // for(var i = 0; i < this.value.length; i++){
+            // resultSymbolAccess = this.value[i].getValue(e);
+            resultSymbolAccess = this.value[0].getValue(e);
 
             if(resultSymbolAccess  == null || resultSymbolAccess.type.enumType == EnumType.ERROR ){
                 ErrorList.addError(new ErrorNode(this.line,this.column,new ErrorType(EnumErrorType.SEMANTIC),`El acceso: "${this.value[i].identifier}", no se encontro`,e.enviromentType));
                 return result;
             }
 
-        }
+            if(resultSymbolAccess.type.enumType == EnumType.TYPE){
+                let tempMap
+
+                if(this.value.length > 1){
+                    if(resultSymbolAccess.value.value.has(this.value[1].identifier)){
+                        tempMap = resultSymbolAccess.value.value.get(this.value[1].identifier);
+                    }
+                    
+                    for(var i = 2; i < this.value.length;i++){
+                        if(tempMap instanceof Map && tempMap.has(this.value[i].identifier)){
+                            tempMap = tempMap.get(this.value[1].identifier);
+                        }
+                    }
+                    return tempMap;
+                }
+
+                
+            }
+
+        // }
 
         if(resultSymbolAccess.type.enumType == EnumType.FUNCTION || resultSymbolAccess.type.enumType == EnumType.TYPE){
             return resultSymbolAccess
