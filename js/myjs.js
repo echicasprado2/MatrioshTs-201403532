@@ -123,7 +123,7 @@ function showTranslatedTree(file) {
     element.innerHTML = svgCode;
   };
   
-  var graph = mermaid.mermaidAPI.render("showTranslatedTree", code, insertSvg);
+  //var graph = mermaid.mermaidAPI.render("showTranslatedTree", code, insertSvg);
 }
 
 function showExecuteTree(file) {
@@ -140,7 +140,7 @@ function showExecuteTree(file) {
     element.innerHTML = svgCode;
   };
 
-  var graph = mermaid.render("showExecuteTree", code, insertSvg);
+  //var graph = mermaid.render("showExecuteTree", code, insertSvg);
 }
 
 function showTableTranslatedSymbols() {

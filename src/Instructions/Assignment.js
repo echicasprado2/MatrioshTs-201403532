@@ -84,7 +84,10 @@ class Assignment extends Instruction {
             return null;
         }
 
-        
+        if(resultSymbol.type.enumType == EnumType.TYPE){
+            this.executeType(e,resultSymbol,resultExp);
+            return null;
+        }
 
         if(resultSymbol.type.enumType == EnumType.NULL){
             resultSymbol.type = resultExp.type;
@@ -146,7 +149,30 @@ class Assignment extends Instruction {
         return null;
     }
 
-    executeType(e){//TODO hacer asignacion de type
+    executeType(e,symbol,newValue){//TODO hacer asignacion de type
+        let key;
+        let tempValue;
+        let tempMap;
+
+        for(let i = 1; i < this.access.length; i++){
+            key = this.access[i].identifier;
+
+            if(symbol.value.value.has(key) && i == (this.access.length - 1) ){
+                // tempMap = symbol.value.value.get(key);
+                tempValue = symbol.value.value.get(key);
+
+                if(tempValue instanceof Value){
+
+                    if(tempValue.type.enumType != newValue.type.enumType){
+                        ErrorList.addError(new ErrorNode(this.line,this.column, new ErrorType(EnumErrorType.SEMANTIC),"El valor no es del mismo tipo",e.enviromentType));
+                        return null;
+                    }
+
+                    symbol.value.value.set(key,newValue);
+                }
+
+            }
+        }
     }
 
     /**
