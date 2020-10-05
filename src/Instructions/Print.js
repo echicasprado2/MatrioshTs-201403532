@@ -90,6 +90,10 @@ class Print extends Instruction {
     getDataMap(map){
         var cadena = "";
 
+        if(!(map instanceof Map)){
+            return cadena;
+        }
+        
         map.forEach((element, key) => {
             cadena += `${key}: ${element.value}\n`
         });

@@ -278,10 +278,13 @@ class Function extends Instruction {
       
     } else if (node instanceof DeclarationArray){
       var obj;
-      for(var i = 0; i < node.values.length;i ++){
-        obj = node.values[i]; // lista de E
-        for(var j =0; j < obj.length; j++){
-          this.changeNameOfCallFunctionsIntoSentences(obj[j]);
+
+      if(node.values != null){
+        for(var i = 0; i < node.values.length;i ++){
+          obj = node.values[i];
+          for(var j =0; j < obj.length; j++){
+            this.changeNameOfCallFunctionsIntoSentences(obj[j]);
+          }
         }
       }
 
@@ -368,19 +371,14 @@ class Function extends Instruction {
         if (node.identifier === this.copyIdentifierOfNestedFuncions[j]) {
           node.identifier = `${this.identifier}_${node.identifier}`;
           
-          // if(node.value == null){
-          //   node.value = [];
-          // }
-          
           for (var k = 0; k < this.parameters.length; k++) {
-            // node.value.push(new Id(this.line, this.column, this.parameters[k].identifier));
             node.parametros.push(new Id(this.line, this.column, this.parameters[k].identifier));
           }
 
           for (var k = 0; k < this.copyIdentifierOfDeclarations.length; k++) {
-            // node.value.push(new Id(this.line,this.column,this.copyIdentifierOfDeclarations[k]));
             node.parametros.push(new Id(this.line,this.column,this.copyIdentifierOfDeclarations[k]));
           }
+          
         }
       }
     }
