@@ -131,7 +131,6 @@ class DeclarationArray extends Instruction {
         var resultValue;
 
         if(objArray[0] instanceof Value && objArray[0].type.enumType == EnumType.NULL){
-            // objArray[0].value = [];
             return objArray[0];
         }
 
@@ -155,26 +154,15 @@ class DeclarationArray extends Instruction {
 
             if(type.enumType == EnumType.NULL){
                 this.type = resultValue.type;
-                type = resultValue.type;
+                type = resultValue.type;    
+            }
 
-                if(resultValue.value instanceof Array){
-                    listValueReturn.push(resultValue);
-                }else{
-                    listValueReturn.push(resultValue);
-                }
-                
-            }else if(type.enumType == resultValue.type.enumType){
-                if(resultValue.value instanceof Array){
-                    listValueReturn.push(resultValue.value);
-                }else{
-                    listValueReturn.push(resultValue);
-                }
-
-            }else if(type.enumType != resultValue.type.enumType){
+            if(type.enumType != resultValue.type.enumType){
                 ErrorList.addError(new ErrorNode(this.line,this.column,new ErrorType(EnumErrorType.SEMANTIC),`el tipo de valor no coincide con el tipo del array`,e.enviromentType));
                 return null;
             }
 
+            listValueReturn.push(resultValue);
          }
 
         return new Value(new Type(type.enumType,type.identifier),listValueReturn);

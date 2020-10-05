@@ -10,7 +10,7 @@ class Value extends Expresion {
      */
     constructor(type, value) {
 
-        if(type.enumType == EnumType.STRING && value != null){
+        if(type.enumType == EnumType.STRING && value != null && !(value instanceof Array) ){
             value = value.replace("\"","");
             value = value.replace("\"","");
             value = value.replace("\'","");

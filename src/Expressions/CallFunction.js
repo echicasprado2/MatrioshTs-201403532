@@ -91,9 +91,11 @@ class CallFunction extends Expresion {
 
             if(this.parametros[i] instanceof Expresion){
                 resultValueParametroDeclaration = this.parametros[i].getValue(e);
-            }
+            
+            }else if(this.parametros[i] instanceof Array){
+                resultValueParametroDeclaration = this.getValueArray(e,this.parametros[i],resultParametroDeclaration.type);
 
-            //TODO aqui tengo que validar que sea un valor en formato de array y obtener esta data en un value
+            }
 
             if(resultValueParametroDeclaration == null || resultValueParametroDeclaration.type.enumType == EnumType.ERROR){
                 ErrorList.addError(new ErrorNode(this.line,this.column,new ErrorType(EnumErrorType.SEMANTIC),`error con el valor del parametro: "${resultParametroDeclaration.identifier}"`,e.enviromentType));
@@ -106,7 +108,6 @@ class CallFunction extends Expresion {
             }
             
             if(resultParametroDeclaration.type.enumType == EnumType.ARRAY){
-                //console.log(resultParametroDeclaration,resultValueParametroDeclaration);
                 
                 if(resultParametroDeclaration.type.identifier != resultValueParametroDeclaration.type.identifier){
                     ErrorList.addError(new ErrorNode(this.line,this.column,new ErrorType(EnumErrorType.SEMANTIC),`El tipo del parametro y el tipo de valor no coinciden function: ${this.identifier}`,e.enviromentType));
@@ -185,30 +186,17 @@ class CallFunction extends Expresion {
                 return null;
             }
   
-            if(type.enumType == EnumType.NULL){
-                this.type = resultValue.type;
-                type = resultValue.type;
-  
-                if(resultValue.value instanceof Array){
-                    listValueReturn.push(resultValue.value);
-                }else{
-                    listValueReturn.push(resultValue);
-                }
-                
-            }else if(type.enumType == resultValue.type.enumType){
-                if(resultValue.value instanceof Array){
-                    listValueReturn.push(resultValue.value);
-                }else{
-                    listValueReturn.push(resultValue);
-                }
-  
-            }else if(type.enumType != resultValue.type.enumType){
+            if(type.identifier == EnumType.NULL){
+                type.identifier = resultValue.type;    
+            }
+            
+            if(type.identifier != resultValue.type.enumType){
                 ErrorList.addError(new ErrorNode(this.line,this.column,new ErrorType(EnumErrorType.SEMANTIC),`el tipo de valor no coincide con el tipo del array`,e.enviromentType));
                 return null;
             }
-  
+
+            listValueReturn.push(resultValue);
          }
-  
         return new Value(new Type(type.enumType,type.identifier),listValueReturn);
     }
   
