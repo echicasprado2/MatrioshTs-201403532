@@ -48,11 +48,11 @@ class Assignment extends Instruction {
     }
 
     translatedSymbolsTable(e){
-        return"implementar";
+        return;
     }
 
     executeSymbolsTable(e){
-        return "implementar";
+        return;
     }
 
     execute(e) {

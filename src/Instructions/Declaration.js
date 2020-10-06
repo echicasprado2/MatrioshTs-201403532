@@ -131,14 +131,40 @@ class Declaration extends Instruction {
       if(result == null){
         e.insertNewSymbol(this.ids[i],new Symbol(this.line,this.column,this.ids[i],this.type,this.typeDeclaration,new Value(new Type(EnumType.NULL,null),"",0)));
       }else{
-        /* TODO en esta parte tengo que validar el tipo type y el identifier y como result es un value tengo que guardar solo el valor del value y no el simbolo
-            esto porque cuando busco un type con un identificar este me retorna el symbolo y no el valor
+        /* TODO here part i valid to type and identifier
+          because result is a symbol and i save only value of symbol and not a symbol
+          this because when a find a type with identifier this return a symbol, not value
         */
+
+        if(result.type.enumType == EnumType.TYPE){
+
+          if(this.type.enumType == EnumType.NULL){
+            this.type = result.type;
+            e.insertNewSymbol(this.ids[i],new Symbol(this.line,this.column,this.ids[i],this.type,this.typeDeclaration,result.value,0));
+            return null;
+
+          }else if(this.type.enumType == EnumType.TYPE && result.type.enumType == EnumType.TYPE){
+
+            if(this.type.identifier != result.type.identifier){
+              ErrorList.addError(new ErrorNode(this.line,this.column,new ErrorType(EnumErrorType.SEMANTIC),`El tipo de la variable no es el mismo que su valor : ${this.type.toString()} != ${result.type.toString()}`,e.enviromentType));
+              return null;
+            }
+            
+            e.insertNewSymbol(this.ids[i],new Symbol(this.line,this.column,this.ids[i],this.type,this.typeDeclaration,result.value,0));
+            return null;
+          }else {
+            ErrorList.addError(new ErrorNode(this.line,this.column,new ErrorType(EnumErrorType.SEMANTIC),`El tipo de la variable no es el mismo que su valor : ${this.type.toString()} != ${result.type.toString()}`,e.enviromentType));
+            return null;
+          }
+        }
+
         if(this.type.enumType == EnumType.NULL){
           this.type = result.type;
           e.insertNewSymbol(this.ids[i],new Symbol(this.line,this.column,this.ids[i],this.type,this.typeDeclaration,result,0));
+
         }else if(this.type.enumType != result.type.enumType){
           ErrorList.addError(new ErrorNode(this.line,this.column,new ErrorType(EnumErrorType.SEMANTIC),`El tipo de la variable no es el mismo que su valor : ${this.type.toString()} != ${result.type.toString()}`,e.enviromentType));
+
         }else{
           e.insertNewSymbol(this.ids[i],new Symbol(this.line,this.column,this.ids[i],this.type,this.typeDeclaration,result,0));
         }
