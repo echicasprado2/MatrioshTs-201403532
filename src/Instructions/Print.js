@@ -88,17 +88,23 @@ class Print extends Instruction {
     }
     
     getDataMap(map){
-        var cadena = "";
+        var cadena = "{";
 
         if(!(map instanceof Map)){
             return cadena;
         }
         
         map.forEach((element, key) => {
-            cadena += `${key}: ${element.value}\n`
+            if(element.value instanceof Map){
+                cadena += `${key}: ${this.getDataMap(element.value)},`
+            }else{
+                cadena += `${key}: ${element.value},`
+            }
         });
 
-        return cadena
+        cadena = cadena.substring(0,cadena.length -1);
+        cadena += "}";
+        return cadena;
     }
 
 }

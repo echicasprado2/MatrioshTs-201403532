@@ -41,6 +41,11 @@ class Return extends Instruction {
         }else{
             if(this.returnExpresion){
                 result = this.expression.getValue(e);
+
+                if(result instanceof Symbol && result.type.enumType == EnumType.TYPE){
+                    return new Return(this.line,this.column,result.value,true);
+                }
+
                 return new Return(this.line,this.column,result,true);
             }
         }

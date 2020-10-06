@@ -104,19 +104,20 @@ class DeclarationTypes extends Instruction {
       return null;
     }else{
 
-      if(symbolTypeDefinition.value.declarations.length != this.value.length){
+      lengthProp = symbolTypeDefinition.value.declarations.length;
+
+      if(lengthProp != this.value.length){
         ErrorList.addError(new ErrorNode(this.line,this.column,new ErrorType(EnumErrorType.SEMANTIC),`Numero de valores no es igual al numero de propiedades`,e.enviromentType));
         return null;
       }
           
-      lengthProp = symbolTypeDefinition.value.declarations.length;
       valueMap = new Map();
           
       for(var j = 0; j < lengthProp; j++){
         definicion = symbolTypeDefinition.value.declarations[j];
         valor = this.value[j].execute(e);
           
-        if(definicion.identifier != valor.identifier){
+        if(definicion.identify != valor.identify){
           ErrorList.addError(new ErrorNode(this.line,this.column,new ErrorType(EnumErrorType.SEMANTIC),`El nombre de la la propiedad no coincide con la del type`,e.enviromentType));
           return null;
         }
@@ -126,7 +127,7 @@ class DeclarationTypes extends Instruction {
         if(tmp.type.enumType != EnumType.NULL){
           
           if(definicion.type.enumType == EnumType.TYPE){
-            if(definicion.type.identifier != tmp.type.identifier){
+            if(definicion.type.identify != tmp.type.identify){
               ErrorList.addError(new ErrorNode(this.line,this.column,new ErrorType(EnumErrorType.SEMANTIC),`El valor no es del mismo tipo que la propiedad`,e.enviromentType));
               return null;
             }

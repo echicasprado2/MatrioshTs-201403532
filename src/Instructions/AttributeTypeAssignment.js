@@ -32,16 +32,7 @@ class AttributeTypeAssignment extends Instruction {
     }
 
     execute(e) {
-
-        var exists = e.searchSymbol(this.identify);
-
-        if(exists != null){
-            ErrorList.addError(new ErrorNode(this.line,this.column,new ErrorType(EnumErrorType.SEMANTIC),`El nombre del atributo: "${this.identify}" ya se encuentra en uso`,e.enviromentType));
-            return null;
-        }
-
         this.value = this.value.getValue(e);
-        // TableReport.addExecute(new NodeTableSymbols(this.line,this.column,this.identify,this.value.type,e.toString(),this.value.value));
         return this;
     }
 
