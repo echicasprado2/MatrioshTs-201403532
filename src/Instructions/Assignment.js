@@ -56,7 +56,6 @@ class Assignment extends Instruction {
     }
 
     execute(e) {
-        //TODO implementar para types
         if(this.value instanceof Array){
             this.executeArray(e);
         }else if(this.value instanceof Expresion){
@@ -74,7 +73,7 @@ class Assignment extends Instruction {
             return null;
         }
         
-        if(resultSymbol.typeDeclaration.enumType == EnumDeclarationType.CONST){
+        if(resultSymbol.typeDeclaration.enumType == EnumDeclarationType.CONST && resultSymbol.type.enumType != EnumType.TYPE){
             ErrorList.addError(new ErrorNode(this.line,this.column,new ErrorType(EnumErrorType.SEMANTIC),`La variable de tipo CONST, no se puede cambiar el valor`,e.enviromentType));
             return null;
         }
@@ -98,10 +97,12 @@ class Assignment extends Instruction {
         }
         
         if(resultSymbol.type.enumType == EnumType.ARRAY){
+            
             if(resultSymbol.dimensions != this.getDimensionArray(resultExp.value,0)){
                 ErrorList.addError(new ErrorNode(this.line,this.column,new ErrorType(EnumErrorType.SEMANTIC),`dimensiones de los arreglos son diferentes`,e.enviromentType));
                 return null;
             }
+
             e.insert(resultSymbol.id,new Symbol(this.line,this.column,resultSymbol.id,resultSymbol.type,resultSymbol.typeDeclaration,resultExp,resultSymbol.dimensions));
         }else{
             e.insert(resultSymbol.id,new Symbol(this.line,this.column,resultSymbol.id,resultSymbol.type,resultSymbol.typeDeclaration,resultExp,0));
@@ -149,16 +150,14 @@ class Assignment extends Instruction {
         return null;
     }
 
-    executeType(e,symbol,newValue){//TODO hacer asignacion de type
+    executeType(e,symbol,newValue){
         let key;
         let tempValue;
-        let tempMap;
 
         for(let i = 1; i < this.access.length; i++){
             key = this.access[i].identifier;
 
             if(symbol.value.value.has(key) && i == (this.access.length - 1) ){
-                // tempMap = symbol.value.value.get(key);
                 tempValue = symbol.value.value.get(key);
 
                 if(tempValue instanceof Value){
@@ -167,7 +166,6 @@ class Assignment extends Instruction {
                         ErrorList.addError(new ErrorNode(this.line,this.column, new ErrorType(EnumErrorType.SEMANTIC),"El valor no es del mismo tipo",e.enviromentType));
                         return null;
                     }
-
                     symbol.value.value.set(key,newValue);
                 }
 

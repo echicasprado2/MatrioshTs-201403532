@@ -131,6 +131,9 @@ class Declaration extends Instruction {
       if(result == null){
         e.insertNewSymbol(this.ids[i],new Symbol(this.line,this.column,this.ids[i],this.type,this.typeDeclaration,new Value(new Type(EnumType.NULL,null),"",0)));
       }else{
+        /* TODO en esta parte tengo que validar el tipo type y el identifier y como result es un value tengo que guardar solo el valor del value y no el simbolo
+            esto porque cuando busco un type con un identificar este me retorna el symbolo y no el valor
+        */
         if(this.type.enumType == EnumType.NULL){
           this.type = result.type;
           e.insertNewSymbol(this.ids[i],new Symbol(this.line,this.column,this.ids[i],this.type,this.typeDeclaration,result,0));
