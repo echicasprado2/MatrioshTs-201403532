@@ -73,10 +73,10 @@ class AssignmentArray extends Instruction {
             return null;
         }
 
-        if(resultSymbol.typeDeclaration.enumType == EnumDeclarationType.CONST){
-            ErrorList.addError(new ErrorNode(this.line,this.column,new ErrorType(EnumErrorType.SEMANTIC),`La variable de tipo CONST, no se puede cambiar el valor`,e.enviromentType));
-            return null;
-        }
+        // if(resultSymbol.typeDeclaration.enumType == EnumDeclarationType.CONST){
+        //     ErrorList.addError(new ErrorNode(this.line,this.column,new ErrorType(EnumErrorType.SEMANTIC),`La variable de tipo CONST, no se puede cambiar el valor`,e.enviromentType));
+        //     return null;
+        // }
 
         if(resultSymbol.dimensions < listAccessValue.length){
             ErrorList.addError(new ErrorNode(this.line,this.column,new ErrorType(EnumErrorType.SEMANTIC),`El indice supera las dimenciones del array`,e.enviromentType));

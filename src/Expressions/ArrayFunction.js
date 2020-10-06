@@ -23,12 +23,6 @@ class ArrayFunction extends Expresion {
     }else{
       this.translatedCode += `${this.identify.getTranslated()}.${this.type.toString()}`;
     }
-
-    // if (this.parentesis) {
-    //   return `(${this.translatedCode})`;
-    // } else {
-    //   return this.translatedCode;
-    // }
     
     if(this.parentesis){
       this.translatedCode = `(${this.translatedCode})`;

@@ -52,7 +52,7 @@
     }
 
     getValue(e) {
-        var result = new Value(new TypeError(EnumType.ERROR,""),"Error");
+        var result = new Value(new TypeError(EnumType.ERROR,null),"Error");
         var resultExp = this.expresion.getValue(e);
         var enumTypeResultOperation = TreatmentOfPrimitiveTypes.getTopType(resultExp,resultExp);
 

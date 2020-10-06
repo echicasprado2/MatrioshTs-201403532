@@ -99,9 +99,107 @@ class Relational extends Expresion {
         result.value = resultExp1.value < resultExp2.value;
       }
       
+    }else if(enumTypeResultExpresitions == EnumType.TYPE){
+      let value1, value2;
+
+      if(resultExp1 instanceof Symbol){
+        value1 = resultExp1.value;
+
+      }else if(resultExp1 instanceof Value){
+        value1 = resultExp1;
+      }
+
+      if(resultExp2 instanceof Symbol){
+        value2 = resultExp2.value;
+
+      }else if(resultExp2 instanceof Value){
+        value2 = resultExp2;
+      }
+
+      if(value1.type.enumType == EnumType.TYPE && value2.type.enumType == EnumType.TYPE){
+
+        if(value1.type.identifier == value2.type.identifier){
+
+          if(this.operationType == EnumOperationType.DIFFERENT_THAN){
+            result.value = value1.value != value2.value; 
+      
+          }else if(this.operationType == EnumOperationType.LIKE_THAN){
+            result.value = value1.value == value2.value;
+      
+          }else if(this.operationType == EnumOperationType.MORE_EQUAL_TO){ 
+              result.value = Number(value1.value) >= Number(value2.value);
+          
+          }else if(this.operationType == EnumOperationType.LESS_EQUAL_TO){
+            result.value = value1.value <= value2.value;
+      
+          }else if(this.operationType == EnumOperationType.MORE_THAN){
+            result.value = value1.value > value2.value;
+      
+          }else if(this.operationType == EnumOperationType.LESS_THAN){
+            result.value = value1.value < value2.value;
+          }
+
+        }
+
+      }else if(value1.type.enumType == EnumType.TYPE && !(value2.type.enumType == EnumType.TYPE)){
+
+        if(value2.type.enumType == EnumType.NULL || value1.type.identifier == value2.type.enumType){
+
+          if(this.operationType == EnumOperationType.DIFFERENT_THAN){
+            result.value = value1.value != value2.value; 
+      
+          }else if(this.operationType == EnumOperationType.LIKE_THAN){
+            result.value = value1.value == value2.value;
+      
+          }else if(this.operationType == EnumOperationType.MORE_EQUAL_TO){ 
+              result.value = Number(value1.value) >= Number(value2.value);
+          
+          }else if(this.operationType == EnumOperationType.LESS_EQUAL_TO){
+            result.value = value1.value <= value2.value;
+      
+          }else if(this.operationType == EnumOperationType.MORE_THAN){
+            result.value = value1.value > value2.value;
+      
+          }else if(this.operationType == EnumOperationType.LESS_THAN){
+            result.value = value1.value < value2.value;
+          }
+
+        }else{
+          console.log("Error de tipos en types")
+        }
+
+
+      }else if(!(value1.type.enumType == EnumType.TYPE) && value2.type.enumType == EnumType.TYPE){
+
+        if(value1.type.enumType == EnumType.NULL || value1.type.enumType == value2.type.identifier){
+
+          if(this.operationType == EnumOperationType.DIFFERENT_THAN){
+            result.value = value1.value != value2.value; 
+      
+          }else if(this.operationType == EnumOperationType.LIKE_THAN){
+            result.value = value1.value == value2.value;
+      
+          }else if(this.operationType == EnumOperationType.MORE_EQUAL_TO){ 
+              result.value = Number(value1.value) >= Number(value2.value);
+          
+          }else if(this.operationType == EnumOperationType.LESS_EQUAL_TO){
+            result.value = value1.value <= value2.value;
+      
+          }else if(this.operationType == EnumOperationType.MORE_THAN){
+            result.value = value1.value > value2.value;
+      
+          }else if(this.operationType == EnumOperationType.LESS_THAN){
+            result.value = value1.value < value2.value;
+          }
+
+        }else{
+          console.log("Error de tipos en types")
+        }
+
+      }
+
     }
     
-
     return result;
   }
 }
