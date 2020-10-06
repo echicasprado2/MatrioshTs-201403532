@@ -160,9 +160,9 @@ SENTENCE: FUNCTION           { $$ = $1; }
         | BREAK              { $$ = $1; }
         | CONITNUE           { $$ = $1; }
         | CALL_FUNCTION      { $$ = $1; }
-        | ARRAY_FUNCION      
-        // | error punto_y_coma { $$ = new InstructionError(); }
-        // | error llave_der       { $$ = $1; cosole.log("error recuperacion con }"); }
+        | ARRAY_FUNCION      { $$ = $1; }
+        | error punto_y_coma { $$ = new NodeGraphAST("ERROR",NumberNode.getNumber()); }
+        | error llave_der    { $$ = new NodeGraphAST("ERROR",NumberNode.getNumber()); }
         ;
 
 ARRAY_FUNCION: ID_ASSIGNMENT punto pop par_izq par_der PUNTO_Y_COMA    { $$ = new NodeGraphAST("FUNCTION_ARRAY",NumberNode.getNumber()); $$.children.push($1,new NodeGraphAST($3,NumberNode.getNumber())); }
@@ -170,7 +170,6 @@ ARRAY_FUNCION: ID_ASSIGNMENT punto pop par_izq par_der PUNTO_Y_COMA    { $$ = ne
              | ID_ASSIGNMENT punto push par_izq E par_der PUNTO_Y_COMA { $$ = new NodeGraphAST("FUNCTION_ARRAY",NumberNode.getNumber()); $$.children.push($1,new NodeGraphAST($3,NumberNode.getNumber()),$5); }
              ;
 
-// faltan de graficar
 CALL_FUNCTION:    identificador par_izq L_E par_der PUNTO_Y_COMA { $$ = new NodeGraphAST("LLAMADA_FUNCION",NumberNode.getNumber()); $$.children.push(new NodeGraphAST($1,NumberNode.getNumber()),$3); }
                 | identificador par_izq par_der     PUNTO_Y_COMA { $$ = new NodeGraphAST("LLAMADA_FUNCION",NumberNode.getNumber()); $$.children.push(new NodeGraphAST($1,NumberNode.getNumber())); }
                 ;
@@ -224,6 +223,8 @@ FUNCTION_SENTENCE: PRINT            { $$ = $1; }
                 | CALL_FUNCTION     { $$ = $1; }
                 | FUNCTION          { $$ = $1; }
                 | ARRAY_FUNCION     { $$ = $1; }
+                | error punto_y_coma { $$ = new NodeGraphAST("ERROR",NumberNode.getNumber()); }
+                | error llave_der    { $$ = new NodeGraphAST("ERROR",NumberNode.getNumber()); }
                 ;
 
 L_PARAMETROS: L_PARAMETROS coma PARAMETRO  { $$ = new NodeGraphAST("L_PARAMETROS",NumberNode.getNumber()); $$.children.push($1,$3); }

@@ -36,7 +36,7 @@ class AssignmentType extends Instruction {
     }
 
     execute(e) {
-        //TODO implemented this
+        //TODO test
         let resultSymbol;
         let newValue;
         let definition;
