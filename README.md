@@ -48,7 +48,7 @@ RETURN: return ';'
 BLOCK: '{' SENTENCES '}'
      | '{' '}'
 
-'.'_COMA: ';'
+PUNTO_COMA: ';'
           |
 
 FUNCTION: FUNCTION_HEAD '{' FUNCTION_SENTENCES '}'
